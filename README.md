@@ -2,87 +2,87 @@
 
 # Size Charts
 
-**Open-source size chart management for e-commerce**
+**Gestión de tablas de tallas de código abierto para e-commerce**
 
-[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://www.sizecharts.dev)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/mattdecrevel/size-charts?style=social)](https://github.com/mattdecrevel/size-charts)
+[![Demo en vivo](https://img.shields.io/badge/demo-en_vivo-brightgreen)](https://www.sizecharts.dev)
+[![Licencia: MIT](https://img.shields.io/badge/Licencia-MIT-blue.svg)](LICENSE)
+[![Estrellas en GitHub](https://img.shields.io/github/stars/mattdecrevel/size-charts?style=social)](https://github.com/mattdecrevel/size-charts)
 
-[Live Demo](https://www.sizecharts.dev) · [Documentation](https://www.sizecharts.dev/docs) · [Report Bug](https://github.com/mattdecrevel/size-charts/issues)
+[Demo en vivo](https://www.sizecharts.dev) · [Documentación](https://www.sizecharts.dev/docs) · [Reportar un error](https://github.com/mattdecrevel/size-charts/issues)
 
-**English** · [Español](README.es.md)
+[English](README.en.md) · **Español**
 
 </div>
 
 ---
 
-A production-ready size chart system with an admin panel, REST API, and embeddable widget. Built for e-commerce platforms that need to manage clothing, footwear, and accessory sizing.
+Un sistema de tablas de tallas listo para producción con panel de administración, API REST y widget integrable. Diseñado para plataformas de e-commerce que necesitan gestionar tallas de ropa, calzado y accesorios.
 
 <div align="center">
 
-![Size Charts Homepage](docs/images/homepage.png)
+![Página principal de Size Charts](docs/images/homepage.png)
 
 </div>
 
-## Features
+## Características
 
-| Feature | Description |
-|---------|-------------|
-| **Spreadsheet Editor** | Excel-like editing with keyboard navigation |
-| **Multi-Category** | One chart can appear in multiple categories |
-| **Dual Units** | All measurements in inches + centimeters |
-| **REST API** | Full CRUD with OpenAPI documentation |
-| **Embeddable Widget** | One script tag, zero dependencies |
-| **API Keys** | Scoped authentication with rate limiting |
-| **Dark Mode** | Full dark mode support |
-| **Templates** | Pre-built charts for common use cases |
+| Característica | Descripción |
+|----------------|-------------|
+| **Editor tipo hoja de cálculo** | Edición estilo Excel con navegación por teclado |
+| **Multicategoría** | Una tabla puede aparecer en múltiples categorías |
+| **Unidades duales** | Todas las medidas en pulgadas + centímetros |
+| **API REST** | CRUD completo con documentación OpenAPI |
+| **Widget integrable** | Un solo script tag, cero dependencias |
+| **Claves de API** | Autenticación con alcance y límite de peticiones |
+| **Modo oscuro** | Soporte completo de modo oscuro |
+| **Plantillas** | Tablas prediseñadas para casos de uso comunes |
 
 <div align="center">
 
-<img src="docs/images/admin-editor.png" alt="Admin Editor" width="80%">
+<img src="docs/images/admin-editor.png" alt="Editor de administración" width="80%">
 
-*Spreadsheet-style editor with inline editing and keyboard navigation*
+*Editor estilo hoja de cálculo con edición en línea y navegación por teclado*
 
 </div>
 
-## Quick Start
+## Inicio rápido
 
-### Option 1: Deploy to Vercel (Recommended)
+### Opción 1: Desplegar en Vercel (Recomendado)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mattdecrevel/size-charts&env=DATABASE_URL&envDescription=PostgreSQL%20connection%20string&envLink=https://github.com/mattdecrevel/size-charts%23environment-variables)
+[![Desplegar con Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mattdecrevel/size-charts&env=DATABASE_URL&envDescription=Cadena%20de%20conexi%C3%B3n%20PostgreSQL&envLink=https://github.com/mattdecrevel/size-charts%23environment-variables)
 
-1. Click the button above
-2. Connect a PostgreSQL database ([Neon](https://neon.tech), [Supabase](https://supabase.com), or [Railway](https://railway.app))
-3. Set `DATABASE_URL` environment variable
-4. Deploy!
+1. Haz clic en el botón de arriba
+2. Conecta una base de datos PostgreSQL ([Neon](https://neon.tech), [Supabase](https://supabase.com) o [Railway](https://railway.app))
+3. Configura la variable de entorno `DATABASE_URL`
+4. ¡Despliega!
 
-### Option 2: Local Development
+### Opción 2: Desarrollo local
 
 ```bash
-# Clone and install
+# Clonar e instalar
 git clone https://github.com/mattdecrevel/size-charts.git
 cd size-charts
 npm install
 
-# Setup database
+# Configurar base de datos
 cp .env.example .env
-# Edit .env with your DATABASE_URL
+# Edita .env con tu DATABASE_URL
 
-# Initialize and seed
+# Inicializar y poblar datos
 npm run db:push
 npm run db:seed
 
-# Start dev server
+# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+Abre [http://localhost:3000](http://localhost:3000)
 
-## Usage
+## Uso
 
-### Embed Widget
+### Widget integrable
 
-Add size charts to any website with one script tag:
+Agrega tablas de tallas a cualquier sitio web con un solo script tag:
 
 ```html
 <div data-chart="mens-tops"></div>
@@ -91,116 +91,116 @@ Add size charts to any website with one script tag:
 </script>
 ```
 
-### REST API
+### API REST
 
 ```bash
-# Get all size charts
+# Obtener todas las tablas de tallas
 curl https://www.sizecharts.dev/api/v1/size-charts
 
-# Get specific chart
+# Obtener una tabla específica
 curl https://www.sizecharts.dev/api/v1/size-charts?slug=mens-tops
 
-# With authentication (when enabled)
+# Con autenticación (cuando está habilitada)
 curl -H "X-API-Key: sc_live_xxxx" \
   https://www.sizecharts.dev/api/v1/size-charts
 ```
 
-See [API Documentation](https://www.sizecharts.dev/docs/api) for all endpoints.
+Consulta la [Documentación de la API](https://www.sizecharts.dev/docs/api) para ver todos los endpoints.
 
-## Tech Stack
+## Stack tecnológico
 
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
-- **Language**: [TypeScript 5](https://www.typescriptlang.org/)
-- **Database**: [PostgreSQL](https://www.postgresql.org/) + [Prisma 7](https://www.prisma.io/)
-- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
-- **State**: [TanStack Query](https://tanstack.com/query)
+- **Lenguaje**: [TypeScript 5](https://www.typescriptlang.org/)
+- **Base de datos**: [PostgreSQL](https://www.postgresql.org/) + [Prisma 7](https://www.prisma.io/)
+- **Estilos**: [Tailwind CSS 4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/)
+- **Estado**: [TanStack Query](https://tanstack.com/query)
 
-## Environment Variables
+## Variables de entorno
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `DATABASE_URL` | Yes | PostgreSQL connection string |
-| `DEMO_MODE` | No | Enable public demo mode (`true`/`false`) |
-| `ADMIN_USERNAME` | No | Admin panel username (if not demo mode) |
-| `ADMIN_PASSWORD` | No | Admin panel password (if not demo mode) |
-| `API_AUTH_REQUIRED` | No | Require API key authentication |
-| `CORS_ALLOWED_ORIGINS` | No | Allowed CORS origins (comma-separated) |
+| Variable | Requerida | Descripción |
+|----------|-----------|-------------|
+| `DATABASE_URL` | Sí | Cadena de conexión PostgreSQL |
+| `DEMO_MODE` | No | Habilitar modo demo público (`true`/`false`) |
+| `ADMIN_USERNAME` | No | Nombre de usuario del panel de administración (si no está en modo demo) |
+| `ADMIN_PASSWORD` | No | Contraseña del panel de administración (si no está en modo demo) |
+| `API_AUTH_REQUIRED` | No | Requerir autenticación con clave de API |
+| `CORS_ALLOWED_ORIGINS` | No | Orígenes CORS permitidos (separados por comas) |
 
-See [.env.example](.env.example) for all options.
+Consulta [.env.example](.env.example) para ver todas las opciones.
 
-## Project Structure
+## Estructura del proyecto
 
 ```
 app/
-├── (marketing)/     # Landing page, docs, examples
+├── (marketing)/     # Página de inicio, documentación, ejemplos
 ├── (app)/
-│   ├── admin/       # Admin panel
-│   └── size-guide/  # Public size guide
+│   ├── admin/       # Panel de administración
+│   └── size-guide/  # Guía de tallas pública
 └── api/
-    ├── v1/          # Public REST API
-    └── admin/       # Admin endpoints
+    ├── v1/          # API REST pública
+    └── admin/       # Endpoints de administración
 
 components/
-├── admin/           # Admin UI components
-├── public/          # Public-facing components
-└── ui/              # shadcn/ui components
+├── admin/           # Componentes de UI del admin
+├── public/          # Componentes públicos
+└── ui/              # Componentes de shadcn/ui
 
 prisma/
-├── schema.prisma    # Database schema
-├── seed.ts          # Sample data
-└── templates/       # Chart templates
+├── schema.prisma    # Esquema de base de datos
+├── seed.ts          # Datos de ejemplo
+└── templates/       # Plantillas de tablas
 ```
 
-## Development
+## Desarrollo
 
 ```bash
-npm run dev          # Start dev server
-npm run build        # Production build
-npm run lint         # Run linter
-npm run typecheck    # Type check
-npm run test:run     # Run tests
-npm run test:e2e     # Run E2E tests
-npm run db:studio    # Open Prisma Studio
-npm run build:analyze # Analyze bundle size
+npm run dev          # Iniciar servidor de desarrollo
+npm run build        # Compilación para producción
+npm run lint         # Ejecutar linter
+npm run typecheck    # Verificación de tipos
+npm run test:run     # Ejecutar pruebas
+npm run test:e2e     # Ejecutar pruebas E2E
+npm run db:studio    # Abrir Prisma Studio
+npm run build:analyze # Analizar tamaño del bundle
 ```
 
-## Self-Hosting
+## Autoalojamiento
 
-This project is designed to be self-hostable. To run as a standalone service:
+Este proyecto está diseñado para ser autoalojable. Para ejecutarlo como un servicio independiente:
 
-1. **Remove marketing content** (optional):
-   - Delete `app/(marketing)/` for a minimal installation
-   - The admin panel, API, and size guide will continue to work
+1. **Eliminar contenido de marketing** (opcional):
+   - Elimina `app/(marketing)/` para una instalación mínima
+   - El panel de administración, la API y la guía de tallas seguirán funcionando
 
-2. **Configure authentication**:
-   - Set `DEMO_MODE=false`
-   - Set `ADMIN_USERNAME` and `ADMIN_PASSWORD`
-   - Optionally enable `API_AUTH_REQUIRED=true`
+2. **Configurar autenticación**:
+   - Establece `DEMO_MODE=false`
+   - Establece `ADMIN_USERNAME` y `ADMIN_PASSWORD`
+   - Opcionalmente habilita `API_AUTH_REQUIRED=true`
 
-3. **Deploy**:
+3. **Desplegar**:
    - Docker: `docker build -t size-charts . && docker run -p 3000:3000 size-charts`
    - Node: `npm run build && npm start`
 
-## Contributing
+## Contribuciones
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+¡Las contribuciones son bienvenidas! Consulta [CONTRIBUTING.md](CONTRIBUTING.md) para ver las directrices.
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/my-feature`
-3. Make your changes
-4. Run tests: `npm run test:run && npm run lint`
-5. Submit a pull request
+1. Haz un fork del repositorio
+2. Crea una rama de funcionalidad: `git checkout -b feature/mi-funcionalidad`
+3. Realiza tus cambios
+4. Ejecuta las pruebas: `npm run test:run && npm run lint`
+5. Envía un pull request
 
-## License
+## Licencia
 
-MIT License - see [LICENSE](LICENSE) for details.
+Licencia MIT - consulta [LICENSE](LICENSE) para más detalles.
 
 ---
 
 <div align="center">
 
-**[Website](https://www.sizecharts.dev)** · **[Documentation](https://www.sizecharts.dev/docs)** · **[GitHub](https://github.com/mattdecrevel/size-charts)**
+**[Sitio web](https://www.sizecharts.dev)** · **[Documentación](https://www.sizecharts.dev/docs)** · **[GitHub](https://github.com/mattdecrevel/size-charts)**
 
-Built with [Next.js](https://nextjs.org/) · UI by [shadcn/ui](https://ui.shadcn.com/) · Database by [Prisma](https://www.prisma.io/)
+Hecho con [Next.js](https://nextjs.org/) · UI por [shadcn/ui](https://ui.shadcn.com/) · Base de datos por [Prisma](https://www.prisma.io/)
 
 </div>
