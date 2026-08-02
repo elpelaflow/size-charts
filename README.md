@@ -10,6 +10,8 @@
 
 [Live Demo](https://www.sizecharts.dev) · [Documentation](https://www.sizecharts.dev/docs) · [Report Bug](https://github.com/mattdecrevel/size-charts/issues)
 
+**English** · [Español](README.es.md)
+
 </div>
 
 ---
