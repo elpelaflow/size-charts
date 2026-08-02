@@ -2,46 +2,49 @@
 
 import Link from "next/link";
 import { BookOpen, Code, History, ArrowRight, Code2, FileUp, ExternalLink } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
 
-const docs = [
+const docsDefs = [
   {
-    title: "Getting Started",
-    description: "Learn how to set up size charts from scratch. Covers categories, labels, and creating your first chart.",
+    titleKey: "admin.gettingStarted",
+    descKey: "admin.docs.gsDesc",
     href: "/admin/docs/getting-started",
     icon: BookOpen,
   },
   {
-    title: "API Reference",
-    description: "Complete API documentation for integrating size charts into your application.",
+    titleKey: "admin.apiReference",
+    descKey: "admin.docs.apiDesc",
     href: "/admin/docs/api",
     icon: Code,
   },
   {
-    title: "Embed Widget",
-    description: "Add size charts to any website with a simple script tag. Includes theming and configuration options.",
+    titleKey: "docs.embedWidget",
+    descKey: "admin.docs.embedDesc",
     href: "/admin/docs/embed",
     icon: Code2,
   },
   {
-    title: "Changelog & Roadmap",
-    description: "See what's been built, what's in progress, and what's planned for the future.",
+    titleKey: "admin.docs.changelogTitle",
+    descKey: "admin.docs.changelogDesc",
     href: "/admin/docs/changelog",
     icon: History,
   },
 ];
 
 export default function DocsPage() {
+  const { t } = useLocale();
+
   return (
     <div className="max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold">Documentation</h1>
+        <h1 className="text-2xl font-bold">{t("admin.documentation")}</h1>
         <p className="mt-2 text-muted-foreground">
-          Everything you need to know about using and integrating the size charts system.
+          {t("admin.docs.intro")}
         </p>
       </div>
 
       <div className="grid gap-4">
-        {docs.map((doc) => (
+        {docsDefs.map((doc) => (
           <Link
             key={doc.href}
             href={doc.href}
@@ -53,10 +56,10 @@ export default function DocsPage() {
               </div>
               <div className="flex-1">
                 <h2 className="text-lg font-semibold group-hover:text-primary transition-colors">
-                  {doc.title}
+                  {t(doc.titleKey)}
                 </h2>
                 <p className="mt-1 text-muted-foreground">
-                  {doc.description}
+                  {t(doc.descKey)}
                 </p>
               </div>
               <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
@@ -67,31 +70,31 @@ export default function DocsPage() {
 
       {/* Quick Links */}
       <div className="mt-8 rounded-lg border bg-muted/50 p-6">
-        <h2 className="mb-4 font-semibold">Quick Links</h2>
+        <h2 className="mb-4 font-semibold">{t("admin.docs.quickLinks")}</h2>
         <div className="grid gap-2 md:grid-cols-2">
           <Link href="/admin/size-charts/new" className="text-sm text-primary hover:underline">
-            → Create a new size chart
+            → {t("admin.docs.qlNewChart")}
           </Link>
           <Link href="/admin/labels" className="text-sm text-primary hover:underline">
-            → Manage size labels
+            → {t("admin.docs.qlLabels")}
           </Link>
           <Link href="/admin/categories" className="text-sm text-primary hover:underline">
-            → View categories
+            → {t("admin.docs.qlCategories")}
           </Link>
           <Link href="/admin/api-keys" className="text-sm text-primary hover:underline">
-            → Manage API keys
+            → {t("admin.docs.qlApiKeys")}
           </Link>
           <Link href="/size-guide" className="text-sm text-primary hover:underline">
-            → View public size guide
+            → {t("admin.docs.qlSizeGuide")}
           </Link>
           <Link href="/examples/embed" className="text-sm text-primary hover:underline">
-            → Frontend embed examples
+            → {t("admin.docs.qlEmbed")}
           </Link>
           <a href="/examples/example.html" className="text-sm text-primary hover:underline" target="_blank" rel="noopener noreferrer">
-            → Standalone embed example <ExternalLink className="inline h-3 w-3 ml-1" />
+            → {t("admin.docs.qlStandalone")} <ExternalLink className="inline h-3 w-3 ml-1" />
           </a>
           <Link href="/api/docs" className="text-sm text-primary hover:underline">
-            → Swagger API docs
+            → {t("admin.docs.qlSwagger")}
           </Link>
         </div>
       </div>
@@ -103,12 +106,11 @@ export default function DocsPage() {
             <FileUp className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <h2 className="font-semibold">Import & Export</h2>
+            <h2 className="font-semibold">{t("admin.docs.importExport")}</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Export all size charts to JSON for backup or migration. Import from JSON to bulk-create charts.
-              Available on the{" "}
+              {t("admin.docs.importExportDesc")}{" "}
               <Link href="/admin/size-charts" className="text-primary hover:underline">
-                Size Charts page
+                {t("admin.docs.sizeChartsPage")}
               </Link>.
             </p>
           </div>

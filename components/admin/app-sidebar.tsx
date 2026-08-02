@@ -31,27 +31,29 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from "@/components/ui/sidebar";
+import { useLocale } from "@/hooks/use-locale";
 
-const navigation = [
-	{ name: "Dashboard", href: "/admin", icon: LayoutGrid },
-	{ name: "Size Charts", href: "/admin/size-charts", icon: TableProperties },
-	{ name: "Templates", href: "/admin/templates", icon: LayoutTemplate },
-	{ name: "Categories", href: "/admin/categories", icon: FolderTree },
-	{ name: "Labels", href: "/admin/labels", icon: Tag },
-	{ name: "API Keys", href: "/admin/api-keys", icon: KeyRound },
+const navigationDefs = [
+	{ nameKey: "admin.dashboard", href: "/admin", icon: LayoutGrid },
+	{ nameKey: "admin.sizeCharts", href: "/admin/size-charts", icon: TableProperties },
+	{ nameKey: "admin.templates", href: "/admin/templates", icon: LayoutTemplate },
+	{ nameKey: "admin.categories", href: "/admin/categories", icon: FolderTree },
+	{ nameKey: "admin.labels", href: "/admin/labels", icon: Tag },
+	{ nameKey: "admin.apiKeys", href: "/admin/api-keys", icon: KeyRound },
 ];
 
-const docs = [
-	{ name: "Getting Started", href: "/admin/docs/getting-started", icon: BookOpen },
-	{ name: "API Reference", href: "/admin/docs/api", icon: Code },
-	{ name: "Examples", href: "/admin/docs/examples", icon: Play },
-	{ name: "Changelog", href: "/admin/docs/changelog", icon: History },
+const docsDefs = [
+	{ nameKey: "admin.gettingStarted", href: "/admin/docs/getting-started", icon: BookOpen },
+	{ nameKey: "admin.apiReference", href: "/admin/docs/api", icon: Code },
+	{ nameKey: "admin.examples", href: "/admin/docs/examples", icon: Play },
+	{ nameKey: "admin.changelog", href: "/admin/docs/changelog", icon: History },
 ];
 
 export function AppSidebar() {
 	const pathname = usePathname();
 	const router = useRouter();
 	const { setOpenMobile } = useSidebar();
+	const { t } = useLocale();
 	const [authEnabled, setAuthEnabled] = useState(false);
 
 	useEffect(() => {
@@ -88,7 +90,7 @@ export function AppSidebar() {
 								</div>
 								<div className="grid flex-1 text-left text-sm leading-tight">
 									<span className="truncate font-semibold">Size Charts</span>
-									<span className="truncate text-xs">Admin Panel</span>
+									<span className="truncate text-xs">{t("admin.title")}</span>
 								</div>
 							</Link>
 						</SidebarMenuButton>
@@ -98,26 +100,26 @@ export function AppSidebar() {
 
 			<SidebarContent>
 				<SidebarGroup>
-					<SidebarGroupLabel>Navigation</SidebarGroupLabel>
+					<SidebarGroupLabel>{t("admin.navigation")}</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{navigation.map((item) => {
+							{navigationDefs.map((item) => {
 								const isActive =
 									item.href === "/admin"
 										? pathname === "/admin"
 										: pathname.startsWith(item.href);
 
 								return (
-									<SidebarMenuItem key={item.name}>
+									<SidebarMenuItem key={item.nameKey}>
 										<SidebarMenuButton
 											asChild
 											isActive={isActive}
-											tooltip={item.name}
+											tooltip={t(item.nameKey)}
 											className="transition-colors"
 										>
 											<Link href={item.href} onClick={handleNavClick}>
 												<item.icon className="size-4" />
-												<span>{item.name}</span>
+												<span>{t(item.nameKey)}</span>
 											</Link>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
@@ -128,23 +130,23 @@ export function AppSidebar() {
 				</SidebarGroup>
 
 				<SidebarGroup>
-					<SidebarGroupLabel>Documentation</SidebarGroupLabel>
+					<SidebarGroupLabel>{t("admin.documentation")}</SidebarGroupLabel>
 					<SidebarGroupContent>
 						<SidebarMenu>
-							{docs.map((item) => {
+							{docsDefs.map((item) => {
 								const isActive = pathname.startsWith(item.href);
 
 								return (
-									<SidebarMenuItem key={item.name}>
+									<SidebarMenuItem key={item.nameKey}>
 										<SidebarMenuButton
 											asChild
 											isActive={isActive}
-											tooltip={item.name}
+											tooltip={t(item.nameKey)}
 											className="transition-colors"
 										>
 											<Link href={item.href} onClick={handleNavClick}>
 												<item.icon className="size-4" />
-												<span>{item.name}</span>
+												<span>{t(item.nameKey)}</span>
 											</Link>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
@@ -158,18 +160,18 @@ export function AppSidebar() {
 			<SidebarFooter>
 				<SidebarMenu>
 					<SidebarMenuItem>
-						<SidebarMenuButton asChild tooltip="View Site" className="transition-colors">
+						<SidebarMenuButton asChild tooltip={t("admin.viewSite")} className="transition-colors">
 							<Link href="/">
 								<ExternalLink className="size-4" />
-								<span>View Site</span>
+								<span>{t("admin.viewSite")}</span>
 							</Link>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
 					<SidebarMenuItem>
-						<SidebarMenuButton asChild tooltip="Size Guide" className="transition-colors">
+						<SidebarMenuButton asChild tooltip={t("admin.sizeGuide")} className="transition-colors">
 							<Link href="/size-guide">
 								<Ruler className="size-4" />
-								<span>Size Guide</span>
+								<span>{t("admin.sizeGuide")}</span>
 							</Link>
 						</SidebarMenuButton>
 					</SidebarMenuItem>
@@ -177,11 +179,11 @@ export function AppSidebar() {
 						<SidebarMenuItem>
 							<SidebarMenuButton
 								onClick={handleLogout}
-								tooltip="Sign Out"
+								tooltip={t("admin.signOut")}
 								className="text-destructive hover:text-destructive hover:bg-destructive/10 transition-colors"
 							>
 								<LogOut className="size-4" />
-								<span>Sign Out</span>
+								<span>{t("admin.signOut")}</span>
 							</SidebarMenuButton>
 						</SidebarMenuItem>
 					)}

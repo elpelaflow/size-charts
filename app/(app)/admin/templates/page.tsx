@@ -4,10 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/toast";
 import { TemplateBrowser, Template } from "@/components/templates/template-browser";
+import { useLocale } from "@/hooks/use-locale";
 
 export default function AdminTemplatesPage() {
 	const router = useRouter();
 	const { addToast } = useToast();
+	const { t } = useLocale();
 	const [isApplying, setIsApplying] = useState(false);
 
 	const handleCreateFromTemplate = async (template: Template, variantKey?: string) => {
@@ -23,14 +25,14 @@ export default function AdminTemplatesPage() {
 
 			if (!response.ok) {
 				const data = await response.json();
-				throw new Error(data.error || "Failed to apply template");
+				throw new Error(data.error || t("admin.templateFailed"));
 			}
 
 			const { sizeChart } = await response.json();
-			addToast("Size chart created from template", "success");
+			addToast(t("admin.templateCreated"), "success");
 			router.push(`/admin/size-charts/${sizeChart.id}`);
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to apply template", "error");
+			addToast(error instanceof Error ? error.message : t("admin.templateFailed"), "error");
 		} finally {
 			setIsApplying(false);
 		}
@@ -39,9 +41,9 @@ export default function AdminTemplatesPage() {
 	return (
 		<div>
 			<div className="mb-6">
-				<h1 className="text-2xl font-bold">Templates</h1>
+				<h1 className="text-2xl font-bold">{t("admin.templates")}</h1>
 				<p className="text-muted-foreground">
-					Browse and use pre-built size chart templates
+					{t("admin.templatesSubtitle")}
 				</p>
 			</div>
 

@@ -30,6 +30,8 @@ import {
 import { useToast } from "@/components/ui/toast";
 import { Plus, Trash2, Key, Copy, Check, AlertTriangle, Eye, EyeOff } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { es } from "date-fns/locale";
+import { useLocale } from "@/hooks/use-locale";
 
 export default function ApiKeysPage() {
 	const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -43,6 +45,8 @@ export default function ApiKeysPage() {
 	const [formScopes, setFormScopes] = useState<string[]>(["read"]);
 
 	const { addToast } = useToast();
+	const { t, locale } = useLocale();
+	const dateLocale = locale === "es" ? es : undefined;
 	const { data: keys, isLoading } = useApiKeys();
 	const createMutation = useCreateApiKey();
 	const updateMutation = useUpdateApiKey();
@@ -61,7 +65,7 @@ export default function ApiKeysPage() {
 
 	const handleCreate = async () => {
 		if (!formName.trim()) {
-			addToast("Please enter a name for the API key", "error");
+			addToast(t("admin.enterKeyName"), "error");
 			return;
 		}
 
@@ -71,9 +75,9 @@ export default function ApiKeysPage() {
 				scopes: formScopes,
 			});
 			setNewKeyData(result);
-			addToast("API key created successfully", "success");
+			addToast(t("admin.apiKeyCreatedToast"), "success");
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to create API key", "error");
+			addToast(error instanceof Error ? error.message : t("admin.apiKeyCreateFailed"), "error");
 		}
 	};
 
@@ -83,9 +87,9 @@ export default function ApiKeysPage() {
 				id: key.id,
 				isActive: !key.isActive,
 			});
-			addToast(key.isActive ? "API key deactivated" : "API key activated", "success");
+			addToast(key.isActive ? t("admin.apiKeyDeactivated") : t("admin.apiKeyActivated"), "success");
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to update API key", "error");
+			addToast(error instanceof Error ? error.message : t("admin.apiKeyUpdateFailed"), "error");
 		}
 	};
 
@@ -94,11 +98,11 @@ export default function ApiKeysPage() {
 
 		try {
 			await deleteMutation.mutateAsync(keyToDelete.id);
-			addToast("API key deleted successfully", "success");
+			addToast(t("admin.apiKeyDeleted"), "success");
 			setDeleteDialogOpen(false);
 			setKeyToDelete(null);
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to delete API key", "error");
+			addToast(error instanceof Error ? error.message : t("admin.apiKeyDeleteFailed"), "error");
 		}
 	};
 
@@ -119,7 +123,7 @@ export default function ApiKeysPage() {
 	if (isLoading) {
 		return (
 			<div>
-				<h1 className="mb-6 text-2xl font-bold">API Keys</h1>
+				<h1 className="mb-6 text-2xl font-bold">{t("admin.apiKeys")}</h1>
 				<div className="space-y-4">
 					{[...Array(3)].map((_, i) => (
 						<Skeleton key={i} className="h-16 w-full rounded-lg" />
@@ -133,22 +137,22 @@ export default function ApiKeysPage() {
 		<div>
 			<div className="mb-6 flex items-center justify-between">
 				<div>
-					<h1 className="text-2xl font-bold">API Keys</h1>
+					<h1 className="text-2xl font-bold">{t("admin.apiKeys")}</h1>
 					<p className="text-muted-foreground">
-						Manage API keys for accessing the v1 API endpoints
+						{t("admin.apiKeysSubtitle")}
 					</p>
 				</div>
 				<Button onClick={openCreateDialog}>
 					<Plus className="h-4 w-4" />
-					New API Key
+					{t("admin.newApiKey")}
 				</Button>
 			</div>
 
 			{/* Info Box */}
 			<div className="mb-6 rounded-lg border bg-primary/5 border-primary/20 p-4">
-				<h3 className="font-medium text-primary mb-2">Using API Keys</h3>
+				<h3 className="font-medium text-primary mb-2">{t("admin.usingApiKeys")}</h3>
 				<p className="text-sm text-muted-foreground mb-2">
-					Include your API key in requests using one of these methods:
+					{t("admin.usingApiKeysDesc")}
 				</p>
 				<div className="space-y-2 font-mono text-xs bg-muted/50 rounded p-3">
 					<div><span className="text-muted-foreground"># Header:</span> X-API-Key: your_key_here</div>
@@ -159,13 +163,13 @@ export default function ApiKeysPage() {
 			{keys?.length === 0 ? (
 				<div className="rounded-lg border-2 border-dashed p-8 text-center">
 					<Key className="mx-auto h-12 w-12 text-muted-foreground" />
-					<h3 className="mt-4 text-lg font-semibold">No API keys</h3>
+					<h3 className="mt-4 text-lg font-semibold">{t("admin.noApiKeys")}</h3>
 					<p className="mt-2 text-sm text-muted-foreground">
-						Create your first API key to start using the v1 API
+						{t("admin.noApiKeysDesc")}
 					</p>
 					<Button className="mt-4" onClick={openCreateDialog}>
 						<Plus className="h-4 w-4" />
-						Create API Key
+						{t("admin.createApiKey")}
 					</Button>
 				</div>
 			) : (
@@ -173,12 +177,12 @@ export default function ApiKeysPage() {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead>Name</TableHead>
-								<TableHead>Key</TableHead>
-								<TableHead>Scopes</TableHead>
-								<TableHead>Status</TableHead>
-								<TableHead>Last Used</TableHead>
-								<TableHead>Created</TableHead>
+								<TableHead>{t("admin.name")}</TableHead>
+								<TableHead>{t("admin.key")}</TableHead>
+								<TableHead>{t("admin.scopes")}</TableHead>
+								<TableHead>{t("admin.status")}</TableHead>
+								<TableHead>{t("admin.lastUsed")}</TableHead>
+								<TableHead>{t("admin.created")}</TableHead>
 								<TableHead className="w-24"></TableHead>
 							</TableRow>
 						</TableHeader>
@@ -202,23 +206,23 @@ export default function ApiKeysPage() {
 									</TableCell>
 									<TableCell>
 										<Badge variant={key.isActive ? "default" : "secondary"}>
-											{key.isActive ? "Active" : "Inactive"}
+											{key.isActive ? t("admin.active") : t("admin.inactive")}
 										</Badge>
 									</TableCell>
 									<TableCell className="text-sm text-muted-foreground">
 										{key.lastUsedAt
-											? formatDistanceToNow(new Date(key.lastUsedAt), { addSuffix: true })
-											: "Never"}
+											? formatDistanceToNow(new Date(key.lastUsedAt), { addSuffix: true, locale: dateLocale })
+											: t("admin.never")}
 									</TableCell>
 									<TableCell className="text-sm text-muted-foreground">
-										{formatDistanceToNow(new Date(key.createdAt), { addSuffix: true })}
+										{formatDistanceToNow(new Date(key.createdAt), { addSuffix: true, locale: dateLocale })}
 									</TableCell>
 									<TableCell>
 										<div className="flex items-center justify-end gap-1">
 											<button
 												onClick={() => handleToggleActive(key)}
 												className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-												title={key.isActive ? "Deactivate" : "Activate"}
+												title={key.isActive ? t("admin.deactivate") : t("admin.activate")}
 											>
 												{key.isActive ? (
 													<EyeOff className="h-4 w-4" />
@@ -232,7 +236,7 @@ export default function ApiKeysPage() {
 													setDeleteDialogOpen(true);
 												}}
 												className="rounded p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-												title="Delete"
+												title={t("admin.delete")}
 											>
 												<Trash2 className="h-4 w-4" />
 											</button>
@@ -259,12 +263,12 @@ export default function ApiKeysPage() {
 				<DialogContent>
 					<DialogHeader>
 						<DialogTitle>
-							{newKeyData ? "API Key Created" : "Create API Key"}
+							{newKeyData ? t("admin.apiKeyCreated") : t("admin.createApiKey")}
 						</DialogTitle>
 						<DialogDescription>
 							{newKeyData
-								? "Copy your API key now. You won't be able to see it again."
-								: "Create a new API key for accessing the v1 API endpoints."}
+								? t("admin.apiKeyCreatedDesc")
+								: t("admin.createApiKeyDesc")}
 						</DialogDescription>
 					</DialogHeader>
 
@@ -274,16 +278,16 @@ export default function ApiKeysPage() {
 								<div className="flex items-start gap-2">
 									<AlertTriangle className="h-5 w-5 text-amber-500 mt-0.5" />
 									<div>
-										<p className="font-medium text-amber-600">Save this key now!</p>
+										<p className="font-medium text-amber-600">{t("admin.saveKeyNow")}</p>
 										<p className="text-sm text-muted-foreground">
-											This is the only time you&apos;ll see this key. Store it securely.
+											{t("admin.saveKeyDesc")}
 										</p>
 									</div>
 								</div>
 							</div>
 
 							<div className="space-y-2">
-								<label className="text-sm font-medium">Your API Key</label>
+								<label className="text-sm font-medium">{t("admin.yourApiKey")}</label>
 								<div className="flex items-center gap-2">
 									<code className="flex-1 rounded bg-muted px-3 py-2 text-sm font-mono break-all">
 										{newKeyData.key}
@@ -305,16 +309,16 @@ export default function ApiKeysPage() {
 					) : (
 						<div className="space-y-4 py-4">
 							<InputWithLabel
-								label="Name"
+								label={t("admin.name")}
 								value={formName}
 								onChange={(e) => setFormName(e.target.value)}
-								placeholder="e.g., Production API, Development"
+								placeholder={t("admin.namePlaceholder")}
 							/>
 
 							<div>
-								<label className="text-sm font-medium">Scopes</label>
+								<label className="text-sm font-medium">{t("admin.scopes")}</label>
 								<p className="text-xs text-muted-foreground mb-2">
-									Select the permissions for this API key
+									{t("admin.scopesDesc")}
 								</p>
 								<div className="flex gap-2">
 									<button
@@ -326,7 +330,7 @@ export default function ApiKeysPage() {
 												: "border-border hover:bg-accent"
 										}`}
 									>
-										Read
+										{t("admin.read")}
 									</button>
 									<button
 										type="button"
@@ -337,7 +341,7 @@ export default function ApiKeysPage() {
 												: "border-border hover:bg-accent"
 										}`}
 									>
-										Write
+										{t("admin.write")}
 									</button>
 								</div>
 							</div>
@@ -351,15 +355,15 @@ export default function ApiKeysPage() {
 								setNewKeyData(null);
 								resetForm();
 							}}>
-								Done
+								{t("admin.done")}
 							</Button>
 						) : (
 							<>
 								<Button variant="outline" onClick={() => setIsCreateOpen(false)}>
-									Cancel
+									{t("admin.cancel")}
 								</Button>
 								<Button onClick={handleCreate} disabled={createMutation.isPending}>
-									Create Key
+									{t("admin.createKey")}
 								</Button>
 							</>
 						)}
@@ -371,10 +375,9 @@ export default function ApiKeysPage() {
 			<Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Delete API Key</DialogTitle>
+						<DialogTitle>{t("admin.deleteApiKey")}</DialogTitle>
 						<DialogDescription>
-							Are you sure you want to delete the API key &quot;{keyToDelete?.name}&quot;?
-							This action cannot be undone and will immediately revoke access.
+							{t("admin.deleteApiKeyDesc")}
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
@@ -385,14 +388,14 @@ export default function ApiKeysPage() {
 								setKeyToDelete(null);
 							}}
 						>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button
 							variant="destructive"
 							onClick={handleDelete}
 							disabled={deleteMutation.isPending}
 						>
-							Delete
+							{t("admin.delete")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

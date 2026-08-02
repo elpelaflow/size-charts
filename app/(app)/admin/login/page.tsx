@@ -5,20 +5,16 @@ import { useRouter } from "next/navigation";
 import { Button, InputWithLabel } from "@/components/ui";
 import { useDemoMode } from "@/hooks/use-demo-mode";
 import { Ruler, AlertCircle, Loader2, Info } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
 
 export default function AdminLoginPage() {
 	const router = useRouter();
 	const { isDemoMode } = useDemoMode();
+	const { t } = useLocale();
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-
-	// Auto-fill demo credentials
-	const fillDemoCredentials = () => {
-		setUsername("demo");
-		setPassword("demo");
-	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -56,8 +52,8 @@ export default function AdminLoginPage() {
 					<div className="inline-flex items-center justify-center w-12 h-12 rounded-lg bg-primary text-primary-foreground mb-4">
 						<Ruler className="w-6 h-6" />
 					</div>
-					<h1 className="text-2xl font-bold">Size Charts Admin</h1>
-					<p className="text-muted-foreground mt-1">Sign in to continue</p>
+					<h1 className="text-2xl font-bold">{t("admin.adminTitle")}</h1>
+					<p className="text-muted-foreground mt-1">{t("admin.signInToContinue")}</p>
 				</div>
 
 				<form onSubmit={handleSubmit} className="space-y-4">
@@ -66,10 +62,9 @@ export default function AdminLoginPage() {
 							<div className="flex items-start gap-2">
 								<Info className="h-4 w-4 text-amber-600 dark:text-amber-400 flex-shrink-0 mt-0.5" />
 								<div className="text-sm">
-									<p className="font-medium text-amber-800 dark:text-amber-200">Demo Mode</p>
+									<p className="font-medium text-amber-800 dark:text-amber-200">{t("admin.demoMode")}</p>
 									<p className="text-amber-700 dark:text-amber-300 mt-1">
-										Use <button type="button" onClick={fillDemoCredentials} className="font-mono underline hover:no-underline">demo / demo</button> to log in.
-										Data resets every 6 hours.
+										{t("admin.demoModeDesc")}
 									</p>
 								</div>
 							</div>
@@ -84,22 +79,22 @@ export default function AdminLoginPage() {
 					)}
 
 					<InputWithLabel
-						label="Username"
+						label={t("admin.username")}
 						type="text"
 						value={username}
 						onChange={(e) => setUsername(e.target.value)}
-						placeholder="Enter username"
+						placeholder={t("admin.enterUsername")}
 						autoComplete="username"
 						disabled={isLoading}
 						required
 					/>
 
 					<InputWithLabel
-						label="Password"
+						label={t("admin.password")}
 						type="password"
 						value={password}
 						onChange={(e) => setPassword(e.target.value)}
-						placeholder="Enter password"
+						placeholder={t("admin.enterPassword")}
 						autoComplete="current-password"
 						disabled={isLoading}
 						required
@@ -113,16 +108,16 @@ export default function AdminLoginPage() {
 						{isLoading ? (
 							<>
 								<Loader2 className="h-4 w-4 animate-spin" />
-								Signing in...
+								{t("admin.signingIn")}
 							</>
 						) : (
-							"Sign in"
+							t("admin.signIn")
 						)}
 					</Button>
 				</form>
 
 				<p className="text-xs text-center text-muted-foreground mt-6">
-					Credentials are set via environment variables
+					{t("admin.credentialsSetViaEnv")}
 				</p>
 			</div>
 		</div>

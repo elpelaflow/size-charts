@@ -15,8 +15,12 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { getT, getLocale } from "@/lib/i18n";
 
 export default async function AdminDashboard() {
+	const t = await getT();
+	const locale = await getLocale();
+
 	const [sizeChartCount, categoryCount, publishedCount] = await Promise.all([
 		db.sizeChart.count(),
 		db.category.count(),
@@ -39,19 +43,19 @@ export default async function AdminDashboard() {
 
 	const stats = [
 		{
-			label: "Total Charts",
+			label: t("admin.totalCharts"),
 			value: sizeChartCount,
 			icon: TableProperties,
 			color: "oklch(0.55 0.28 295)", // Purple
 		},
 		{
-			label: "Published",
+			label: t("admin.published"),
 			value: publishedCount,
 			icon: TrendingUp,
 			color: "oklch(0.65 0.20 160)", // Teal
 		},
 		{
-			label: "Categories",
+			label: t("admin.categories"),
 			value: categoryCount,
 			icon: FolderTree,
 			color: "oklch(0.65 0.28 330)", // Magenta
@@ -59,11 +63,11 @@ export default async function AdminDashboard() {
 	];
 
 	const quickActions = [
-		{ href: "/admin/templates", label: "Templates", icon: LayoutTemplate },
-		{ href: "/admin/docs/embed", label: "Embed Guide", icon: Code2 },
-		{ href: "/examples/live", label: "Live Builder", icon: Wand2 },
-		{ href: "/examples/embed", label: "Widget Examples", icon: Play },
-		{ href: "/size-guide", label: "Size Guide", icon: ExternalLink },
+		{ href: "/admin/templates", label: t("admin.templates"), icon: LayoutTemplate },
+		{ href: "/admin/docs/embed", label: t("admin.embedGuide"), icon: Code2 },
+		{ href: "/examples/live", label: t("admin.liveBuilder"), icon: Wand2 },
+		{ href: "/examples/embed", label: t("admin.widgetExamples"), icon: Play },
+		{ href: "/size-guide", label: t("admin.sizeGuide"), icon: ExternalLink },
 	];
 
 	return (
@@ -72,16 +76,16 @@ export default async function AdminDashboard() {
 			<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<div>
 					<h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-						Dashboard
+						{t("admin.dashboard")}
 					</h1>
 					<p className="text-muted-foreground mt-1">
-						Manage your size charts and categories
+						{t("admin.dashboardSubtitle")}
 					</p>
 				</div>
 				<Button asChild className="self-start">
 					<Link href="/admin/size-charts/new">
 						<Plus className="h-4 w-4" />
-						New Size Chart
+						{t("admin.newSizeChart")}
 					</Link>
 				</Button>
 			</div>
@@ -124,14 +128,14 @@ export default async function AdminDashboard() {
 					<div className="flex items-center gap-2">
 						<Clock className="h-4 w-4 text-muted-foreground" />
 						<h2 className="text-lg font-semibold text-foreground">
-							Recently Updated
+							{t("admin.recentlyUpdated")}
 						</h2>
 					</div>
 					<Link
 						href="/admin/size-charts"
 						className="text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1 transition-colors"
 					>
-						View all
+						{t("admin.viewAll")}
 						<ChevronRight className="h-4 w-4" />
 					</Link>
 				</div>
@@ -139,12 +143,12 @@ export default async function AdminDashboard() {
 				{recentCharts.length === 0 ? (
 					<div className="px-6 py-14 text-center">
 						<TableProperties className="h-10 w-10 text-muted-foreground/30 mx-auto mb-4" />
-						<p className="text-muted-foreground mb-2">No size charts yet</p>
+						<p className="text-muted-foreground mb-2">{t("admin.noChartsYet")}</p>
 						<Link
 							href="/admin/size-charts/new"
 							className="text-sm font-medium text-primary hover:text-primary/80 transition-colors"
 						>
-							Create your first one
+							{t("admin.createFirst")}
 						</Link>
 					</div>
 				) : (
@@ -161,16 +165,16 @@ export default async function AdminDashboard() {
 									</p>
 									<p className="text-sm text-muted-foreground truncate mt-0.5">
 										{chart.subcategories.length > 0
-											? `${chart.subcategories[0].subcategory.category.name} → ${chart.subcategories[0].subcategory.name}${chart.subcategories.length > 1 ? ` +${chart.subcategories.length - 1} more` : ""}`
-											: "No category assigned"}
+											? `${chart.subcategories[0].subcategory.category.name} → ${chart.subcategories[0].subcategory.name}${chart.subcategories.length > 1 ? ` +${chart.subcategories.length - 1} ${t("admin.more")}` : ""}`
+											: t("admin.noCategory")}
 									</p>
 								</div>
 								<div className="flex items-center gap-4 ml-4 flex-shrink-0">
 									<Badge variant={chart.isPublished ? "default" : "secondary"}>
-										{chart.isPublished ? "Published" : "Draft"}
+										{chart.isPublished ? t("admin.published") : t("admin.draft")}
 									</Badge>
 									<span className="text-sm text-muted-foreground hidden sm:block">
-										{new Date(chart.updatedAt).toLocaleDateString("en-US", {
+										{new Date(chart.updatedAt).toLocaleDateString(locale === "es" ? "es-ES" : "en-US", {
 											month: "short",
 											day: "numeric",
 										})}

@@ -3,23 +3,25 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BookOpen, FileCode, History, Code2 } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
 
-const docsNav = [
-  { href: "/docs/getting-started", label: "Getting Started", icon: BookOpen },
-  { href: "/docs/api", label: "API Reference", icon: FileCode },
-  { href: "/docs/embed", label: "Embed Widget", icon: Code2 },
-  { href: "/docs/changelog", label: "Changelog", icon: History },
+const docsNavDefs = [
+  { href: "/docs/getting-started", labelKey: "docs.gettingStarted", icon: BookOpen },
+  { href: "/docs/api", labelKey: "docs.apiReference", icon: FileCode },
+  { href: "/docs/embed", labelKey: "docs.embedWidget", icon: Code2 },
+  { href: "/docs/changelog", labelKey: "docs.changelog", icon: History },
 ];
 
 export default function DocsLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { t } = useLocale();
 
   return (
     <div className="flex flex-col md:flex-row gap-8">
       {/* Sidebar */}
       <aside className="md:w-48 flex-shrink-0">
         <nav className="flex md:flex-col gap-1 overflow-x-auto md:overflow-visible pb-4 md:pb-0 -mx-4 px-4 md:mx-0 md:px-0 md:sticky md:top-24">
-          {docsNav.map((item) => {
+          {docsNavDefs.map((item) => {
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
             return (
               <Link
@@ -32,7 +34,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
                 }`}
               >
                 <item.icon className="h-4 w-4" />
-                {item.label}
+                {t(item.labelKey)}
               </Link>
             );
           })}

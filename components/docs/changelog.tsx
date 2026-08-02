@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircle2, Clock, HelpCircle } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
 
 interface ReleaseItemProps {
 	title: string;
@@ -26,13 +27,15 @@ interface ChangelogContentProps {
 }
 
 export function ChangelogContent({ showTitle = true, className = "" }: ChangelogContentProps) {
+	const { t } = useLocale();
+
 	return (
 		<div className={className}>
 			{showTitle && (
 				<div className="mb-8">
-					<h1 className="text-2xl font-bold text-foreground">Changelog</h1>
+					<h1 className="text-2xl font-bold text-foreground">{t("docs.changelog")}</h1>
 					<p className="mt-2 text-muted-foreground">
-						Release history and upcoming features.
+						{t("docs.changelog.intro")}
 					</p>
 				</div>
 			)}
@@ -41,10 +44,10 @@ export function ChangelogContent({ showTitle = true, className = "" }: Changelog
 			<div className="mb-8 rounded-xl border border-primary/20 bg-primary/5 p-4">
 				<div className="flex items-center gap-2 mb-1">
 					<div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-					<span className="text-sm font-medium text-primary">v1.0 In Development</span>
+					<span className="text-sm font-medium text-primary">{t("docs.changelog.inDev")}</span>
 				</div>
 				<p className="text-sm text-muted-foreground">
-					Embeddable widget and integration features.
+					{t("docs.changelog.inDevDesc")}
 				</p>
 			</div>
 
@@ -53,32 +56,32 @@ export function ChangelogContent({ showTitle = true, className = "" }: Changelog
 				<div className="flex items-center gap-2 mb-4">
 					<CheckCircle2 className="h-5 w-5 text-[oklch(0.65_0.20_160)]" />
 					<h2 className="text-lg font-semibold text-foreground">v0.6.0</h2>
-					<span className="text-sm text-muted-foreground">Production Ready</span>
+					<span className="text-sm text-muted-foreground">{t("docs.changelog.productionReady")}</span>
 				</div>
 				<div className="space-y-4">
 					<ReleaseItem
-						title="Security & Authentication"
+						title={t("docs.changelog.security")}
 						items={[
-							"Admin login with session management",
-							"API key authentication with scopes",
-							"Rate limiting (100 read / 30 write per minute)",
-							"CORS configuration for cross-origin access",
+							t("docs.changelog.security1"),
+							t("docs.changelog.security2"),
+							t("docs.changelog.security3"),
+							t("docs.changelog.security4"),
 						]}
 					/>
 					<ReleaseItem
-						title="Data Management"
+						title={t("docs.changelog.dataMgmt")}
 						items={[
-							"Full CRUD API for charts, categories, and labels",
-							"Many-to-many category relationships",
-							"Reusable size labels (SM, MD, LG)",
-							"Measurement instructions support",
+							t("docs.changelog.data1"),
+							t("docs.changelog.data2"),
+							t("docs.changelog.data3"),
+							t("docs.changelog.data4"),
 						]}
 					/>
 					<ReleaseItem
-						title="Infrastructure"
+						title={t("docs.changelog.infra")}
 						items={[
-							"Docker support with multi-stage builds",
-							"Structured JSON logging",
+							t("docs.changelog.infra1"),
+							t("docs.changelog.infra2"),
 						]}
 					/>
 				</div>
@@ -89,24 +92,24 @@ export function ChangelogContent({ showTitle = true, className = "" }: Changelog
 				<div className="flex items-center gap-2 mb-4">
 					<CheckCircle2 className="h-5 w-5 text-[oklch(0.65_0.20_160)]" />
 					<h2 className="text-lg font-semibold text-foreground">v0.1.0</h2>
-					<span className="text-sm text-muted-foreground">Alpha</span>
+					<span className="text-sm text-muted-foreground">{t("docs.changelog.alpha")}</span>
 				</div>
 				<div className="space-y-4">
 					<ReleaseItem
-						title="Core Foundation"
+						title={t("docs.changelog.core")}
 						items={[
-							"Initial project architecture with Next.js 15",
-							"PostgreSQL database with Prisma ORM",
-							"Basic size chart data model",
-							"Category and subcategory hierarchy",
+							t("docs.changelog.core1"),
+							t("docs.changelog.core2"),
+							t("docs.changelog.core3"),
+							t("docs.changelog.core4"),
 						]}
 					/>
 					<ReleaseItem
-						title="Admin Interface"
+						title={t("docs.changelog.adminInterface")}
 						items={[
-							"Dashboard with chart management",
-							"Visual chart editor with drag-and-drop rows",
-							"Dual unit display (inches/cm)",
+							t("docs.changelog.admin1"),
+							t("docs.changelog.admin2"),
+							t("docs.changelog.admin3"),
 						]}
 					/>
 				</div>
@@ -117,21 +120,21 @@ export function ChangelogContent({ showTitle = true, className = "" }: Changelog
 				<div className="flex items-center gap-2 mb-4">
 					<Clock className="h-5 w-5 text-primary" />
 					<h2 className="text-lg font-semibold text-foreground">v1.0</h2>
-					<span className="text-sm text-muted-foreground">In Progress</span>
+					<span className="text-sm text-muted-foreground">{t("docs.changelog.inProgress")}</span>
 				</div>
 				<div className="space-y-4">
 					<ReleaseItem
-						title="Integration"
+						title={t("docs.changelog.integration")}
 						items={[
-							"Zero-dependency embeddable widget",
-							"JSON import/export for bulk management",
+							t("docs.changelog.integration1"),
+							t("docs.changelog.integration2"),
 						]}
 					/>
 					<ReleaseItem
-						title="Productivity"
+						title={t("docs.changelog.productivity")}
 						items={[
-							"Pre-built chart templates for common use cases",
-							"Version history with restore capability",
+							t("docs.changelog.productivity1"),
+							t("docs.changelog.productivity2"),
 						]}
 					/>
 				</div>
@@ -141,16 +144,16 @@ export function ChangelogContent({ showTitle = true, className = "" }: Changelog
 			<section>
 				<div className="flex items-center gap-2 mb-4">
 					<HelpCircle className="h-5 w-5 text-muted-foreground" />
-					<h2 className="text-lg font-semibold text-foreground">Considering</h2>
+					<h2 className="text-lg font-semibold text-foreground">{t("docs.changelog.considering")}</h2>
 				</div>
 				<ul className="pl-6 text-sm text-muted-foreground space-y-1">
-					<li>Webhooks for chart updates</li>
-					<li>Redis caching for high-performance API</li>
-					<li>Fit recommendation API</li>
-					<li>Multi-tenancy support</li>
-					<li>Analytics dashboard</li>
-					<li>Full i18n support</li>
-					<li>Shopify, WooCommerce, Magento integrations</li>
+					<li>{t("docs.changelog.consider1")}</li>
+					<li>{t("docs.changelog.consider2")}</li>
+					<li>{t("docs.changelog.consider3")}</li>
+					<li>{t("docs.changelog.consider4")}</li>
+					<li>{t("docs.changelog.consider5")}</li>
+					<li>{t("docs.changelog.consider6")}</li>
+					<li>{t("docs.changelog.consider7")}</li>
 				</ul>
 			</section>
 		</div>

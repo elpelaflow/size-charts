@@ -3,16 +3,17 @@
 import { useState, useEffect, useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Copy, Check, ChevronDown, ChevronRight } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
 
 // Section navigation data
 const sections = [
-	{ id: "authentication", label: "Authentication" },
-	{ id: "base-url", label: "Base URL" },
-	{ id: "size-charts", label: "Size Charts" },
-	{ id: "categories", label: "Categories" },
-	{ id: "labels", label: "Labels" },
-	{ id: "error-handling", label: "Error Handling" },
-	{ id: "rate-limiting", label: "Rate Limiting" },
+	{ id: "authentication", labelKey: "docs.api.authentication" },
+	{ id: "base-url", labelKey: "docs.api.baseUrl" },
+	{ id: "size-charts", labelKey: "docs.api.sizeCharts" },
+	{ id: "categories", labelKey: "docs.api.categories" },
+	{ id: "labels", labelKey: "docs.api.labels" },
+	{ id: "error-handling", labelKey: "docs.api.errorHandling" },
+	{ id: "rate-limiting", labelKey: "docs.api.rateLimiting" },
 ];
 
 interface EndpointProps {
@@ -28,6 +29,7 @@ interface EndpointProps {
 function Endpoint({ method, path, description, params, requestBody, response, example }: EndpointProps) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [copied, setCopied] = useState(false);
+	const { t } = useLocale();
 
 	const methodColors = {
 		GET: "bg-[oklch(0.65_0.20_160)]/15 text-[oklch(0.45_0.18_160)] dark:text-[oklch(0.75_0.16_160)] border-[oklch(0.65_0.20_160)]/20",
@@ -66,15 +68,15 @@ function Endpoint({ method, path, description, params, requestBody, response, ex
 
 					{params && params.length > 0 && (
 						<div>
-							<h4 className="mb-2 text-sm font-semibold text-foreground">Query Parameters</h4>
+							<h4 className="mb-2 text-sm font-semibold text-foreground">{t("docs.api.queryParams")}</h4>
 							<div className="rounded-lg border border-border overflow-x-auto bg-card">
 								<table className="w-full text-sm">
 									<thead>
 										<tr className="border-b border-border bg-muted/50">
-											<th className="px-3 py-2 text-left font-medium text-muted-foreground">Name</th>
-											<th className="px-3 py-2 text-left font-medium text-muted-foreground">Type</th>
-											<th className="px-3 py-2 text-left font-medium text-muted-foreground">Required</th>
-											<th className="px-3 py-2 text-left font-medium text-muted-foreground">Description</th>
+											<th className="px-3 py-2 text-left font-medium text-muted-foreground">{t("docs.api.name")}</th>
+											<th className="px-3 py-2 text-left font-medium text-muted-foreground">{t("docs.api.type")}</th>
+											<th className="px-3 py-2 text-left font-medium text-muted-foreground">{t("docs.api.required")}</th>
+											<th className="px-3 py-2 text-left font-medium text-muted-foreground">{t("docs.api.description")}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -86,9 +88,9 @@ function Endpoint({ method, path, description, params, requestBody, response, ex
 												<td className="px-3 py-2 text-muted-foreground">{param.type}</td>
 												<td className="px-3 py-2">
 													{param.required ? (
-														<Badge variant="default" className="text-xs">Required</Badge>
+														<Badge variant="default" className="text-xs">{t("docs.api.required")}</Badge>
 													) : (
-														<span className="text-muted-foreground text-xs">Optional</span>
+														<span className="text-muted-foreground text-xs">{t("docs.api.optional")}</span>
 													)}
 												</td>
 												<td className="px-3 py-2 text-muted-foreground">{param.description}</td>
@@ -102,7 +104,7 @@ function Endpoint({ method, path, description, params, requestBody, response, ex
 
 					{requestBody && (
 						<div>
-							<h4 className="mb-2 text-sm font-semibold text-foreground">Request Body</h4>
+							<h4 className="mb-2 text-sm font-semibold text-foreground">{t("docs.api.requestBody")}</h4>
 							<pre className="rounded-lg border border-border bg-muted/50 p-3 text-xs overflow-x-auto">
 								<code className="font-mono text-foreground">{requestBody}</code>
 							</pre>
@@ -111,7 +113,7 @@ function Endpoint({ method, path, description, params, requestBody, response, ex
 
 					{response && (
 						<div>
-							<h4 className="mb-2 text-sm font-semibold text-foreground">Response</h4>
+							<h4 className="mb-2 text-sm font-semibold text-foreground">{t("docs.api.response")}</h4>
 							<pre className="rounded-lg border border-border bg-muted/50 p-3 text-xs overflow-x-auto">
 								<code className="font-mono text-foreground">{response}</code>
 							</pre>
@@ -121,13 +123,13 @@ function Endpoint({ method, path, description, params, requestBody, response, ex
 					{example && (
 						<div>
 							<div className="flex items-center justify-between mb-2">
-								<h4 className="text-sm font-semibold text-foreground">Example</h4>
+								<h4 className="text-sm font-semibold text-foreground">{t("docs.api.example")}</h4>
 								<button
 									onClick={() => copyToClipboard(example.request || example.response)}
 									className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
 								>
 									{copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
-									{copied ? "Copied!" : "Copy"}
+									{copied ? t("docs.embed.copied") : t("docs.embed.copy")}
 								</button>
 							</div>
 							{example.request && (
@@ -148,10 +150,12 @@ function Endpoint({ method, path, description, params, requestBody, response, ex
 
 // Section navigation component
 function SectionNav({ activeSection }: { activeSection: string }) {
+	const { t } = useLocale();
+
 	return (
 		<nav className="space-y-1">
 			<p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-				On this page
+				{t("docs.api.onThisPage")}
 			</p>
 			{sections.map((section) => (
 				<a
@@ -162,7 +166,7 @@ function SectionNav({ activeSection }: { activeSection: string }) {
 							: "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground/50"
 						}`}
 				>
-					{section.label}
+					{t(section.labelKey)}
 				</a>
 			))}
 		</nav>
@@ -269,6 +273,7 @@ export function ApiReferenceContent({
 }: ApiReferenceContentProps) {
 	const [activeSection, setActiveSection] = useState("authentication");
 	const contentRef = useRef<HTMLDivElement>(null);
+	const { t } = useLocale();
 
 	// Intersection observer to track active section
 	useEffect(() => {
@@ -297,19 +302,19 @@ export function ApiReferenceContent({
 		<div ref={contentRef} className={showNavigation ? "lg:pr-8" : ""}>
 			{showTitle && (
 				<div className="mb-8">
-					<h1 className="text-2xl font-bold text-foreground">API Reference</h1>
+					<h1 className="text-2xl font-bold text-foreground">{t("docs.apiReference")}</h1>
 					<p className="mt-2 text-muted-foreground">
-						Complete documentation for the Size Charts v1 API.
+						{t("docs.api.intro")}
 					</p>
 				</div>
 			)}
 
 			{/* Authentication */}
 			<section id="authentication" className="mb-10 scroll-mt-20">
-				<h2 className="text-lg font-semibold text-foreground mb-4">Authentication</h2>
+				<h2 className="text-lg font-semibold text-foreground mb-4">{t("docs.api.authentication")}</h2>
 				<div className="rounded-xl border border-border bg-card p-5">
 					<p className="text-sm text-muted-foreground mb-4">
-						All API requests require authentication via API key. Include the key in request headers:
+						{t("docs.api.authDesc")}
 					</p>
 					<pre className="rounded-lg border border-border bg-muted/50 p-4 text-xs overflow-x-auto">
 						<code className="font-mono text-foreground">{`# Option 1: X-API-Key header
@@ -319,14 +324,14 @@ curl -H "X-API-Key: sc_live_xxxxxxxxxxxx" ...
 curl -H "Authorization: Bearer sc_live_xxxxxxxxxxxx" ...`}</code>
 					</pre>
 					<p className="text-sm text-muted-foreground mt-4">
-						Generate API keys in the admin panel under <span className="text-foreground font-medium">API Keys</span>.
+						{t("docs.api.authNote")} <span className="text-foreground font-medium">API Keys</span>.
 					</p>
 				</div>
 			</section>
 
 			{/* Base URL */}
 			<section id="base-url" className="mb-10 scroll-mt-20">
-				<h2 className="text-lg font-semibold text-foreground mb-4">Base URL</h2>
+				<h2 className="text-lg font-semibold text-foreground mb-4">{t("docs.api.baseUrl")}</h2>
 				<div className="rounded-xl border border-border bg-muted/30 p-4">
 					<code className="text-sm font-mono text-foreground">https://www.sizecharts.dev/api/v1</code>
 				</div>
@@ -334,7 +339,7 @@ curl -H "Authorization: Bearer sc_live_xxxxxxxxxxxx" ...`}</code>
 
 			{/* Size Charts */}
 			<section id="size-charts" className="mb-10 scroll-mt-20">
-				<h2 className="text-lg font-semibold text-foreground mb-4">Size Charts</h2>
+				<h2 className="text-lg font-semibold text-foreground mb-4">{t("docs.api.sizeCharts")}</h2>
 				<div className="space-y-3">
 					{sizeChartsEndpoints.map((endpoint, i) => (
 						<Endpoint key={i} {...endpoint} />
@@ -344,7 +349,7 @@ curl -H "Authorization: Bearer sc_live_xxxxxxxxxxxx" ...`}</code>
 
 			{/* Categories */}
 			<section id="categories" className="mb-10 scroll-mt-20">
-				<h2 className="text-lg font-semibold text-foreground mb-4">Categories</h2>
+				<h2 className="text-lg font-semibold text-foreground mb-4">{t("docs.api.categories")}</h2>
 				<div className="space-y-3">
 					{categoriesEndpoints.map((endpoint, i) => (
 						<Endpoint key={i} {...endpoint} />
@@ -354,7 +359,7 @@ curl -H "Authorization: Bearer sc_live_xxxxxxxxxxxx" ...`}</code>
 
 			{/* Labels */}
 			<section id="labels" className="mb-10 scroll-mt-20">
-				<h2 className="text-lg font-semibold text-foreground mb-4">Labels</h2>
+				<h2 className="text-lg font-semibold text-foreground mb-4">{t("docs.api.labels")}</h2>
 				<div className="space-y-3">
 					{labelsEndpoints.map((endpoint, i) => (
 						<Endpoint key={i} {...endpoint} />
@@ -364,30 +369,30 @@ curl -H "Authorization: Bearer sc_live_xxxxxxxxxxxx" ...`}</code>
 
 			{/* Error Handling */}
 			<section id="error-handling" className="mb-10 scroll-mt-20">
-				<h2 className="text-lg font-semibold text-foreground mb-4">Error Handling</h2>
+				<h2 className="text-lg font-semibold text-foreground mb-4">{t("docs.api.errorHandling")}</h2>
 				<div className="rounded-xl border border-border bg-card overflow-hidden">
 					<table className="w-full text-sm">
 						<thead>
 							<tr className="border-b border-border bg-muted/50">
-								<th className="px-4 py-3 text-left font-medium text-muted-foreground">Status</th>
-								<th className="px-4 py-3 text-left font-medium text-muted-foreground">Description</th>
+								<th className="px-4 py-3 text-left font-medium text-muted-foreground">{t("docs.api.status")}</th>
+								<th className="px-4 py-3 text-left font-medium text-muted-foreground">{t("docs.api.description")}</th>
 							</tr>
 						</thead>
 						<tbody>
 							{[
-								{ code: "200", desc: "Success", color: "bg-[oklch(0.65_0.20_160)]/15 text-[oklch(0.45_0.18_160)] dark:text-[oklch(0.75_0.16_160)]" },
-								{ code: "400", desc: "Bad request - invalid parameters", color: "bg-[oklch(0.75_0.15_85)]/15 text-[oklch(0.50_0.12_85)] dark:text-[oklch(0.80_0.12_85)]" },
-								{ code: "401", desc: "Unauthorized - API key required", color: "bg-[oklch(0.75_0.15_85)]/15 text-[oklch(0.50_0.12_85)] dark:text-[oklch(0.80_0.12_85)]" },
-								{ code: "403", desc: "Forbidden - insufficient permissions", color: "bg-[oklch(0.75_0.15_85)]/15 text-[oklch(0.50_0.12_85)] dark:text-[oklch(0.80_0.12_85)]" },
-								{ code: "404", desc: "Not found", color: "bg-[oklch(0.75_0.15_85)]/15 text-[oklch(0.50_0.12_85)] dark:text-[oklch(0.80_0.12_85)]" },
-								{ code: "429", desc: "Rate limit exceeded (100 req/min)", color: "bg-[oklch(0.70_0.18_55)]/15 text-[oklch(0.50_0.15_55)] dark:text-[oklch(0.80_0.15_55)]" },
-								{ code: "500", desc: "Server error", color: "bg-destructive/15 text-destructive" },
+								{ code: "200", descKey: "docs.api.err200", color: "bg-[oklch(0.65_0.20_160)]/15 text-[oklch(0.45_0.18_160)] dark:text-[oklch(0.75_0.16_160)]" },
+								{ code: "400", descKey: "docs.api.err400", color: "bg-[oklch(0.75_0.15_85)]/15 text-[oklch(0.50_0.12_85)] dark:text-[oklch(0.80_0.12_85)]" },
+								{ code: "401", descKey: "docs.api.err401", color: "bg-[oklch(0.75_0.15_85)]/15 text-[oklch(0.50_0.12_85)] dark:text-[oklch(0.80_0.12_85)]" },
+								{ code: "403", descKey: "docs.api.err403", color: "bg-[oklch(0.75_0.15_85)]/15 text-[oklch(0.50_0.12_85)] dark:text-[oklch(0.80_0.12_85)]" },
+								{ code: "404", descKey: "docs.api.err404", color: "bg-[oklch(0.75_0.15_85)]/15 text-[oklch(0.50_0.12_85)] dark:text-[oklch(0.80_0.12_85)]" },
+								{ code: "429", descKey: "docs.api.err429", color: "bg-[oklch(0.70_0.18_55)]/15 text-[oklch(0.50_0.15_55)] dark:text-[oklch(0.80_0.15_55)]" },
+								{ code: "500", descKey: "docs.api.err500", color: "bg-destructive/15 text-destructive" },
 							].map((error, i) => (
 								<tr key={error.code} className={i < 6 ? "border-b border-border" : ""}>
 									<td className="px-4 py-3">
 										<code className={`text-xs px-2 py-1 rounded font-mono font-semibold ${error.color}`}>{error.code}</code>
 									</td>
-									<td className="px-4 py-3 text-muted-foreground">{error.desc}</td>
+									<td className="px-4 py-3 text-muted-foreground">{t(error.descKey)}</td>
 								</tr>
 							))}
 						</tbody>
@@ -397,23 +402,23 @@ curl -H "Authorization: Bearer sc_live_xxxxxxxxxxxx" ...`}</code>
 
 			{/* Rate Limiting */}
 			<section id="rate-limiting" className="mb-10 scroll-mt-20">
-				<h2 className="text-lg font-semibold text-foreground mb-4">Rate Limiting</h2>
+				<h2 className="text-lg font-semibold text-foreground mb-4">{t("docs.api.rateLimiting")}</h2>
 				<div className="rounded-xl border border-border bg-card p-5">
 					<p className="text-sm text-muted-foreground mb-4">
-						API requests are rate limited per API key:
+						{t("docs.api.rateLimitDesc")}
 					</p>
 					<ul className="text-sm space-y-2 mb-4">
 						<li className="flex items-center gap-2">
 							<span className="h-1.5 w-1.5 rounded-full bg-primary" />
-							<span><span className="font-medium text-foreground">Read operations:</span> <span className="text-muted-foreground">100 requests per minute</span></span>
+							<span><span className="font-medium text-foreground">{t("docs.api.readOps")}</span> <span className="text-muted-foreground">{t("docs.api.readOpsVal")}</span></span>
 						</li>
 						<li className="flex items-center gap-2">
 							<span className="h-1.5 w-1.5 rounded-full bg-primary" />
-							<span><span className="font-medium text-foreground">Write operations:</span> <span className="text-muted-foreground">30 requests per minute</span></span>
+							<span><span className="font-medium text-foreground">{t("docs.api.writeOps")}</span> <span className="text-muted-foreground">{t("docs.api.writeOpsVal")}</span></span>
 						</li>
 					</ul>
 					<p className="text-sm text-muted-foreground mb-3">
-						Rate limit headers are included in all responses:
+						{t("docs.api.rateLimitHeaders")}
 					</p>
 					<pre className="rounded-lg border border-border bg-muted/50 p-3 text-xs overflow-x-auto">
 						<code className="font-mono text-foreground">{`X-RateLimit-Limit: 100
