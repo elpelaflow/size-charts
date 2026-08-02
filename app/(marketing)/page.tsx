@@ -9,62 +9,71 @@ import {
 	Zap,
 } from "lucide-react";
 import { db } from "@/lib/db";
+import { getT } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 import { TemplatePreview } from "@/components/templates/template-preview";
 import { SectionHeader } from "@/components/ui/section-header";
 import { FeaturesGrid } from "@/components/ui/features-grid";
 
-const features = [
+const featureDefs = [
 	{
 		iconName: "Layers",
-		title: "Hierarchical Categories",
-		description: "Organize charts by category and subcategory. One chart can appear in multiple places.",
+		titleKey: "home.feature.categories.title",
+		descKey: "home.feature.categories.desc",
 	},
 	{
 		iconName: "Globe",
-		title: "Dual Unit System",
-		description: "All measurements stored in inches, automatically converted to centimeters.",
+		titleKey: "home.feature.units.title",
+		descKey: "home.feature.units.desc",
 	},
 	{
 		iconName: "Key",
-		title: "API Authentication",
-		description: "Secure API keys with scopes and rate limiting for production use.",
+		titleKey: "home.feature.auth.title",
+		descKey: "home.feature.auth.desc",
 	},
 	{
 		iconName: "Code2",
-		title: "Embeddable Widget",
-		description: "Drop-in JavaScript widget that works on any website with zero dependencies.",
+		titleKey: "home.feature.widget.title",
+		descKey: "home.feature.widget.desc",
 	},
 	{
 		iconName: "Gauge",
-		title: "Rate Limited",
-		description: "Built-in rate limiting protects your API from abuse (100 req/min).",
+		titleKey: "home.feature.rateLimit.title",
+		descKey: "home.feature.rateLimit.desc",
 	},
 	{
 		iconName: "FileText",
-		title: "Full REST API",
-		description: "Complete CRUD operations for charts, categories, and labels.",
+		titleKey: "home.feature.rest.title",
+		descKey: "home.feature.rest.desc",
 	},
 ];
 
-const quickLinks = [
+const quickLinkDefs = [
 	{
 		href: "/examples",
 		icon: Code2,
-		title: "Examples & Size Guide",
-		description: "Widget examples, live builder, and browse all size charts by category.",
-		cta: "View Examples",
+		titleKey: "home.quickLinks.examples.title",
+		descKey: "home.quickLinks.examples.desc",
+		ctaKey: "home.quickLinks.examples.cta",
 	},
 	{
 		href: "/docs",
 		icon: FileText,
-		title: "Documentation",
-		description: "Complete reference for integrating via REST API.",
-		cta: "Read Docs",
+		titleKey: "home.quickLinks.docs.title",
+		descKey: "home.quickLinks.docs.desc",
+		ctaKey: "home.quickLinks.docs.cta",
 	},
 ];
 
 export default async function HomePage() {
+	const t = await getT();
+
+	const features = featureDefs.map((f) => ({
+		iconName: f.iconName,
+		title: t(f.titleKey),
+		description: t(f.descKey),
+	}));
+
 	const categories = await db.category.findMany({
 		orderBy: { displayOrder: "asc" },
 		include: {
@@ -159,7 +168,7 @@ export default async function HomePage() {
 					{/* Badge */}
 					<div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-8 animate-fade-up animate-glow-pulse backdrop-blur-sm">
 						<Sparkles className="h-4 w-4" />
-						<span>E-commerce Size Management</span>
+						<span>{t("home.badge")}</span>
 						<Zap className="h-3 w-3" />
 					</div>
 
@@ -171,8 +180,7 @@ export default async function HomePage() {
 
 					{/* Subheading */}
 					<p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed animate-fade-up stagger-2">
-						A complete solution for managing and displaying e-commerce size charts.
-						Use the API directly or embed the widget on any website.
+						{t("home.heroSubtitle")}
 					</p>
 
 					{/* CTA Buttons */}
@@ -181,13 +189,13 @@ export default async function HomePage() {
 							<Link href="/examples">
 								<span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 								<Code2 className="h-5 w-5 relative" />
-								<span className="relative">View Examples</span>
+								<span className="relative">{t("home.viewExamples")}</span>
 							</Link>
 						</Button>
 						<Button variant="secondary" asChild size="lg" className="backdrop-blur-sm">
 							<Link href="/docs">
 								<FileText className="h-5 w-5" />
-								Documentation
+								{t("home.documentation")}
 							</Link>
 						</Button>
 					</div>
@@ -196,17 +204,17 @@ export default async function HomePage() {
 					<div className="flex flex-wrap items-center justify-center gap-8 mt-16 animate-fade-up stagger-4">
 						<div className="text-center">
 							<div className="text-3xl font-bold text-foreground">100+</div>
-							<div className="text-sm text-muted-foreground">Size Charts</div>
+							<div className="text-sm text-muted-foreground">{t("home.statCharts")}</div>
 						</div>
 						<div className="w-px h-10 bg-border" />
 						<div className="text-center">
 							<div className="text-3xl font-bold text-foreground">REST</div>
-							<div className="text-sm text-muted-foreground">API</div>
+							<div className="text-sm text-muted-foreground">{t("home.statApi")}</div>
 						</div>
 						<div className="w-px h-10 bg-border" />
 						<div className="text-center">
-							<div className="text-3xl font-bold text-foreground">1 line</div>
-							<div className="text-sm text-muted-foreground">To embed</div>
+							<div className="text-3xl font-bold text-foreground">{t("home.statEmbedValue")}</div>
+							<div className="text-sm text-muted-foreground">{t("home.statEmbed")}</div>
 						</div>
 					</div>
 				</div>
@@ -217,9 +225,9 @@ export default async function HomePage() {
 				{/* Features - Using spotlight cards */}
 				<section>
 					<SectionHeader
-						title="Features"
+						title={t("home.featuresTitle")}
 						variant="lamp"
-						subtitle="Everything you need to manage size charts for your e-commerce platform"
+						subtitle={t("home.featuresSubtitle")}
 					/>
 
 					<FeaturesGrid features={features} variant="spotlight" />
@@ -232,14 +240,14 @@ export default async function HomePage() {
 				{categoriesWithCounts.length > 0 && (
 					<section>
 						<SectionHeader
-							title="Size Charts"
+							title={t("home.sizeChartsTitle")}
 							variant="gradient-line"
 							action={
 								<Link
 									href="/size-guide"
 									className="text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1 transition-colors group"
 								>
-									Browse all
+									{t("home.browseAll")}
 									<ChevronRight className="h-4 w-4 group-hover:translate-x-0.5 transition-transform" />
 								</Link>
 							}
@@ -257,7 +265,7 @@ export default async function HomePage() {
 												{category.name}
 											</h3>
 											<span className="badge badge-muted">
-												{category.totalCharts} charts
+												{category.totalCharts} {t("home.charts")}
 											</span>
 										</div>
 										<div className="space-y-2">
@@ -276,7 +284,7 @@ export default async function HomePage() {
 													href={`/size-guide/${category.slug}`}
 													className="block text-xs text-primary/70 hover:text-primary pt-2 transition-colors"
 												>
-													+{category.subcategories.length - 3} more
+													+{category.subcategories.length - 3} {t("home.more")}
 												</Link>
 											)}
 										</div>
@@ -290,13 +298,13 @@ export default async function HomePage() {
 				{/* Get Started */}
 				<section>
 					<SectionHeader
-						title="Get Started"
+						title={t("home.getStartedTitle")}
 						variant="gradient-line"
-						subtitle="Start integrating size charts in minutes"
+						subtitle={t("home.getStartedSubtitle")}
 					/>
 
 					<div className="grid gap-6 md:grid-cols-2">
-						{quickLinks.map((link, index) => (
+						{quickLinkDefs.map((link, index) => (
 							<Link
 								key={link.href}
 								href={link.href}
@@ -307,13 +315,13 @@ export default async function HomePage() {
 									<div className="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
 								</div>
 								<h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-									{link.title}
+									{t(link.titleKey)}
 								</h3>
 								<p className="text-sm text-muted-foreground mb-5 leading-relaxed">
-									{link.description}
+									{t(link.descKey)}
 								</p>
 								<span className="inline-flex items-center gap-2 text-sm font-medium text-primary group-hover:gap-3 transition-all">
-									{link.cta}
+									{t(link.ctaKey)}
 									<ArrowRight className="h-4 w-4" />
 								</span>
 							</Link>
@@ -330,14 +338,14 @@ export default async function HomePage() {
 					<div className="relative">
 						<div className="inline-flex items-center gap-2 text-sm text-muted-foreground mb-4">
 							<Ruler className="h-4 w-4" />
-							<span>Need to manage size charts?</span>
+							<span>{t("home.adminCta")}</span>
 						</div>
 						<div>
 							<Link
 								href="/admin"
 								className="inline-flex items-center gap-2 text-base font-medium text-primary hover:text-primary/80 transition-colors group underline-grow"
 							>
-								Go to Admin Panel
+								{t("home.goToAdmin")}
 								<ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
 							</Link>
 						</div>

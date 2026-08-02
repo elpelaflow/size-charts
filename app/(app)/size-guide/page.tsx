@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { db } from "@/lib/db";
+import { getT } from "@/lib/i18n";
 import { ChevronRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -13,6 +14,8 @@ export const metadata: Metadata = {
 };
 
 export default async function SizeGuidePage() {
+	const t = await getT();
+
 	// Get all categories with published chart counts
 	const categories = await db.category.findMany({
 		orderBy: { displayOrder: "asc" },
@@ -56,17 +59,17 @@ export default async function SizeGuidePage() {
 			<div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 				<div>
 					<h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-						Size Guide
+						{t("sizeGuide.title")}
 					</h1>
 					<p className="mt-2 text-muted-foreground">
-						Find the perfect fit with our comprehensive size charts.
+						{t("sizeGuide.subtitle")}
 					</p>
 				</div>
 			</div>
 
 			{activeCategories.length === 0 ? (
 				<div className="rounded-xl border border-border bg-card p-8 text-center">
-					<p className="text-muted-foreground">No size charts available yet.</p>
+					<p className="text-muted-foreground">{t("sizeGuide.noCharts")}</p>
 				</div>
 			) : (
 				<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -82,7 +85,7 @@ export default async function SizeGuidePage() {
 										{category.name}
 									</h2>
 									<p className="text-sm text-muted-foreground mt-1">
-										{category.totalCharts} size chart{category.totalCharts !== 1 ? "s" : ""}
+										{category.totalCharts} {t("home.charts")}
 									</p>
 								</div>
 								<ChevronRight className="h-5 w-5 text-muted-foreground/40 group-hover:text-primary transition-colors" />

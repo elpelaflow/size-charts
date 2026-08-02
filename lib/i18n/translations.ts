@@ -1,0 +1,318 @@
+/**
+ * Translation dictionaries for EN and ES locales.
+ * Keys use dot notation: "section.element"
+ */
+
+export const en = {
+  // Navigation
+  "nav.sizeGuide": "Size Guide",
+  "nav.templates": "Templates",
+  "nav.examples": "Examples",
+  "nav.docs": "Docs",
+  "nav.tryDemo": "Try Demo",
+  "nav.admin": "Admin",
+  "nav.openMenu": "Open menu",
+  "nav.closeMenu": "Close menu",
+
+  // Footer
+  "footer.brand": "Size Charts API",
+
+  // Home - Hero
+  "home.badge": "E-commerce Size Management",
+  "home.heroSubtitle": "A complete solution for managing and displaying e-commerce size charts. Use the API directly or embed the widget on any website.",
+  "home.viewExamples": "View Examples",
+  "home.documentation": "Documentation",
+  "home.statCharts": "Size Charts",
+  "home.statApi": "API",
+  "home.statEmbedValue": "1 line",
+  "home.statEmbed": "To embed",
+
+  // Home - Features
+  "home.featuresTitle": "Features",
+  "home.featuresSubtitle": "Everything you need to manage size charts for your e-commerce platform",
+  "home.feature.categories.title": "Hierarchical Categories",
+  "home.feature.categories.desc": "Organize charts by category and subcategory. One chart can appear in multiple places.",
+  "home.feature.units.title": "Dual Unit System",
+  "home.feature.units.desc": "All measurements stored in inches, automatically converted to centimeters.",
+  "home.feature.auth.title": "API Authentication",
+  "home.feature.auth.desc": "Secure API keys with scopes and rate limiting for production use.",
+  "home.feature.widget.title": "Embeddable Widget",
+  "home.feature.widget.desc": "Drop-in JavaScript widget that works on any website with zero dependencies.",
+  "home.feature.rateLimit.title": "Rate Limited",
+  "home.feature.rateLimit.desc": "Built-in rate limiting protects your API from abuse (100 req/min).",
+  "home.feature.rest.title": "Full REST API",
+  "home.feature.rest.desc": "Complete CRUD operations for charts, categories, and labels.",
+
+  // Home - Size Charts section
+  "home.sizeChartsTitle": "Size Charts",
+  "home.browseAll": "Browse all",
+  "home.charts": "charts",
+  "home.more": "more",
+
+  // Home - Get Started
+  "home.getStartedTitle": "Get Started",
+  "home.getStartedSubtitle": "Start integrating size charts in minutes",
+  "home.quickLinks.examples.title": "Examples & Size Guide",
+  "home.quickLinks.examples.desc": "Widget examples, live builder, and browse all size charts by category.",
+  "home.quickLinks.examples.cta": "View Examples",
+  "home.quickLinks.docs.title": "Documentation",
+  "home.quickLinks.docs.desc": "Complete reference for integrating via REST API.",
+  "home.quickLinks.docs.cta": "Read Docs",
+
+  // Home - Admin CTA
+  "home.adminCta": "Need to manage size charts?",
+  "home.goToAdmin": "Go to Admin Panel",
+
+  // Size Guide
+  "sizeGuide.title": "Size Guide",
+  "sizeGuide.subtitle": "Find the perfect fit with our comprehensive size charts",
+  "sizeGuide.categories": "Categories",
+  "sizeGuide.selectCategory": "Select a category to view size charts",
+  "sizeGuide.chartsAvailable": "charts available",
+  "sizeGuide.noCharts": "No size charts available yet",
+  "sizeGuide.backToCategories": "Back to categories",
+  "sizeGuide.measurements": "Measurements",
+  "sizeGuide.howToMeasure": "How to Measure",
+  "sizeGuide.inches": "in",
+  "sizeGuide.cm": "cm",
+
+  // Templates
+  "templates.title": "Templates",
+  "templates.pageTitle": "Size Chart Templates",
+  "templates.pageSubtitle": "Browse pre-built templates for common sizing needs. Try them in the demo to see how they work.",
+  "templates.subtitle": "Pre-built size chart templates to get you started quickly",
+  "templates.useTemplate": "Use Template",
+  "templates.preview": "Preview",
+  "templates.rows": "rows",
+  "templates.columns": "columns",
+  "templates.all": "All",
+  "templates.apparel": "Apparel",
+  "templates.footwear": "Footwear",
+  "templates.accessories": "Accessories",
+  "templates.youth": "Youth",
+
+  // Examples
+  "examples.title": "Examples",
+  "examples.pageSubtitle": "Explore different ways to use the size chart widget.",
+  "examples.subtitle": "See size charts in action with live examples and interactive demos",
+  "examples.embed.title": "Embed Widget",
+  "examples.embed.desc": "Add size charts to any website with a single script tag",
+  "examples.embedWidget.title": "Embed Widget Examples",
+  "examples.embedWidget.desc": "Pre-configured widget examples showing light/dark themes, units, and compact mode.",
+  "examples.live.title": "Live Builder",
+  "examples.live.desc": "Build and preview a size chart interactively",
+  "examples.liveBuilder.desc": "Interactive builder to configure and preview the widget with your settings.",
+  "examples.standalone.title": "Standalone HTML",
+  "examples.standalone.desc": "Plain HTML page demonstrating the embed widget - opens in new tab.",
+  "examples.open": "Open",
+  "examples.view": "View",
+  "examples.browseByCategory": "Browse size charts by category",
+  "examples.noChartsYet": "No charts yet",
+  "examples.unitsNote": "All measurements available in inches and centimeters. Use the unit toggle on any chart to switch.",
+  "examples.quickEmbed": "Quick Embed",
+  "examples.quickEmbedDesc": "Add size charts to any website with just two lines of code:",
+
+  // Docs
+  "docs.title": "Documentation",
+  "docs.subtitle": "Everything you need to integrate size charts",
+  "docs.gettingStarted": "Getting Started",
+  "docs.apiReference": "API Reference",
+  "docs.embedGuide": "Embed Guide",
+  "docs.changelog": "Changelog",
+
+  // Admin
+  "admin.title": "Admin Panel",
+  "admin.signIn": "Sign in",
+  "admin.signingIn": "Signing in...",
+  "admin.username": "Username",
+  "admin.password": "Password",
+  "admin.enterUsername": "Enter username",
+  "admin.enterPassword": "Enter password",
+  "admin.loginFailed": "Login failed",
+  "admin.signOut": "Sign out",
+  "admin.dashboard": "Dashboard",
+  "admin.sizeCharts": "Size Charts",
+  "admin.categories": "Categories",
+  "admin.labels": "Labels",
+  "admin.apiKeys": "API Keys",
+  "admin.templates": "Templates",
+  "admin.newChart": "New Chart",
+  "admin.save": "Save",
+  "admin.cancel": "Cancel",
+  "admin.delete": "Delete",
+  "admin.edit": "Edit",
+  "admin.create": "Create",
+  "admin.name": "Name",
+  "admin.slug": "Slug",
+  "admin.published": "Published",
+  "admin.draft": "Draft",
+  "admin.actions": "Actions",
+  "admin.search": "Search...",
+  "admin.demoMode": "Demo Mode",
+  "admin.credentialsSetViaEnv": "Credentials are set via environment variables",
+
+  // Common
+  "common.loading": "Loading...",
+  "common.error": "An error occurred. Please try again.",
+  "common.noResults": "No results found",
+  "common.viewAll": "View all",
+  "common.learnMore": "Learn more",
+} as const;
+
+export const es: Record<keyof typeof en, string> = {
+  // Navigation
+  "nav.sizeGuide": "Guía de Tallas",
+  "nav.templates": "Plantillas",
+  "nav.examples": "Ejemplos",
+  "nav.docs": "Docs",
+  "nav.tryDemo": "Probar Demo",
+  "nav.admin": "Admin",
+  "nav.openMenu": "Abrir menú",
+  "nav.closeMenu": "Cerrar menú",
+
+  // Footer
+  "footer.brand": "Size Charts API",
+
+  // Home - Hero
+  "home.badge": "Gestión de Tallas para E-commerce",
+  "home.heroSubtitle": "Una solución completa para gestionar y mostrar tablas de tallas de e-commerce. Usa la API directamente o integra el widget en cualquier sitio web.",
+  "home.viewExamples": "Ver Ejemplos",
+  "home.documentation": "Documentación",
+  "home.statCharts": "Tablas de Tallas",
+  "home.statApi": "API",
+  "home.statEmbedValue": "1 línea",
+  "home.statEmbed": "Para integrar",
+
+  // Home - Features
+  "home.featuresTitle": "Características",
+  "home.featuresSubtitle": "Todo lo que necesitas para gestionar tablas de tallas en tu plataforma de e-commerce",
+  "home.feature.categories.title": "Categorías Jerárquicas",
+  "home.feature.categories.desc": "Organiza tablas por categoría y subcategoría. Una tabla puede aparecer en múltiples lugares.",
+  "home.feature.units.title": "Sistema de Unidades Dual",
+  "home.feature.units.desc": "Todas las medidas en pulgadas, convertidas automáticamente a centímetros.",
+  "home.feature.auth.title": "Autenticación de API",
+  "home.feature.auth.desc": "Claves de API seguras con scopes y límite de peticiones para producción.",
+  "home.feature.widget.title": "Widget Integrable",
+  "home.feature.widget.desc": "Widget JavaScript que funciona en cualquier sitio web sin dependencias.",
+  "home.feature.rateLimit.title": "Límite de Peticiones",
+  "home.feature.rateLimit.desc": "Rate limiting integrado que protege tu API del abuso (100 req/min).",
+  "home.feature.rest.title": "API REST Completa",
+  "home.feature.rest.desc": "Operaciones CRUD completas para tablas, categorías y etiquetas.",
+
+  // Home - Size Charts section
+  "home.sizeChartsTitle": "Tablas de Tallas",
+  "home.browseAll": "Ver todas",
+  "home.charts": "tablas",
+  "home.more": "más",
+
+  // Home - Get Started
+  "home.getStartedTitle": "Comienza Ahora",
+  "home.getStartedSubtitle": "Empieza a integrar tablas de tallas en minutos",
+  "home.quickLinks.examples.title": "Ejemplos y Guía de Tallas",
+  "home.quickLinks.examples.desc": "Ejemplos del widget, constructor en vivo y todas las tablas por categoría.",
+  "home.quickLinks.examples.cta": "Ver Ejemplos",
+  "home.quickLinks.docs.title": "Documentación",
+  "home.quickLinks.docs.desc": "Referencia completa para integrar mediante la API REST.",
+  "home.quickLinks.docs.cta": "Leer Docs",
+
+  // Home - Admin CTA
+  "home.adminCta": "¿Necesitas gestionar tablas de tallas?",
+  "home.goToAdmin": "Ir al Panel de Administración",
+
+  // Size Guide
+  "sizeGuide.title": "Guía de Tallas",
+  "sizeGuide.subtitle": "Encuentra la talla perfecta con nuestras tablas de medidas",
+  "sizeGuide.categories": "Categorías",
+  "sizeGuide.selectCategory": "Selecciona una categoría para ver las tablas de tallas",
+  "sizeGuide.chartsAvailable": "tablas disponibles",
+  "sizeGuide.noCharts": "Aún no hay tablas de tallas disponibles",
+  "sizeGuide.backToCategories": "Volver a categorías",
+  "sizeGuide.measurements": "Medidas",
+  "sizeGuide.howToMeasure": "Cómo Medir",
+  "sizeGuide.inches": "in",
+  "sizeGuide.cm": "cm",
+
+  // Templates
+  "templates.title": "Plantillas",
+  "templates.pageTitle": "Plantillas de Tablas de Tallas",
+  "templates.pageSubtitle": "Explora plantillas prediseñadas para necesidades comunes de tallas. Pruébalas en la demo para ver cómo funcionan.",
+  "templates.subtitle": "Plantillas de tablas de tallas prediseñadas para empezar rápidamente",
+  "templates.useTemplate": "Usar Plantilla",
+  "templates.preview": "Vista previa",
+  "templates.rows": "filas",
+  "templates.columns": "columnas",
+  "templates.all": "Todas",
+  "templates.apparel": "Ropa",
+  "templates.footwear": "Calzado",
+  "templates.accessories": "Accesorios",
+  "templates.youth": "Juvenil",
+
+  // Examples
+  "examples.title": "Ejemplos",
+  "examples.pageSubtitle": "Explora diferentes formas de usar el widget de tablas de tallas.",
+  "examples.subtitle": "Mira las tablas de tallas en acción con ejemplos en vivo y demos interactivas",
+  "examples.embed.title": "Widget Integrable",
+  "examples.embed.desc": "Agrega tablas de tallas a cualquier sitio web con un solo script tag",
+  "examples.embedWidget.title": "Ejemplos del Widget",
+  "examples.embedWidget.desc": "Ejemplos preconfigurados del widget con temas claro/oscuro, unidades y modo compacto.",
+  "examples.live.title": "Constructor en Vivo",
+  "examples.live.desc": "Construye y previsualiza una tabla de tallas interactivamente",
+  "examples.liveBuilder.desc": "Constructor interactivo para configurar y previsualizar el widget con tus ajustes.",
+  "examples.standalone.title": "HTML Independiente",
+  "examples.standalone.desc": "Página HTML simple que demuestra el widget - se abre en una nueva pestaña.",
+  "examples.open": "Abrir",
+  "examples.view": "Ver",
+  "examples.browseByCategory": "Explorar tablas de tallas por categoría",
+  "examples.noChartsYet": "Aún no hay tablas",
+  "examples.unitsNote": "Todas las medidas disponibles en pulgadas y centímetros. Usa el selector de unidades en cualquier tabla.",
+  "examples.quickEmbed": "Integración Rápida",
+  "examples.quickEmbedDesc": "Agrega tablas de tallas a cualquier sitio web con solo dos líneas de código:",
+
+  // Docs
+  "docs.title": "Documentación",
+  "docs.subtitle": "Todo lo que necesitas para integrar tablas de tallas",
+  "docs.gettingStarted": "Primeros Pasos",
+  "docs.apiReference": "Referencia de API",
+  "docs.embedGuide": "Guía de Integración",
+  "docs.changelog": "Registro de Cambios",
+
+  // Admin
+  "admin.title": "Panel de Administración",
+  "admin.signIn": "Iniciar sesión",
+  "admin.signingIn": "Iniciando sesión...",
+  "admin.username": "Usuario",
+  "admin.password": "Contraseña",
+  "admin.enterUsername": "Ingresa tu usuario",
+  "admin.enterPassword": "Ingresa tu contraseña",
+  "admin.loginFailed": "Error de inicio de sesión",
+  "admin.signOut": "Cerrar sesión",
+  "admin.dashboard": "Panel",
+  "admin.sizeCharts": "Tablas de Tallas",
+  "admin.categories": "Categorías",
+  "admin.labels": "Etiquetas",
+  "admin.apiKeys": "Claves de API",
+  "admin.templates": "Plantillas",
+  "admin.newChart": "Nueva Tabla",
+  "admin.save": "Guardar",
+  "admin.cancel": "Cancelar",
+  "admin.delete": "Eliminar",
+  "admin.edit": "Editar",
+  "admin.create": "Crear",
+  "admin.name": "Nombre",
+  "admin.slug": "Slug",
+  "admin.published": "Publicado",
+  "admin.draft": "Borrador",
+  "admin.actions": "Acciones",
+  "admin.search": "Buscar...",
+  "admin.demoMode": "Modo Demo",
+  "admin.credentialsSetViaEnv": "Las credenciales se configuran mediante variables de entorno",
+
+  // Common
+  "common.loading": "Cargando...",
+  "common.error": "Ocurrió un error. Inténtalo de nuevo.",
+  "common.noResults": "No se encontraron resultados",
+  "common.viewAll": "Ver todo",
+  "common.learnMore": "Más información",
+};
+
+export const translations = { en, es };

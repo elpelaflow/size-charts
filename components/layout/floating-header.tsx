@@ -6,13 +6,15 @@ import { usePathname } from "next/navigation";
 import { Code2, FileText, Ruler, Menu, X, LayoutTemplate, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { GITHUB_URL } from "@/lib/constants";
+import { useLocale } from "@/hooks/use-locale";
 
-const navLinks = [
-	{ name: "Size Guide", href: "/size-guide", icon: Ruler },
-	{ name: "Templates", href: "/templates", icon: LayoutTemplate },
-	{ name: "Examples", href: "/examples", icon: Code2 },
-	{ name: "Docs", href: "/docs", icon: FileText },
+const navLinkDefs = [
+	{ key: "nav.sizeGuide", href: "/size-guide", icon: Ruler },
+	{ key: "nav.templates", href: "/templates", icon: LayoutTemplate },
+	{ key: "nav.examples", href: "/examples", icon: Code2 },
+	{ key: "nav.docs", href: "/docs", icon: FileText },
 ];
 
 function GitHubIcon({ className }: { className?: string }) {
@@ -81,6 +83,7 @@ function NavItem({
 
 export function FloatingHeader({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
+	const { t } = useLocale();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 	const [scrolled, setScrolled] = useState(false);
 	const [hidden, setHidden] = useState(false);
@@ -181,11 +184,11 @@ export function FloatingHeader({ children }: { children: React.ReactNode }) {
 
 							{/* Desktop Nav */}
 							<nav className="hidden md:flex items-center gap-1">
-								{navLinks.map((link) => (
+								{navLinkDefs.map((link) => (
 									<NavItem
 										key={link.href}
 										href={link.href}
-										name={link.name}
+										name={t(link.key)}
 										icon={link.icon}
 										isActive={isActive(link.href)}
 										compact={scrolled}
@@ -196,6 +199,9 @@ export function FloatingHeader({ children }: { children: React.ReactNode }) {
 
 						{/* Right side actions */}
 						<div className="relative flex items-center gap-2">
+							{/* Language Switcher */}
+							<LanguageSwitcher />
+
 							{/* Theme Toggle */}
 							<ThemeToggle />
 
@@ -225,14 +231,14 @@ export function FloatingHeader({ children }: { children: React.ReactNode }) {
 								<span className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
 								<Sparkles className="h-4 w-4 relative" />
-								<span className="relative">Try Demo</span>
+								<span className="relative">{t("nav.tryDemo")}</span>
 							</Link>
 
 							{/* Mobile menu button */}
 							<button
 								onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
 								className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300"
-								aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+								aria-label={mobileMenuOpen ? t("nav.closeMenu") : t("nav.openMenu")}
 							>
 								{mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
 							</button>
@@ -252,7 +258,7 @@ export function FloatingHeader({ children }: { children: React.ReactNode }) {
 
 					{/* Menu content with staggered animations */}
 					<nav className="relative z-10 flex flex-col items-center justify-center h-full gap-3 p-6">
-						{navLinks.map((link, index) => (
+						{navLinkDefs.map((link, index) => (
 							<Link
 								key={link.href}
 								href={link.href}
@@ -267,7 +273,7 @@ export function FloatingHeader({ children }: { children: React.ReactNode }) {
 								style={{ animationDelay: `${index * 50}ms` }}
 							>
 								<link.icon className="h-5 w-5" />
-								{link.name}
+								{t(link.key)}
 							</Link>
 						))}
 
@@ -276,10 +282,10 @@ export function FloatingHeader({ children }: { children: React.ReactNode }) {
 							href="/admin"
 							onClick={handleNavClick}
 							className="flex items-center gap-3 px-8 py-4 text-lg font-medium rounded-2xl w-full max-w-xs bg-gradient-to-r from-primary to-primary/90 text-primary-foreground animate-fade-up"
-							style={{ animationDelay: `${navLinks.length * 50}ms` }}
+							style={{ animationDelay: `${navLinkDefs.length * 50}ms` }}
 						>
 							<Sparkles className="h-5 w-5" />
-							Try Demo
+							{t("nav.tryDemo")}
 						</Link>
 
 						{/* GitHub link in mobile menu */}
@@ -289,7 +295,7 @@ export function FloatingHeader({ children }: { children: React.ReactNode }) {
 							rel="noopener noreferrer"
 							onClick={handleNavClick}
 							className="flex items-center gap-3 px-8 py-4 text-lg font-medium rounded-2xl w-full max-w-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors animate-fade-up"
-							style={{ animationDelay: `${(navLinks.length + 1) * 50}ms` }}
+							style={{ animationDelay: `${(navLinkDefs.length + 1) * 50}ms` }}
 						>
 							<GitHubIcon className="h-5 w-5" />
 							GitHub
@@ -313,16 +319,16 @@ export function FloatingHeader({ children }: { children: React.ReactNode }) {
 						</div>
 						<div className="flex items-center gap-6 text-sm text-muted-foreground">
 							<Link href="/size-guide" className="hover:text-foreground transition-colors">
-								Size Guide
+								{t("nav.sizeGuide")}
 							</Link>
 							<Link href="/templates" className="hover:text-foreground transition-colors">
-								Templates
+								{t("nav.templates")}
 							</Link>
 							<Link href="/docs" className="hover:text-foreground transition-colors">
-								Docs
+								{t("nav.docs")}
 							</Link>
 							<Link href="/examples" className="hover:text-foreground transition-colors">
-								Examples
+								{t("nav.examples")}
 							</Link>
 							<a
 								href={GITHUB_URL}

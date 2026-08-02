@@ -5,13 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Code2, FileText, Ruler, Menu, X, LayoutTemplate, Play } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 import { GITHUB_URL } from "@/lib/constants";
+import { useLocale } from "@/hooks/use-locale";
 
-const navLinks = [
-	{ name: "Size Guide", href: "/size-guide", icon: Ruler },
-	{ name: "Templates", href: "/templates", icon: LayoutTemplate },
-	{ name: "Examples", href: "/examples", icon: Code2 },
-	{ name: "Docs", href: "/docs", icon: FileText },
+const navLinkDefs = [
+	{ key: "nav.sizeGuide", href: "/size-guide", icon: Ruler },
+	{ key: "nav.templates", href: "/templates", icon: LayoutTemplate },
+	{ key: "nav.examples", href: "/examples", icon: Code2 },
+	{ key: "nav.docs", href: "/docs", icon: FileText },
 ];
 
 // GitHub icon as inline SVG
@@ -40,6 +42,7 @@ function NavLink({ href, name, icon: Icon, isActive }: { href: string; name: str
 
 export function PublicShell({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
+	const { t } = useLocale();
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
 	// Don't render public shell for admin routes
@@ -80,11 +83,11 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
 						{/* Desktop Nav */}
 						<nav className="hidden md:flex items-center gap-1">
-							{navLinks.map((link) => (
+							{navLinkDefs.map((link) => (
 								<NavLink
 									key={link.href}
 									href={link.href}
-									name={link.name}
+									name={t(link.key)}
 									icon={link.icon}
 									isActive={isActive(link.href)}
 								/>
@@ -94,6 +97,9 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
 					{/* Right side actions */}
 					<div className="flex items-center gap-2">
+						{/* Language Switcher */}
+						<LanguageSwitcher />
+
 						{/* Theme Toggle */}
 						<ThemeToggle />
 
@@ -114,14 +120,14 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 							className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-soft"
 						>
 							<Play className="h-4 w-4" />
-							Try Demo
+							{t("nav.tryDemo")}
 						</Link>
 
 						{/* Mobile menu button */}
 						<button
 							onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
 							className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-							aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+							aria-label={mobileMenuOpen ? t("nav.closeMenu") : t("nav.openMenu")}
 						>
 							{mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
 						</button>
@@ -140,7 +146,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
 					{/* Menu content */}
 					<nav className="relative z-10 flex flex-col items-center justify-center h-full gap-2 p-6">
-						{navLinks.map((link) => (
+						{navLinkDefs.map((link) => (
 							<Link
 								key={link.href}
 								href={link.href}
@@ -151,7 +157,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 									}`}
 							>
 								<link.icon className="h-5 w-5" />
-								{link.name}
+								{t(link.key)}
 							</Link>
 						))}
 
@@ -162,7 +168,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 							className="flex items-center gap-3 px-6 py-4 text-lg font-medium rounded-xl w-full max-w-xs bg-primary text-primary-foreground transition-colors"
 						>
 							<Play className="h-5 w-5" />
-							Try Demo
+							{t("nav.tryDemo")}
 						</Link>
 
 						{/* GitHub link in mobile menu */}
@@ -195,16 +201,16 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 						</div>
 						<div className="flex items-center gap-6 text-sm text-muted-foreground">
 							<Link href="/size-guide" className="hover:text-foreground transition-colors">
-								Size Guide
+								{t("nav.sizeGuide")}
 							</Link>
 							<Link href="/templates" className="hover:text-foreground transition-colors">
-								Templates
+								{t("nav.templates")}
 							</Link>
 							<Link href="/docs" className="hover:text-foreground transition-colors">
-								Docs
+								{t("nav.docs")}
 							</Link>
 							<Link href="/examples" className="hover:text-foreground transition-colors">
-								Examples
+								{t("nav.examples")}
 							</Link>
 							<a
 								href={GITHUB_URL}

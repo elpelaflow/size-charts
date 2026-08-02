@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Code2, Wand2, ExternalLink, ArrowRight, ChevronRight } from "lucide-react";
 import { db } from "@/lib/db";
+import { getT } from "@/lib/i18n";
 
 export const metadata: Metadata = {
 	title: "Examples",
@@ -12,31 +13,33 @@ export const metadata: Metadata = {
 	},
 };
 
-const examples = [
+const exampleDefs = [
 	{
 		href: "/examples/embed",
 		icon: Code2,
-		title: "Embed Widget Examples",
-		description: "Pre-configured widget examples showing light/dark themes, units, and compact mode.",
+		titleKey: "examples.embedWidget.title",
+		descKey: "examples.embedWidget.desc",
 		external: false,
 	},
 	{
 		href: "/examples/live",
 		icon: Wand2,
-		title: "Live Builder",
-		description: "Interactive builder to configure and preview the widget with your settings.",
+		titleKey: "examples.live.title",
+		descKey: "examples.liveBuilder.desc",
 		external: false,
 	},
 	{
 		href: "/examples/example.html",
 		icon: ExternalLink,
-		title: "Standalone HTML",
-		description: "Plain HTML page demonstrating the embed widget - opens in new tab.",
+		titleKey: "examples.standalone.title",
+		descKey: "examples.standalone.desc",
 		external: true,
 	},
 ];
 
 export default async function ExamplesPage() {
+	const t = await getT();
+
 	// Fetch categories with chart counts for size guide section
 	const categories = await db.category.findMany({
 		orderBy: { displayOrder: "asc" },
@@ -76,15 +79,15 @@ export default async function ExamplesPage() {
 	return (
 		<div className="mx-auto">
 			<div className="mb-8">
-				<h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">Examples</h1>
+				<h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{t("examples.title")}</h1>
 				<p className="mt-2 text-zinc-600 dark:text-zinc-400">
-					Explore different ways to use the size chart widget.
+					{t("examples.pageSubtitle")}
 				</p>
 			</div>
 
 			{/* Example Links */}
 			<div className="grid gap-4 md:grid-cols-3">
-				{examples.map((example) =>
+				{exampleDefs.map((example) =>
 					example.external ? (
 						<a
 							key={example.href}
@@ -95,13 +98,13 @@ export default async function ExamplesPage() {
 						>
 							<example.icon className="h-8 w-8 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 mb-4" />
 							<h2 className="font-semibold text-zinc-900 dark:text-zinc-50 mb-1">
-								{example.title}
+								{t(example.titleKey)}
 							</h2>
 							<p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-								{example.description}
+								{t(example.descKey)}
 							</p>
 							<span className="inline-flex items-center gap-1 text-sm font-medium text-zinc-900 dark:text-zinc-50 group-hover:gap-2 transition-all">
-								Open
+								{t("examples.open")}
 								<ExternalLink className="h-4 w-4" />
 							</span>
 						</a>
@@ -113,13 +116,13 @@ export default async function ExamplesPage() {
 						>
 							<example.icon className="h-8 w-8 text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-300 mb-4" />
 							<h2 className="font-semibold text-zinc-900 dark:text-zinc-50 mb-1">
-								{example.title}
+								{t(example.titleKey)}
 							</h2>
 							<p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-								{example.description}
+								{t(example.descKey)}
 							</p>
 							<span className="inline-flex items-center gap-1 text-sm font-medium text-zinc-900 dark:text-zinc-50 group-hover:gap-2 transition-all">
-								View
+								{t("examples.view")}
 								<ArrowRight className="h-4 w-4" />
 							</span>
 						</Link>
@@ -131,9 +134,9 @@ export default async function ExamplesPage() {
 			<div className="mt-12">
 				<div className="flex items-center justify-between mb-6">
 					<div>
-						<h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Size Guide</h2>
+						<h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">{t("sizeGuide.title")}</h2>
 						<p className="text-sm text-zinc-600 dark:text-zinc-400">
-							Browse size charts by category
+							{t("examples.browseByCategory")}
 						</p>
 					</div>
 				</div>
@@ -150,7 +153,7 @@ export default async function ExamplesPage() {
 										{category.name}
 									</h3>
 									<span className="text-xs text-zinc-500">
-										{category.totalCharts} {category.totalCharts === 1 ? "chart" : "charts"}
+										{category.totalCharts} {t("home.charts")}
 									</span>
 								</div>
 							</div>
@@ -177,13 +180,13 @@ export default async function ExamplesPage() {
 										href={`/size-guide/${category.slug}`}
 										className="block px-5 py-2.5 text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
 									>
-										+{category.subcategories.filter((sub) => sub.chartCount > 0).length - 5} more
+										+{category.subcategories.filter((sub) => sub.chartCount > 0).length - 5} {t("home.more")}
 									</Link>
 								)}
 
 								{category.subcategories.filter((sub) => sub.chartCount > 0).length === 0 && (
 									<div className="px-5 py-3 text-sm text-zinc-500 italic">
-										No charts yet
+										{t("examples.noChartsYet")}
 									</div>
 								)}
 							</div>
@@ -192,15 +195,15 @@ export default async function ExamplesPage() {
 				</div>
 
 				<p className="mt-4 text-xs text-zinc-500">
-					All measurements available in inches and centimeters. Use the unit toggle on any chart to switch.
+					{t("examples.unitsNote")}
 				</p>
 			</div>
 
 			{/* Quick Embed */}
 			<div className="mt-12 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-6">
-				<h2 className="font-semibold text-zinc-900 dark:text-zinc-50 mb-3">Quick Embed</h2>
+				<h2 className="font-semibold text-zinc-900 dark:text-zinc-50 mb-3">{t("examples.quickEmbed")}</h2>
 				<p className="text-sm text-zinc-600 dark:text-zinc-400 mb-4">
-					Add size charts to any website with just two lines of code:
+					{t("examples.quickEmbedDesc")}
 				</p>
 				<pre className="rounded-lg bg-zinc-950 p-4 text-sm text-zinc-100 overflow-x-auto">
 					<code>{`<div data-chart="mens-tops"></div>

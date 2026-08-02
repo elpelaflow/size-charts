@@ -1,17 +1,20 @@
 "use client";
 
 import { TemplateBrowser } from "@/components/templates/template-browser";
+import { useLocale } from "@/hooks/use-locale";
 
 export default function TemplatesPage() {
+	const { t } = useLocale();
+
 	return (
 		<div>
 			<div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
 				<div>
 					<h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-						Size Chart Templates
+						{t("templates.pageTitle")}
 					</h1>
 					<p className="mt-2 text-muted-foreground">
-						Browse pre-built templates for common sizing needs. Try them in the demo to see how they work.
+						{t("templates.pageSubtitle")}
 					</p>
 				</div>
 			</div>
