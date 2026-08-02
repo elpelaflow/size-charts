@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { db } from "@/lib/db";
+import { getT, getLocale } from "@/lib/i18n";
+import { translateCategoryName, translateSubcategoryName } from "@/lib/i18n/data-translations";
 import { ChevronRight } from "lucide-react";
 
 interface PageProps {
@@ -31,6 +33,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CategoryPage({ params }: PageProps) {
 	const { category: categorySlug } = await params;
+	const t = await getT();
+	const locale = await getLocale();
 
 	const category = await db.category.findUnique({
 		where: { slug: categorySlug },
@@ -76,14 +80,14 @@ export default async function CategoryPage({ params }: PageProps) {
 		<div>
 			<nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
 				<Link href="/size-guide" className="hover:text-foreground transition-colors">
-					Size Guide
+					{t("sizeGuide.title")}
 				</Link>
 				<ChevronRight className="h-4 w-4" />
-				<span className="text-foreground">{categoryWithCounts.name}</span>
+				<span className="text-foreground">{translateCategoryName(categoryWithCounts.slug, categoryWithCounts.name, locale)}</span>
 			</nav>
 
 			<h1 className="mb-8 text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-				{categoryWithCounts.name} Size Charts
+				{t("sizeGuide.categoryCharts").replace("{category}", translateCategoryName(categoryWithCounts.slug, categoryWithCounts.name, locale))}
 			</h1>
 
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -96,17 +100,17 @@ export default async function CategoryPage({ params }: PageProps) {
 							className="group rounded-xl border border-border bg-card p-6 hover:border-primary/30 hover:bg-primary/5 transition-colors"
 						>
 							<h2 className="mb-2 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-								{subcategory.name}
+								{translateSubcategoryName(subcategory.slug, subcategory.name, locale)}
 							</h2>
 							<p className="text-sm text-muted-foreground">
-								{subcategory._count.sizeCharts} size chart{subcategory._count.sizeCharts !== 1 ? "s" : ""}
+								{subcategory._count.sizeCharts} {subcategory._count.sizeCharts !== 1 ? t("sizeGuide.sizeChartsPlural") : t("sizeGuide.sizeChartSingular")}
 							</p>
 						</Link>
 					))}
 			</div>
 
 			{categoryWithCounts.subcategories.filter((sub) => sub._count.sizeCharts > 0).length === 0 && (
-				<p className="text-center text-muted-foreground">No size charts available for this category yet.</p>
+				<p className="text-center text-muted-foreground">{t("sizeGuide.noChartsCategory")}</p>
 			)}
 		</div>
 	);

@@ -10,6 +10,7 @@ import { useCategories } from "@/hooks/use-categories";
 import { useLabels } from "@/hooks/use-labels";
 import { useToast } from "@/components/ui/toast";
 import { ArrowLeft, Save, Eye, LayoutTemplate, Plus } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
 
 const initialState: EditorState = {
   name: "",
@@ -66,6 +67,7 @@ interface TemplateData {
 export default function NewSizeChartPage() {
   const router = useRouter();
   const { addToast } = useToast();
+  const { t } = useLocale();
   const { data: categories, isLoading: categoriesLoading } = useCategories();
   const { data: labels } = useLabels();
 
@@ -141,7 +143,7 @@ export default function NewSizeChartPage() {
     });
 
     setFromTemplate(true);
-    addToast(`Loaded template: ${template.name}`, "success");
+    addToast(`${t("admin.templateLoaded")}: ${template.name}`, "success");
   };
 
   // Reset to blank state
@@ -158,17 +160,17 @@ export default function NewSizeChartPage() {
 
   const handleSave = async (publish = false) => {
     if (!state.name.trim()) {
-      addToast("Please enter a name for the size chart", "error");
+      addToast(t("admin.enterChartName"), "error");
       return;
     }
 
     if (state.subcategoryIds.length === 0) {
-      addToast("Please select a category and subcategory", "error");
+      addToast(t("admin.selectCategorySubcategory"), "error");
       return;
     }
 
     if (state.columns.length === 0) {
-      addToast("Please add at least one column", "error");
+      addToast(t("admin.addOneColumn"), "error");
       return;
     }
 
@@ -220,10 +222,10 @@ export default function NewSizeChartPage() {
         });
       }
 
-      addToast("Size chart created successfully", "success");
+      addToast(t("admin.chartCreated"), "success");
       router.push(`/admin/size-charts/${chart.id}`);
     } catch (error) {
-      addToast(error instanceof Error ? error.message : "Failed to create size chart", "error");
+      addToast(error instanceof Error ? error.message : t("admin.chartCreateFailed"), "error");
     } finally {
       setSaving(false);
     }
@@ -237,16 +239,16 @@ export default function NewSizeChartPage() {
           className="mb-4 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Size Charts
+          {t("admin.backToSizeCharts")}
         </Link>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold">
-              New Size Chart
+              {t("admin.newSizeChart")}
             </h1>
             {fromTemplate && (
               <p className="text-sm text-muted-foreground mt-1">
-                Created from template - customize as needed
+                {t("admin.fromTemplateHint")}
               </p>
             )}
           </div>
@@ -256,23 +258,23 @@ export default function NewSizeChartPage() {
               trigger={
                 <Button variant="outline">
                   <LayoutTemplate className="h-4 w-4" />
-                  {fromTemplate ? "Change Template" : "Start from Template"}
+                  {fromTemplate ? t("admin.changeTemplate") : t("admin.startFromTemplate")}
                 </Button>
               }
             />
             {fromTemplate && (
               <Button variant="ghost" onClick={handleStartBlank}>
                 <Plus className="h-4 w-4" />
-                Start Blank
+                {t("admin.startBlank")}
               </Button>
             )}
             <Button variant="outline" onClick={() => handleSave(false)} disabled={saving}>
               <Save className="h-4 w-4" />
-              Save as Draft
+              {t("admin.saveAsDraft")}
             </Button>
             <Button onClick={() => handleSave(true)} disabled={saving}>
               <Eye className="h-4 w-4" />
-              Save & Publish
+              {t("admin.saveAndPublish")}
             </Button>
           </div>
         </div>
@@ -281,33 +283,33 @@ export default function NewSizeChartPage() {
       <div className="space-y-6">
         <div className="rounded-lg border bg-card p-6">
           <h2 className="mb-4 text-lg font-semibold">
-            Basic Information
+            {t("admin.basicInfo")}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <InputWithLabel
-              label="Name"
+              label={t("admin.name")}
               value={state.name}
               onChange={(e) => setState({ ...state, name: e.target.value })}
               placeholder="e.g., Regular Fit, Contour Fit"
             />
             <InputWithLabel
-              label="Chart ID (URL slug, optional)"
+              label={t("admin.chartId")}
               value={customSlug}
               onChange={(e) => setCustomSlug(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "-"))}
               placeholder="e.g., regular-fit (auto-generated if empty)"
             />
             <div className="sm:col-span-2">
               <InputWithLabel
-                label="Description (optional)"
+                label={t("admin.descriptionOptional")}
                 value={state.description}
                 onChange={(e) => setState({ ...state, description: e.target.value })}
                 placeholder="Brief description of this size chart"
               />
             </div>
             <SelectWithLabel
-              label="Category"
+              label={t("admin.category")}
               options={[
-                { value: "", label: "Select category..." },
+                { value: "", label: t("admin.selectCategory") },
                 ...(categories?.map((c) => ({ value: c.id, label: c.name })) || []),
               ]}
               value={selectedCategory}
@@ -318,9 +320,9 @@ export default function NewSizeChartPage() {
               disabled={categoriesLoading}
             />
             <SelectWithLabel
-              label="Subcategory"
+              label={t("admin.subcategory")}
               options={[
-                { value: "", label: "Select subcategory..." },
+                { value: "", label: t("admin.selectSubcategory") },
                 ...subcategories.map((s) => ({ value: s.id, label: s.name })),
               ]}
               value={state.subcategoryIds[0] || ""}
@@ -332,10 +334,10 @@ export default function NewSizeChartPage() {
 
         <div className="rounded-lg border bg-card p-6">
           <h2 className="mb-4 text-lg font-semibold">
-            Measurement Instructions
+            {t("admin.measurementInstructions")}
           </h2>
           <p className="mb-4 text-sm text-muted-foreground">
-            Select which measurement instructions to display on this chart&apos;s public page.
+            {t("admin.measurementInstructionsDesc")}
           </p>
           <MeasurementInstructionsSelector
             selectedIds={state.measurementInstructionIds}
@@ -345,11 +347,10 @@ export default function NewSizeChartPage() {
 
         <div className="rounded-lg border bg-card p-6">
           <h2 className="mb-4 text-lg font-semibold">
-            Size Chart Data
+            {t("admin.sizeChartData")}
           </h2>
           <p className="mb-4 text-sm text-muted-foreground">
-            Click on a cell to edit. Use Tab to move to the next cell, Enter to move down.
-            Configure columns by clicking the settings icon in the header.
+            {t("admin.sizeChartDataDesc")}
           </p>
           <SizeChartEditor state={state} onChange={setState} labels={labels} />
         </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/hooks/use-locale";
 import type { UnitPreference } from "@/types";
 
 interface UnitSwitcherProps {
@@ -9,6 +10,8 @@ interface UnitSwitcherProps {
 }
 
 export function UnitSwitcher({ value, onChange }: UnitSwitcherProps) {
+  const { t } = useLocale();
+
   return (
     <div className="inline-flex rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-700 dark:bg-zinc-800">
       <button
@@ -20,7 +23,7 @@ export function UnitSwitcher({ value, onChange }: UnitSwitcherProps) {
             : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
         )}
       >
-        Inches
+        {t("sizeGuide.unitInches")}
       </button>
       <button
         onClick={() => onChange("cm")}
@@ -31,7 +34,7 @@ export function UnitSwitcher({ value, onChange }: UnitSwitcherProps) {
             : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-50"
         )}
       >
-        CM
+        {t("sizeGuide.unitCm")}
       </button>
     </div>
   );

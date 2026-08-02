@@ -27,11 +27,13 @@ import { useSizeCharts, useDeleteSizeChart, useDuplicateSizeChart, useTogglePubl
 import { useCategories } from "@/hooks/use-categories";
 import { useToast } from "@/components/ui/toast";
 import { Plus, Search, Trash2, Copy, Eye, EyeOff, Pencil, ChevronLeft, ChevronRight, Download, Upload } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
 
 function SizeChartsListContent() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const { addToast } = useToast();
+	const { t, locale } = useLocale();
 
 	const [search, setSearch] = useState(searchParams.get("search") || "");
 	const [selectedCategory, setSelectedCategory] = useState(searchParams.get("categoryId") || "");
@@ -77,30 +79,30 @@ function SizeChartsListContent() {
 	const handleDelete = async (id: string) => {
 		try {
 			await deleteMutation.mutateAsync(id);
-			addToast("Size chart deleted successfully", "success");
+			addToast(t("admin.chartDeleted"), "success");
 			setDeleteDialogOpen(false);
 			setChartToDelete(null);
 		} catch {
-			addToast("Failed to delete size chart", "error");
+			addToast(t("admin.chartDeleteFailed"), "error");
 		}
 	};
 
 	const handleDuplicate = async (id: string) => {
 		try {
 			const duplicate = await duplicateMutation.mutateAsync(id);
-			addToast("Size chart duplicated successfully", "success");
+			addToast(t("admin.chartDuplicated"), "success");
 			router.push(`/admin/size-charts/${duplicate.id}`);
 		} catch {
-			addToast("Failed to duplicate size chart", "error");
+			addToast(t("admin.chartDuplicateFailed"), "error");
 		}
 	};
 
 	const handleTogglePublish = async (id: string, currentState: boolean) => {
 		try {
 			await togglePublishMutation.mutateAsync({ id, isPublished: !currentState });
-			addToast(currentState ? "Size chart unpublished" : "Size chart published", "success");
+			addToast(currentState ? t("admin.chartUnpublished") : t("admin.chartPublished"), "success");
 		} catch {
-			addToast("Failed to update size chart", "error");
+			addToast(t("admin.chartUpdateFailed"), "error");
 		}
 	};
 
@@ -108,10 +110,10 @@ function SizeChartsListContent() {
 		if (selectedIds.size === 0) return;
 		try {
 			await bulkMutation.mutateAsync({ operation: "delete", ids: Array.from(selectedIds) });
-			addToast(`${selectedIds.size} size chart(s) deleted`, "success");
+			addToast(`${selectedIds.size} ${t("admin.bulkDeleted")}`, "success");
 			setSelectedIds(new Set());
 		} catch {
-			addToast("Failed to delete size charts", "error");
+			addToast(t("admin.bulkDeleteFailed"), "error");
 		}
 	};
 
@@ -167,16 +169,16 @@ function SizeChartsListContent() {
 			if (response.ok) {
 				setImportResult(result);
 				if (result.success) {
-					addToast(`Imported: ${result.summary.created} created, ${result.summary.updated} updated`, "success");
+					addToast(`${t("admin.importSuccess")}: ${result.summary.created} ${t("admin.nCreated")}, ${result.summary.updated} ${t("admin.nUpdated")}`, "success");
 					refetch();
 				} else {
-					addToast(`Import completed with ${result.summary.errors} error(s)`, "error");
+					addToast(`${t("admin.importCompleteErrors")}: ${result.summary.errors} ${t("admin.nErrors")}`, "error");
 				}
 			} else {
-				addToast(result.error || "Import failed", "error");
+				addToast(result.error || t("admin.importFailed"), "error");
 			}
 		} catch (error) {
-			addToast(`Invalid JSON file: ${error instanceof Error ? error.message : "Unknown error"}`, "error");
+			addToast(`${t("admin.importInvalidJson")}: ${error instanceof Error ? error.message : "Unknown error"}`, "error");
 		} finally {
 			setIsImporting(false);
 		}
@@ -186,24 +188,24 @@ function SizeChartsListContent() {
 		<div>
 			<div className="mb-6 flex items-center justify-between">
 				<div>
-					<h1 className="text-2xl font-bold">Size Charts</h1>
+					<h1 className="text-2xl font-bold">{t("admin.sizeCharts")}</h1>
 					<p className="text-muted-foreground">
-						Manage your size charts
+						{t("admin.sizeChartsSubtitle")}
 					</p>
 				</div>
 				<div className="flex gap-2">
 					<Button variant="outline" onClick={handleExport}>
 						<Download className="h-4 w-4" />
-						Export
+						{t("admin.export")}
 					</Button>
 					<Button variant="outline" onClick={() => setImportDialogOpen(true)}>
 						<Upload className="h-4 w-4" />
-						Import
+						{t("admin.import")}
 					</Button>
 					<Link href="/admin/size-charts/new">
 						<Button>
 							<Plus className="h-4 w-4" />
-							New Size Chart
+							{t("admin.newSizeChart")}
 						</Button>
 					</Link>
 				</div>
@@ -213,7 +215,7 @@ function SizeChartsListContent() {
 				<div className="relative flex-1 min-w-[200px] max-w-xs">
 					<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 					<Input
-						placeholder="Search charts..."
+						placeholder={t("admin.searchCharts")}
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
 						onKeyDown={(e) => e.key === "Enter" && handleSearch()}
@@ -222,7 +224,7 @@ function SizeChartsListContent() {
 				</div>
 				<SimpleSelect
 					options={[
-						{ value: "", label: "All Categories" },
+						{ value: "", label: t("admin.allCategories") },
 						...(categories?.map((c) => ({ value: c.id, label: c.name })) || []),
 					]}
 					value={selectedCategory}
@@ -236,7 +238,7 @@ function SizeChartsListContent() {
 				{subcategories.length > 0 && (
 					<SimpleSelect
 						options={[
-							{ value: "", label: "All Subcategories" },
+							{ value: "", label: t("admin.allSubcategories") },
 							...subcategories.map((s) => ({ value: s.id, label: s.name })),
 						]}
 						value={selectedSubcategory}
@@ -249,9 +251,9 @@ function SizeChartsListContent() {
 				)}
 				<SimpleSelect
 					options={[
-						{ value: "", label: "All Status" },
-						{ value: "true", label: "Published" },
-						{ value: "false", label: "Draft" },
+						{ value: "", label: t("admin.allStatus") },
+						{ value: "true", label: t("admin.published") },
+						{ value: "false", label: t("admin.draft") },
 					]}
 					value={publishedFilter}
 					onChange={(e) => {
@@ -265,18 +267,18 @@ function SizeChartsListContent() {
 			{selectedIds.size > 0 && (
 				<div className="mb-4 flex items-center gap-2 rounded-lg bg-muted px-4 py-2">
 					<span className="text-sm">
-						{selectedIds.size} selected
+						{selectedIds.size} {t("admin.selected")}
 					</span>
 					<Button variant="destructive" size="sm" onClick={handleBulkDelete}>
 						<Trash2 className="h-4 w-4" />
-						Delete Selected
+						{t("admin.deleteSelected")}
 					</Button>
 					<Button
 						variant="ghost"
 						size="sm"
 						onClick={() => setSelectedIds(new Set())}
 					>
-						Clear Selection
+						{t("admin.clearSelection")}
 					</Button>
 				</div>
 			)}
@@ -299,10 +301,10 @@ function SizeChartsListContent() {
 											onCheckedChange={handleSelectAll}
 										/>
 									</TableHead>
-									<TableHead>Name</TableHead>
-									<TableHead>Category</TableHead>
-									<TableHead>Status</TableHead>
-									<TableHead>Updated</TableHead>
+									<TableHead>{t("admin.name")}</TableHead>
+									<TableHead>{t("admin.category")}</TableHead>
+									<TableHead>{t("admin.status")}</TableHead>
+									<TableHead>{t("admin.updated")}</TableHead>
 									<TableHead className="w-32"></TableHead>
 								</TableRow>
 							</TableHeader>
@@ -310,7 +312,7 @@ function SizeChartsListContent() {
 								{data.data.length === 0 ? (
 									<TableRow>
 										<TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-											No size charts found. Create your first one!
+											{t("admin.noChartsFound")}
 										</TableCell>
 									</TableRow>
 								) : (
@@ -342,11 +344,11 @@ function SizeChartsListContent() {
 											</TableCell>
 											<TableCell>
 												<Badge variant={chart.isPublished ? "default" : "secondary"}>
-													{chart.isPublished ? "Published" : "Draft"}
+													{chart.isPublished ? t("admin.published") : t("admin.draft")}
 												</Badge>
 											</TableCell>
 											<TableCell className="text-muted-foreground text-sm">
-												{new Date(chart.updatedAt).toLocaleDateString("en-US", {
+												{new Date(chart.updatedAt).toLocaleDateString(locale === "es" ? "es-ES" : "en-US", {
 													month: "short",
 													day: "numeric",
 													hour: "numeric",
@@ -358,21 +360,21 @@ function SizeChartsListContent() {
 													<button
 														onClick={() => router.push(`/admin/size-charts/${chart.id}`)}
 														className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-														title="Edit"
+														title={t("admin.edit")}
 													>
 														<Pencil className="h-4 w-4" />
 													</button>
 													<button
 														onClick={() => handleTogglePublish(chart.id, chart.isPublished)}
 														className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-														title={chart.isPublished ? "Unpublish" : "Publish"}
+														title={chart.isPublished ? t("admin.unpublish") : t("admin.publish")}
 													>
 														{chart.isPublished ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
 													</button>
 													<button
 														onClick={() => handleDuplicate(chart.id)}
 														className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-														title="Duplicate"
+														title={t("admin.duplicate")}
 													>
 														<Copy className="h-4 w-4" />
 													</button>
@@ -382,7 +384,7 @@ function SizeChartsListContent() {
 															setDeleteDialogOpen(true);
 														}}
 														className="rounded p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-														title="Delete"
+														title={t("admin.delete")}
 													>
 														<Trash2 className="h-4 w-4" />
 													</button>
@@ -397,9 +399,9 @@ function SizeChartsListContent() {
 					{data.pagination.totalPages > 1 && (
 						<div className="mt-4 flex items-center justify-between">
 							<p className="text-sm text-muted-foreground">
-								Showing {(data.pagination.page - 1) * data.pagination.limit + 1} to{" "}
-								{Math.min(data.pagination.page * data.pagination.limit, data.pagination.total)} of{" "}
-								{data.pagination.total} results
+								{t("admin.showing")} {(data.pagination.page - 1) * data.pagination.limit + 1} {t("admin.to")}{" "}
+								{Math.min(data.pagination.page * data.pagination.limit, data.pagination.total)} {t("admin.of")}{" "}
+								{data.pagination.total} {t("admin.results")}
 							</p>
 							<div className="flex items-center gap-2">
 								<Button
@@ -409,7 +411,7 @@ function SizeChartsListContent() {
 									disabled={page === 1}
 								>
 									<ChevronLeft className="h-4 w-4" />
-									Previous
+									{t("admin.previous")}
 								</Button>
 								<Button
 									variant="outline"
@@ -417,7 +419,7 @@ function SizeChartsListContent() {
 									onClick={() => setPage((p) => Math.min(data.pagination.totalPages, p + 1))}
 									disabled={page === data.pagination.totalPages}
 								>
-									Next
+									{t("admin.next")}
 									<ChevronRight className="h-4 w-4" />
 								</Button>
 							</div>
@@ -429,9 +431,9 @@ function SizeChartsListContent() {
 			<Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Delete Size Chart</DialogTitle>
+						<DialogTitle>{t("admin.deleteSizeChart")}</DialogTitle>
 						<DialogDescription>
-							Are you sure you want to delete this size chart? This action cannot be undone.
+							{t("admin.deleteSizeChartDesc")}
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
@@ -442,14 +444,14 @@ function SizeChartsListContent() {
 								setChartToDelete(null);
 							}}
 						>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button
 							variant="destructive"
 							disabled={deleteMutation.isPending}
 							onClick={() => chartToDelete && handleDelete(chartToDelete)}
 						>
-							Delete
+							{t("admin.delete")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -464,15 +466,15 @@ function SizeChartsListContent() {
 			}}>
 				<DialogContent className="max-w-md">
 					<DialogHeader>
-						<DialogTitle>Import Size Charts</DialogTitle>
+						<DialogTitle>{t("admin.importSizeCharts")}</DialogTitle>
 						<DialogDescription>
-							Upload a JSON file exported from this system. Choose how to handle existing charts.
+							{t("admin.importSizeChartsDesc")}
 						</DialogDescription>
 					</DialogHeader>
 
 					<div className="space-y-4 py-4">
 						<div>
-							<label className="text-sm font-medium">File</label>
+							<label className="text-sm font-medium">{t("admin.file")}</label>
 							<input
 								type="file"
 								accept=".json"
@@ -482,34 +484,34 @@ function SizeChartsListContent() {
 						</div>
 
 						<div>
-							<label className="text-sm font-medium">Import Mode</label>
+							<label className="text-sm font-medium">{t("admin.importMode")}</label>
 							<SimpleSelect
 								options={[
-									{ value: "create", label: "Create only (skip existing)" },
-									{ value: "upsert", label: "Update existing, create new" },
-									{ value: "skip", label: "Skip existing charts" },
+									{ value: "create", label: t("admin.importCreate") },
+									{ value: "upsert", label: t("admin.importUpsert") },
+									{ value: "skip", label: t("admin.importSkip") },
 								]}
 								value={importMode}
 								onChange={(e) => setImportMode(e.target.value as "create" | "upsert" | "skip")}
 								className="mt-1.5"
 							/>
 							<p className="text-xs text-muted-foreground mt-1">
-								{importMode === "create" && "Fails if a chart with the same slug already exists."}
-								{importMode === "upsert" && "Updates existing charts with matching slugs."}
-								{importMode === "skip" && "Skips charts that already exist, creates new ones."}
+								{importMode === "create" && t("admin.importCreateDesc")}
+								{importMode === "upsert" && t("admin.importUpsertDesc")}
+								{importMode === "skip" && t("admin.importSkipDesc")}
 							</p>
 						</div>
 
 						{importResult && (
 							<div className={`rounded-lg p-3 text-sm ${importResult.success ? "bg-green-50 text-green-800 dark:bg-green-900/20 dark:text-green-300" : "bg-yellow-50 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300"}`}>
 								<p className="font-medium mb-1">
-									{importResult.success ? "Import Complete" : "Import Completed with Errors"}
+									{importResult.success ? t("admin.importComplete") : t("admin.importCompleteErrors")}
 								</p>
 								<ul className="text-xs space-y-0.5">
-									{importResult.summary.created > 0 && <li>{importResult.summary.created} created</li>}
-									{importResult.summary.updated > 0 && <li>{importResult.summary.updated} updated</li>}
-									{importResult.summary.skipped > 0 && <li>{importResult.summary.skipped} skipped</li>}
-									{importResult.summary.errors > 0 && <li>{importResult.summary.errors} errors</li>}
+									{importResult.summary.created > 0 && <li>{importResult.summary.created} {t("admin.nCreated")}</li>}
+									{importResult.summary.updated > 0 && <li>{importResult.summary.updated} {t("admin.nUpdated")}</li>}
+									{importResult.summary.skipped > 0 && <li>{importResult.summary.skipped} {t("admin.nSkipped")}</li>}
+									{importResult.summary.errors > 0 && <li>{importResult.summary.errors} {t("admin.nErrors")}</li>}
 								</ul>
 							</div>
 						)}
@@ -524,14 +526,14 @@ function SizeChartsListContent() {
 								setImportResult(null);
 							}}
 						>
-							{importResult ? "Close" : "Cancel"}
+							{importResult ? t("admin.close") : t("admin.cancel")}
 						</Button>
 						{!importResult && (
 							<Button
 								disabled={!importFile || isImporting}
 								onClick={handleImport}
 							>
-								{isImporting ? "Importing..." : "Import"}
+								{isImporting ? t("admin.importing") : t("admin.import")}
 							</Button>
 						)}
 					</DialogFooter>

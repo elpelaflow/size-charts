@@ -36,6 +36,7 @@ import { useToast } from "@/components/ui/toast";
 import { Plus, Pencil, Trash2, Tag, Search, Settings, RotateCcw } from "lucide-react";
 import { LABEL_TYPES } from "@/lib/constants";
 import type { LabelType, SizeLabel } from "@prisma/client";
+import { useLocale } from "@/hooks/use-locale";
 
 export default function LabelsPage() {
 	const [filterType, setFilterType] = useState<string>("");
@@ -59,6 +60,7 @@ export default function LabelsPage() {
 	const [formDescription, setFormDescription] = useState("");
 
 	const { addToast } = useToast();
+	const { t } = useLocale();
 	const { data: labels, isLoading } = useLabels({
 		type: filterType as LabelType | undefined,
 	});
@@ -127,7 +129,7 @@ export default function LabelsPage() {
 
 	const handleCreate = async () => {
 		if (!formKey.trim() || !formDisplayValue.trim()) {
-			addToast("Key and display value are required", "error");
+			addToast(t("admin.labelRequired"), "error");
 			return;
 		}
 
@@ -139,18 +141,18 @@ export default function LabelsPage() {
 				sortOrder: parseInt(formSortOrder) || 0,
 				description: formDescription || null,
 			});
-			addToast("Label created successfully", "success");
+			addToast(t("admin.labelCreated"), "success");
 			setIsCreateOpen(false);
 			resetForm();
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to create label", "error");
+			addToast(error instanceof Error ? error.message : t("admin.labelCreateFailed"), "error");
 		}
 	};
 
 	const handleUpdate = async () => {
 		if (!editingLabel) return;
 		if (!formKey.trim() || !formDisplayValue.trim()) {
-			addToast("Key and display value are required", "error");
+			addToast(t("admin.labelRequired"), "error");
 			return;
 		}
 
@@ -163,11 +165,11 @@ export default function LabelsPage() {
 				sortOrder: parseInt(formSortOrder) || 0,
 				description: formDescription || null,
 			});
-			addToast("Label updated successfully", "success");
+			addToast(t("admin.labelUpdated"), "success");
 			setEditingLabel(null);
 			resetForm();
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to update label", "error");
+			addToast(error instanceof Error ? error.message : t("admin.labelUpdateFailed"), "error");
 		}
 	};
 
@@ -176,11 +178,11 @@ export default function LabelsPage() {
 
 		try {
 			await deleteMutation.mutateAsync(labelToDelete.id);
-			addToast("Label deleted successfully", "success");
+			addToast(t("admin.labelDeleted"), "success");
 			setDeleteDialogOpen(false);
 			setLabelToDelete(null);
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to delete label", "error");
+			addToast(error instanceof Error ? error.message : t("admin.labelDeleteFailed"), "error");
 		}
 	};
 
@@ -205,7 +207,7 @@ export default function LabelsPage() {
 	const handleUpdateLabelType = async () => {
 		if (!editingLabelType) return;
 		if (!labelTypeDisplayName.trim()) {
-			addToast("Display name is required", "error");
+			addToast(t("admin.displayNameRequired"), "error");
 			return;
 		}
 
@@ -215,26 +217,26 @@ export default function LabelsPage() {
 				displayName: labelTypeDisplayName,
 				description: labelTypeDescription || null,
 			});
-			addToast("Label type updated successfully", "success");
+			addToast(t("admin.labelTypeUpdated"), "success");
 			setEditingLabelType(null);
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to update label type", "error");
+			addToast(error instanceof Error ? error.message : t("admin.labelTypeUpdateFailed"), "error");
 		}
 	};
 
 	const handleResetLabelType = async (labelType: string) => {
 		try {
 			await resetLabelTypeMutation.mutateAsync(labelType);
-			addToast("Label type reset to default", "success");
+			addToast(t("admin.labelTypeReset"), "success");
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to reset label type", "error");
+			addToast(error instanceof Error ? error.message : t("admin.labelTypeResetFailed"), "error");
 		}
 	};
 
 	if (isLoading) {
 		return (
 			<div>
-				<h1 className="mb-6 text-2xl font-bold">Size Labels</h1>
+				<h1 className="mb-6 text-2xl font-bold">{t("admin.sizeLabels")}</h1>
 				<div className="space-y-4">
 					{[...Array(5)].map((_, i) => (
 						<Skeleton key={i} className="h-16 w-full rounded-lg" />
@@ -248,19 +250,19 @@ export default function LabelsPage() {
 		<div>
 			<div className="mb-6 flex items-center justify-between">
 				<div>
-					<h1 className="text-2xl font-bold">Size Labels</h1>
+					<h1 className="text-2xl font-bold">{t("admin.sizeLabels")}</h1>
 					<p className="text-muted-foreground">
-						Manage reusable size labels for your charts
+						{t("admin.labelsSubtitle")}
 					</p>
 				</div>
 				<div className="flex items-center gap-2">
 					<Button variant="outline" onClick={() => setShowLabelTypeSettings(!showLabelTypeSettings)}>
 						<Settings className="h-4 w-4" />
-						{showLabelTypeSettings ? "Hide" : "Label Types"}
+						{showLabelTypeSettings ? t("admin.hide") : t("admin.labelTypes")}
 					</Button>
 					<Button onClick={openCreateDialog}>
 						<Plus className="h-4 w-4" />
-						New Label
+						{t("admin.newLabel")}
 					</Button>
 				</div>
 			</div>
@@ -270,8 +272,8 @@ export default function LabelsPage() {
 				<div className="mb-6 rounded-lg border bg-muted/30 p-4">
 					<div className="mb-3 flex items-center gap-2">
 						<Settings className="h-5 w-5 text-muted-foreground" />
-						<h2 className="font-semibold">Label Type Settings</h2>
-						<span className="text-sm text-muted-foreground">Customize display names for label types</span>
+						<h2 className="font-semibold">{t("admin.labelTypeSettings")}</h2>
+						<span className="text-sm text-muted-foreground">{t("admin.labelTypeSettingsDesc")}</span>
 					</div>
 					<div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
 						{labelTypeConfigs?.map((config) => {
@@ -285,12 +287,12 @@ export default function LabelsPage() {
 										<div className="flex items-center gap-2">
 											<span className="font-medium truncate">{config.displayName}</span>
 											{config.isCustomized && (
-												<Badge variant="secondary" className="shrink-0 text-xs">Custom</Badge>
+												<Badge variant="secondary" className="shrink-0 text-xs">{t("admin.custom")}</Badge>
 											)}
 										</div>
 										{config.displayName !== defaultConfig?.label && (
 											<p className="text-xs text-muted-foreground truncate">
-												Default: {defaultConfig?.label}
+												{t("admin.default")}: {defaultConfig?.label}
 											</p>
 										)}
 									</div>
@@ -298,7 +300,7 @@ export default function LabelsPage() {
 										<button
 											onClick={() => openEditLabelTypeDialog(config)}
 											className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-											title="Edit display name"
+											title={t("admin.editDisplayName")}
 										>
 											<Pencil className="h-4 w-4" />
 										</button>
@@ -306,7 +308,7 @@ export default function LabelsPage() {
 											<button
 												onClick={() => handleResetLabelType(config.labelType)}
 												className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-												title="Reset to default"
+												title={t("admin.resetToDefault")}
 												disabled={resetLabelTypeMutation.isPending}
 											>
 												<RotateCcw className="h-4 w-4" />
@@ -324,7 +326,7 @@ export default function LabelsPage() {
 				<div className="flex-1 min-w-[200px] max-w-xs relative">
 					<Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 					<Input
-						placeholder="Search labels..."
+						placeholder={t("admin.searchLabels")}
 						value={search}
 						onChange={(e) => setSearch(e.target.value)}
 						className="pl-9"
@@ -332,7 +334,7 @@ export default function LabelsPage() {
 				</div>
 				<SimpleSelect
 					options={[
-						{ value: "", label: "All Types" },
+						{ value: "", label: t("admin.allTypes") },
 						...labelTypeOptions,
 					]}
 					value={filterType}
@@ -344,14 +346,14 @@ export default function LabelsPage() {
 			{Object.keys(groupedLabels).length === 0 ? (
 				<div className="rounded-lg border-2 border-dashed p-8 text-center">
 					<Tag className="mx-auto h-12 w-12 text-muted-foreground" />
-					<h3 className="mt-4 text-lg font-semibold">No labels found</h3>
+					<h3 className="mt-4 text-lg font-semibold">{t("admin.noLabels")}</h3>
 					<p className="mt-2 text-sm text-muted-foreground">
-						{search ? "Try a different search term" : "Create your first label to get started"}
+						{search ? t("admin.tryDifferentSearch") : t("admin.createFirstLabel")}
 					</p>
 					{!search && (
 						<Button className="mt-4" onClick={openCreateDialog}>
 							<Plus className="h-4 w-4" />
-							Create Label
+							{t("admin.createLabel")}
 						</Button>
 					)}
 				</div>
@@ -380,10 +382,10 @@ export default function LabelsPage() {
 									<Table>
 										<TableHeader>
 											<TableRow>
-												<TableHead className="w-40">Key</TableHead>
-												<TableHead>Display Value</TableHead>
-												<TableHead className="w-24">Sort Order</TableHead>
-												<TableHead>Description</TableHead>
+												<TableHead className="w-40">{t("admin.keyLabel")}</TableHead>
+												<TableHead>{t("admin.displayValue")}</TableHead>
+												<TableHead className="w-24">{t("admin.sortOrder")}</TableHead>
+												<TableHead>{t("admin.description")}</TableHead>
 												<TableHead className="w-24"></TableHead>
 											</TableRow>
 										</TableHeader>
@@ -411,7 +413,7 @@ export default function LabelsPage() {
 																<button
 																	onClick={() => openEditDialog(label)}
 																	className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-																	title="Edit"
+																	title={t("admin.edit")}
 																>
 																	<Pencil className="h-4 w-4" />
 																</button>
@@ -421,7 +423,7 @@ export default function LabelsPage() {
 																		setDeleteDialogOpen(true);
 																	}}
 																	className="rounded p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
-																	title="Delete"
+																	title={t("admin.delete")}
 																>
 																	<Trash2 className="h-4 w-4" />
 																</button>
@@ -441,32 +443,32 @@ export default function LabelsPage() {
 			<Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Create Size Label</DialogTitle>
+						<DialogTitle>{t("admin.createSizeLabel")}</DialogTitle>
 						<DialogDescription>
-							Create a reusable label for size chart cells
+							{t("admin.createSizeLabelDesc")}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="space-y-4 py-4">
 						<div>
 							<InputWithLabel
-								label="Key"
+								label={t("admin.keyLabel")}
 								value={formKey}
 								onChange={(e) => setFormKey(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, "_"))}
 								placeholder="SIZE_XS"
 							/>
-							<p className="mt-1 text-xs text-muted-foreground">Unique identifier (uppercase with underscores)</p>
+							<p className="mt-1 text-xs text-muted-foreground">{t("admin.keyHint")}</p>
 						</div>
 						<div>
 							<InputWithLabel
-								label="Display Value"
+								label={t("admin.displayValue")}
 								value={formDisplayValue}
 								onChange={(e) => setFormDisplayValue(e.target.value)}
 								placeholder="XS"
 							/>
-							<p className="mt-1 text-xs text-muted-foreground">The value shown to users</p>
+							<p className="mt-1 text-xs text-muted-foreground">{t("admin.displayValueHint")}</p>
 						</div>
 						<SelectWithLabel
-							label="Label Type"
+							label={t("admin.labelType")}
 							options={(labelTypeConfigs || LABEL_TYPES.map((t) => ({ labelType: t.value, displayName: t.label, description: t.description }))).map((c) => {
 								const defaultDesc = LABEL_TYPES.find((t) => t.value === c.labelType)?.description;
 								return {
@@ -479,16 +481,16 @@ export default function LabelsPage() {
 						/>
 						<div>
 							<InputWithLabel
-								label="Sort Order"
+								label={t("admin.sortOrder")}
 								type="number"
 								value={formSortOrder}
 								onChange={(e) => setFormSortOrder(e.target.value)}
 								placeholder="0"
 							/>
-							<p className="mt-1 text-xs text-muted-foreground">Lower numbers appear first</p>
+							<p className="mt-1 text-xs text-muted-foreground">{t("admin.sortOrderHint")}</p>
 						</div>
 						<InputWithLabel
-							label="Description (optional)"
+							label={t("admin.descriptionOptional")}
 							value={formDescription}
 							onChange={(e) => setFormDescription(e.target.value)}
 							placeholder="Extra small size"
@@ -496,10 +498,10 @@ export default function LabelsPage() {
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setIsCreateOpen(false)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button onClick={handleCreate} disabled={createMutation.isPending}>
-							Create
+							{t("admin.create")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -509,32 +511,32 @@ export default function LabelsPage() {
 			<Dialog open={!!editingLabel} onOpenChange={(open) => !open && setEditingLabel(null)}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Edit Size Label</DialogTitle>
+						<DialogTitle>{t("admin.editSizeLabel")}</DialogTitle>
 						<DialogDescription>
-							Update the label properties
+							{t("admin.editSizeLabelDesc")}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="space-y-4 py-4">
 						<div>
 							<InputWithLabel
-								label="Key"
+								label={t("admin.keyLabel")}
 								value={formKey}
 								onChange={(e) => setFormKey(e.target.value.toUpperCase().replace(/[^A-Z0-9_]/g, "_"))}
 								placeholder="SIZE_XS"
 							/>
-							<p className="mt-1 text-xs text-muted-foreground">Unique identifier (uppercase with underscores)</p>
+							<p className="mt-1 text-xs text-muted-foreground">{t("admin.keyHint")}</p>
 						</div>
 						<div>
 							<InputWithLabel
-								label="Display Value"
+								label={t("admin.displayValue")}
 								value={formDisplayValue}
 								onChange={(e) => setFormDisplayValue(e.target.value)}
 								placeholder="XS"
 							/>
-							<p className="mt-1 text-xs text-muted-foreground">The value shown to users</p>
+							<p className="mt-1 text-xs text-muted-foreground">{t("admin.displayValueHint")}</p>
 						</div>
 						<SelectWithLabel
-							label="Label Type"
+							label={t("admin.labelType")}
 							options={(labelTypeConfigs || LABEL_TYPES.map((t) => ({ labelType: t.value, displayName: t.label, description: t.description }))).map((c) => {
 								const defaultDesc = LABEL_TYPES.find((t) => t.value === c.labelType)?.description;
 								return {
@@ -547,16 +549,16 @@ export default function LabelsPage() {
 						/>
 						<div>
 							<InputWithLabel
-								label="Sort Order"
+								label={t("admin.sortOrder")}
 								type="number"
 								value={formSortOrder}
 								onChange={(e) => setFormSortOrder(e.target.value)}
 								placeholder="0"
 							/>
-							<p className="mt-1 text-xs text-muted-foreground">Lower numbers appear first</p>
+							<p className="mt-1 text-xs text-muted-foreground">{t("admin.sortOrderHint")}</p>
 						</div>
 						<InputWithLabel
-							label="Description (optional)"
+							label={t("admin.descriptionOptional")}
 							value={formDescription}
 							onChange={(e) => setFormDescription(e.target.value)}
 							placeholder="Extra small size"
@@ -564,10 +566,10 @@ export default function LabelsPage() {
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setEditingLabel(null)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button onClick={handleUpdate} disabled={updateMutation.isPending}>
-							Save Changes
+							{t("admin.saveChanges")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -577,10 +579,9 @@ export default function LabelsPage() {
 			<Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Delete Label</DialogTitle>
+						<DialogTitle>{t("admin.deleteLabel")}</DialogTitle>
 						<DialogDescription>
-							Are you sure you want to delete the label &quot;{labelToDelete?.displayValue}&quot;?
-							This action cannot be undone.
+							{t("admin.deleteLabelDesc")}
 						</DialogDescription>
 					</DialogHeader>
 					<DialogFooter>
@@ -591,14 +592,14 @@ export default function LabelsPage() {
 								setLabelToDelete(null);
 							}}
 						>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button
 							variant="destructive"
 							onClick={handleDelete}
 							disabled={deleteMutation.isPending}
 						>
-							Delete
+							{t("admin.delete")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -608,9 +609,9 @@ export default function LabelsPage() {
 			<Dialog open={!!editingLabelType} onOpenChange={(open) => !open && setEditingLabelType(null)}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Edit Label Type</DialogTitle>
+						<DialogTitle>{t("admin.editLabelType")}</DialogTitle>
 						<DialogDescription>
-							Customize the display name for &quot;{
+							{t("admin.editLabelTypeDesc")} &quot;{
 								LABEL_TYPES.find((t) => t.value === editingLabelType?.labelType)?.label
 							}&quot;
 						</DialogDescription>
@@ -618,33 +619,33 @@ export default function LabelsPage() {
 					<div className="space-y-4 py-4">
 						<div>
 							<InputWithLabel
-								label="Display Name"
+								label={t("admin.displayName")}
 								value={labelTypeDisplayName}
 								onChange={(e) => setLabelTypeDisplayName(e.target.value)}
 								placeholder="e.g., General Size, Shirt Size"
 							/>
 							<p className="mt-1 text-xs text-muted-foreground">
-								This name will be shown throughout the admin interface
+								{t("admin.displayNameHint")}
 							</p>
 						</div>
 						<div>
 							<InputWithLabel
-								label="Description (optional)"
+								label={t("admin.descriptionOptional")}
 								value={labelTypeDescription}
 								onChange={(e) => setLabelTypeDescription(e.target.value)}
 								placeholder="Brief description of this label type"
 							/>
 							<p className="mt-1 text-xs text-muted-foreground">
-								Helps users understand what this label type is for
+								{t("admin.labelTypeDescHint")}
 							</p>
 						</div>
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setEditingLabelType(null)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button onClick={handleUpdateLabelType} disabled={updateLabelTypeMutation.isPending}>
-							Save Changes
+							{t("admin.saveChanges")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

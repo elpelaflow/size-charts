@@ -8,6 +8,8 @@ import { UnitSwitcher } from "@/components/public/unit-switcher";
 import { useUnitPreference } from "@/hooks/use-unit-preference";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronRight, Printer } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
+import { translateCategoryName, translateSubcategoryName, translateChartName, translateChartDescription, translateInstructionName, translateInstructionText } from "@/lib/i18n/data-translations";
 import type { SizeChartFull } from "@/types";
 
 interface PageProps {
@@ -17,6 +19,7 @@ interface PageProps {
 export default function ChartPage({ params }: PageProps) {
 	const { category: categorySlug, subcategory: subcategorySlug, chart: chartSlug } = use(params);
 	const { unit, setUnit, isLoaded } = useUnitPreference();
+	const { t, locale } = useLocale();
 	const [chart, setChart] = useState<SizeChartFull | null>(null);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(false);
@@ -75,19 +78,19 @@ export default function ChartPage({ params }: PageProps) {
 		<div>
 			<nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
 				<Link href="/size-guide" className="hover:text-foreground transition-colors">
-					Size Guide
+					{t("sizeGuide.title")}
 				</Link>
 				<ChevronRight className="h-4 w-4" />
 				<Link
 					href={`/size-guide/${categorySlug}`}
 					className="hover:text-foreground transition-colors"
 				>
-					{chart.subcategory?.category.name}
+					{translateCategoryName(categorySlug, chart.subcategory?.category.name || "", locale)}
 				</Link>
 				<ChevronRight className="h-4 w-4" />
 				{chartNameMatchesSubcategory ? (
 					// If chart name matches subcategory, just show the chart name as the final item
-					<span className="text-foreground">{chart.name}</span>
+					<span className="text-foreground">{translateChartName(chartSlug, chart.name, locale)}</span>
 				) : (
 					// Otherwise show both subcategory and chart name
 					<>
@@ -95,10 +98,10 @@ export default function ChartPage({ params }: PageProps) {
 							href={`/size-guide/${categorySlug}/${subcategorySlug}`}
 							className="hover:text-foreground transition-colors"
 						>
-							{subcategoryName}
+							{translateSubcategoryName(subcategorySlug, subcategoryName, locale)}
 						</Link>
 						<ChevronRight className="h-4 w-4" />
-						<span className="text-foreground">{chart.name}</span>
+						<span className="text-foreground">{translateChartName(chartSlug, chart.name, locale)}</span>
 					</>
 				)}
 			</nav>
@@ -106,10 +109,10 @@ export default function ChartPage({ params }: PageProps) {
 			<div className="mb-6 flex flex-wrap items-center justify-between gap-4">
 				<div>
 					<h1 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-						{chart.name}
+						{translateChartName(chartSlug, chart.name, locale)}
 					</h1>
 					{chart.description && (
-						<p className="mt-2 text-muted-foreground">{chart.description}</p>
+						<p className="mt-2 text-muted-foreground">{translateChartDescription(chartSlug, chart.description, locale)}</p>
 					)}
 				</div>
 				<div className="flex items-center gap-3">
@@ -119,7 +122,7 @@ export default function ChartPage({ params }: PageProps) {
 						className="flex items-center gap-2 rounded-lg border border-border bg-background px-3 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
 					>
 						<Printer className="h-4 w-4" />
-						Print
+						{t("sizeGuide.print")}
 					</button>
 				</div>
 			</div>
@@ -129,12 +132,12 @@ export default function ChartPage({ params }: PageProps) {
 			{chart.measurementInstructions && chart.measurementInstructions.length > 0 && (
 				<div className="mt-8 rounded-xl border border-border bg-card p-6">
 					<h2 className="mb-3 text-lg font-semibold text-foreground">
-						How to Measure
+						{t("sizeGuide.howToMeasure")}
 					</h2>
 					<ul className="space-y-2 text-sm text-muted-foreground">
 						{chart.measurementInstructions.map((mi) => (
 							<li key={mi.instruction.id}>
-								<strong className="text-foreground">{mi.instruction.name}:</strong> {mi.instruction.instruction}
+								<strong className="text-foreground">{translateInstructionName(mi.instruction.name, locale)}:</strong> {translateInstructionText(mi.instruction.instruction, locale)}
 							</li>
 						))}
 					</ul>

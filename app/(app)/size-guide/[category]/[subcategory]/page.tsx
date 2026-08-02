@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { getT, getLocale } from "@/lib/i18n";
+import { translateCategoryName, translateSubcategoryName, translateChartName, translateChartDescription } from "@/lib/i18n/data-translations";
 import { ChevronRight } from "lucide-react";
 
 interface PageProps {
@@ -34,6 +36,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function SubcategoryPage({ params }: PageProps) {
 	const { category: categorySlug, subcategory: subcategorySlug } = await params;
+	const t = await getT();
+	const locale = await getLocale();
 
 	const subcategory = await db.subcategory.findFirst({
 		where: {
@@ -74,21 +78,21 @@ export default async function SubcategoryPage({ params }: PageProps) {
 		<div>
 			<nav className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
 				<Link href="/size-guide" className="hover:text-foreground transition-colors">
-					Size Guide
+					{t("sizeGuide.title")}
 				</Link>
 				<ChevronRight className="h-4 w-4" />
 				<Link
 					href={`/size-guide/${categorySlug}`}
 					className="hover:text-foreground transition-colors"
 				>
-					{subcategoryWithCharts.category.name}
+					{translateCategoryName(subcategoryWithCharts.category.slug, subcategoryWithCharts.category.name, locale)}
 				</Link>
 				<ChevronRight className="h-4 w-4" />
-				<span className="text-foreground">{subcategoryWithCharts.name}</span>
+				<span className="text-foreground">{translateSubcategoryName(subcategoryWithCharts.slug, subcategoryWithCharts.name, locale)}</span>
 			</nav>
 
 			<h1 className="mb-8 text-2xl sm:text-3xl font-bold text-foreground tracking-tight">
-				{subcategoryWithCharts.name} Size Charts
+				{t("sizeGuide.categoryCharts").replace("{category}", translateSubcategoryName(subcategoryWithCharts.slug, subcategoryWithCharts.name, locale))}
 			</h1>
 
 			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -99,17 +103,17 @@ export default async function SubcategoryPage({ params }: PageProps) {
 						className="group rounded-xl border border-border bg-card p-6 hover:border-primary/30 hover:bg-primary/5 transition-colors"
 					>
 						<h2 className="mb-2 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-							{chart.name}
+							{translateChartName(chart.slug, chart.name, locale)}
 						</h2>
 						{chart.description && (
-							<p className="text-sm text-muted-foreground">{chart.description}</p>
+							<p className="text-sm text-muted-foreground">{translateChartDescription(chart.slug, chart.description, locale)}</p>
 						)}
 					</Link>
 				))}
 			</div>
 
 			{subcategoryWithCharts.sizeCharts.length === 0 && (
-				<p className="text-center text-muted-foreground">No size charts available yet.</p>
+				<p className="text-center text-muted-foreground">{t("sizeGuide.noChartsYet")}</p>
 			)}
 		</div>
 	);

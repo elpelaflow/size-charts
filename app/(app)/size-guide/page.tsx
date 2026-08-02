@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { db } from "@/lib/db";
-import { getT } from "@/lib/i18n";
+import { getT, getLocale } from "@/lib/i18n";
+import { translateCategoryName } from "@/lib/i18n/data-translations";
 import { ChevronRight } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
 
 export default async function SizeGuidePage() {
 	const t = await getT();
+	const locale = await getLocale();
 
 	// Get all categories with published chart counts
 	const categories = await db.category.findMany({
@@ -82,7 +84,7 @@ export default async function SizeGuidePage() {
 							<div className="flex items-center justify-between">
 								<div>
 									<h2 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
-										{category.name}
+										{translateCategoryName(category.slug, category.name, locale)}
 									</h2>
 									<p className="text-sm text-muted-foreground mt-1">
 										{category.totalCharts} {t("home.charts")}

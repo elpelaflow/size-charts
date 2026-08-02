@@ -11,6 +11,7 @@ import { useDemoMode } from "@/hooks/use-demo-mode";
 import { useToast } from "@/components/ui/toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, Save, Eye, EyeOff, ExternalLink, Pencil, Check, Info } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
 
 interface PageProps {
 	params: Promise<{ id: string }>;
@@ -19,6 +20,7 @@ interface PageProps {
 export default function EditSizeChartPage({ params }: PageProps) {
 	const { id } = use(params);
 	const { addToast } = useToast();
+	const { t } = useLocale();
 
 	const { data: chart, isLoading } = useSizeChart(id);
 	const { data: categories } = useCategories();
@@ -80,7 +82,7 @@ export default function EditSizeChartPage({ params }: PageProps) {
 		if (!state) return;
 
 		if (!state.name.trim()) {
-			addToast("Please enter a name for the size chart", "error");
+			addToast(t("admin.enterChartName"), "error");
 			return;
 		}
 
@@ -127,10 +129,10 @@ export default function EditSizeChartPage({ params }: PageProps) {
 				throw new Error(error.error || "Failed to save size chart");
 			}
 
-			addToast("Size chart saved successfully", "success");
+			addToast(t("admin.chartSaved"), "success");
 			setHasChanges(false);
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to save size chart", "error");
+			addToast(error instanceof Error ? error.message : t("admin.chartSaveFailed"), "error");
 		} finally {
 			setSaving(false);
 		}
@@ -153,9 +155,9 @@ export default function EditSizeChartPage({ params }: PageProps) {
 			}
 
 			setState({ ...state, isPublished: !state.isPublished });
-			addToast(state.isPublished ? "Size chart unpublished" : "Size chart published", "success");
+			addToast(state.isPublished ? t("admin.chartUnpublished") : t("admin.chartPublished"), "success");
 		} catch {
-			addToast("Failed to update publish status", "error");
+			addToast(t("admin.publishStatusFailed"), "error");
 		} finally {
 			setSaving(false);
 		}
@@ -184,18 +186,18 @@ export default function EditSizeChartPage({ params }: PageProps) {
 					className="mb-4 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
 				>
 					<ArrowLeft className="h-4 w-4" />
-					Back to Size Charts
+					{t("admin.backToSizeCharts")}
 				</Link>
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-3">
 						<h1 className="text-2xl font-bold">
-							{state.name || "Untitled Size Chart"}
+							{state.name || t("admin.untitledChart")}
 						</h1>
 						<Badge variant={state.isPublished ? "default" : "secondary"}>
-							{state.isPublished ? "Published" : "Draft"}
+							{state.isPublished ? t("admin.published") : t("admin.draft")}
 						</Badge>
 						{hasChanges && (
-							<Badge variant="outline">Unsaved changes</Badge>
+							<Badge variant="outline">{t("admin.unsavedChanges")}</Badge>
 						)}
 					</div>
 					<div className="flex items-center gap-2">
@@ -206,7 +208,7 @@ export default function EditSizeChartPage({ params }: PageProps) {
 							>
 								<Button variant="outline">
 									<ExternalLink className="h-4 w-4" />
-									View Live
+									{t("admin.viewLive")}
 								</Button>
 							</Link>
 						)}
@@ -218,18 +220,18 @@ export default function EditSizeChartPage({ params }: PageProps) {
 							{state.isPublished ? (
 								<>
 									<EyeOff className="h-4 w-4" />
-									Unpublish
+									{t("admin.unpublish")}
 								</>
 							) : (
 								<>
 									<Eye className="h-4 w-4" />
-									Publish
+									{t("admin.publish")}
 								</>
 							)}
 						</Button>
 						<Button onClick={handleSave} disabled={saving || !hasChanges}>
 							<Save className="h-4 w-4" />
-							Save Changes
+							{t("admin.saveChanges")}
 						</Button>
 					</div>
 				</div>
@@ -238,18 +240,18 @@ export default function EditSizeChartPage({ params }: PageProps) {
 			<div className="space-y-6">
 				<div className="rounded-lg border bg-card p-6">
 					<h2 className="mb-4 text-lg font-semibold">
-						Basic Information
+						{t("admin.basicInfo")}
 					</h2>
 					<div className="grid gap-4 sm:grid-cols-2">
 						<InputWithLabel
-							label="Name"
+							label={t("admin.name")}
 							value={state.name}
 							onChange={(e) => handleStateChange({ ...state, name: e.target.value })}
 							placeholder="e.g., Regular Fit, Contour Fit"
 						/>
 						<div className="relative">
 							<InputWithLabel
-								label="Chart ID (URL slug)"
+								label={t("admin.chartIdSlug")}
 								value={slug}
 								onChange={(e) => {
 									if (!isProtectedSizeChartSlug(chart?.slug || "")) {
@@ -269,14 +271,14 @@ export default function EditSizeChartPage({ params }: PageProps) {
 										</span>
 									</TooltipTrigger>
 									<TooltipContent>
-										<p>Chart ID cannot be changed in demo mode.</p>
+										<p>{t("admin.slugProtected")}</p>
 									</TooltipContent>
 								</Tooltip>
 							)}
 						</div>
 						<div className="sm:col-span-2">
 							<InputWithLabel
-								label="Description (optional)"
+								label={t("admin.descriptionOptional")}
 								value={state.description}
 								onChange={(e) => handleStateChange({ ...state, description: e.target.value })}
 								placeholder="Brief description of this size chart"
@@ -284,7 +286,7 @@ export default function EditSizeChartPage({ params }: PageProps) {
 						</div>
 						<div className="sm:col-span-2">
 							<div className="mb-2 flex items-center justify-between">
-								<span className="text-sm font-medium">Categories</span>
+								<span className="text-sm font-medium">{t("admin.categories")}</span>
 								<Button
 									variant="ghost"
 									size="sm"
@@ -294,7 +296,7 @@ export default function EditSizeChartPage({ params }: PageProps) {
 									}}
 								>
 									<Pencil className="h-4 w-4" />
-									Edit
+									{t("admin.edit")}
 								</Button>
 							</div>
 							<div className="flex flex-wrap gap-2">
@@ -310,13 +312,13 @@ export default function EditSizeChartPage({ params }: PageProps) {
 												))
 										)
 								) : (
-									<span className="text-sm text-muted-foreground">No categories assigned</span>
+									<span className="text-sm text-muted-foreground">{t("admin.noCategoriesAssigned")}</span>
 								)}
 							</div>
 						</div>
 						{slug && chart && chart.subcategories.length > 0 && (
 							<div className="text-sm text-muted-foreground">
-								<span className="font-medium">Public URL:</span>{" "}
+								<span className="font-medium">{t("admin.publicUrl")}</span>{" "}
 								<code className="bg-muted px-1 py-0.5 rounded text-xs">
 									/size-guide/{chart.subcategories[0].subcategory.category.slug}/{chart.subcategories[0].subcategory.slug}/{slug}
 								</code>
@@ -327,10 +329,10 @@ export default function EditSizeChartPage({ params }: PageProps) {
 
 				<div className="rounded-lg border bg-card p-6">
 					<h2 className="mb-4 text-lg font-semibold">
-						Measurement Instructions
+						{t("admin.measurementInstructions")}
 					</h2>
 					<p className="mb-4 text-sm text-muted-foreground">
-						Select which measurement instructions to display on this chart&apos;s public page.
+						{t("admin.measurementInstructionsDesc")}
 					</p>
 					<MeasurementInstructionsSelector
 						selectedIds={state.measurementInstructionIds}
@@ -340,11 +342,10 @@ export default function EditSizeChartPage({ params }: PageProps) {
 
 				<div className="rounded-lg border bg-card p-6">
 					<h2 className="mb-4 text-lg font-semibold">
-						Size Chart Data
+						{t("admin.sizeChartData")}
 					</h2>
 					<p className="mb-4 text-sm text-muted-foreground">
-						Click on a cell to edit. Use Tab to move to the next cell, Enter to move down.
-						Configure columns by clicking the settings icon in the header.
+						{t("admin.sizeChartDataDesc")}
 					</p>
 					<SizeChartEditor state={state} onChange={handleStateChange} labels={labels} />
 				</div>
@@ -354,9 +355,9 @@ export default function EditSizeChartPage({ params }: PageProps) {
 			<Dialog open={categoriesDialogOpen} onOpenChange={setCategoriesDialogOpen}>
 				<DialogContent className="max-w-2xl">
 					<DialogHeader>
-						<DialogTitle>Edit Categories</DialogTitle>
+						<DialogTitle>{t("admin.editCategories")}</DialogTitle>
 						<DialogDescription>
-							Select which categories this size chart should appear in. You can select multiple categories.
+							{t("admin.editCategoriesDesc")}
 						</DialogDescription>
 					</DialogHeader>
 					<div className="max-h-96 overflow-y-auto py-4">
@@ -394,7 +395,7 @@ export default function EditSizeChartPage({ params }: PageProps) {
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setCategoriesDialogOpen(false)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button
 							onClick={() => {
@@ -405,7 +406,7 @@ export default function EditSizeChartPage({ params }: PageProps) {
 								setCategoriesDialogOpen(false);
 							}}
 						>
-							Save Categories
+							{t("admin.saveCategories")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>

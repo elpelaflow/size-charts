@@ -1,6 +1,8 @@
 "use client";
 
 import { formatMeasurement, formatRange } from "@/lib/conversions";
+import { useLocale } from "@/hooks/use-locale";
+import { translateColumnName } from "@/lib/i18n/data-translations";
 import type { SizeChartFull, UnitPreference } from "@/types";
 
 interface SizeChartDisplayProps {
@@ -9,6 +11,8 @@ interface SizeChartDisplayProps {
 }
 
 export function SizeChartDisplay({ chart, unit }: SizeChartDisplayProps) {
+	const { locale } = useLocale();
+
 	const formatCellValue = (
 		cell: {
 			valueInches: number | null;
@@ -37,7 +41,7 @@ export function SizeChartDisplay({ chart, unit }: SizeChartDisplayProps) {
 								key={column.id}
 								className="whitespace-nowrap px-4 py-3 text-left text-sm font-semibold text-foreground"
 							>
-								{column.name}
+								{translateColumnName(column.name, locale)}
 								{column.columnType === "MEASUREMENT" && (
 									<span className="ml-1 text-xs font-normal text-muted-foreground">
 										({unit === "cm" ? "cm" : "in"})

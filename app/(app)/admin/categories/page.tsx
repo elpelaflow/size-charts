@@ -27,6 +27,7 @@ import {
 	Trash2,
 } from "lucide-react";
 import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { useLocale } from "@/hooks/use-locale";
 
 interface SizeChartSummary {
 	id: string;
@@ -52,6 +53,7 @@ interface CategoryWithCharts {
 
 export default function CategoriesPage() {
 	const { addToast } = useToast();
+	const { t } = useLocale();
 	const queryClient = useQueryClient();
 
 	// Fetch categories with charts included
@@ -112,7 +114,7 @@ export default function CategoriesPage() {
 	// Category CRUD
 	const handleAddCategory = async () => {
 		if (!categoryName.trim()) {
-			addToast("Please enter a category name", "error");
+			addToast(t("admin.enterCategoryName"), "error");
 			return;
 		}
 
@@ -129,12 +131,12 @@ export default function CategoriesPage() {
 				throw new Error(data.error || "Failed to create category");
 			}
 
-			addToast("Category created successfully", "success");
+			addToast(t("admin.categoryCreated"), "success");
 			setCategoryName("");
 			setShowAddCategory(false);
 			invalidateCategories();
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to create category", "error");
+			addToast(error instanceof Error ? error.message : t("admin.categoryCreateFailed"), "error");
 		} finally {
 			setSaving(false);
 		}
@@ -156,12 +158,12 @@ export default function CategoriesPage() {
 				throw new Error(data.error || "Failed to update category");
 			}
 
-			addToast("Category updated successfully", "success");
+			addToast(t("admin.categoryUpdated"), "success");
 			setCategoryName("");
 			setEditingCategory(null);
 			invalidateCategories();
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to update category", "error");
+			addToast(error instanceof Error ? error.message : t("admin.categoryUpdateFailed"), "error");
 		} finally {
 			setSaving(false);
 		}
@@ -181,11 +183,11 @@ export default function CategoriesPage() {
 				throw new Error(data.error || "Failed to delete category");
 			}
 
-			addToast("Category deleted successfully", "success");
+			addToast(t("admin.categoryDeleted"), "success");
 			setDeletingCategory(null);
 			invalidateCategories();
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to delete category", "error");
+			addToast(error instanceof Error ? error.message : t("admin.categoryDeleteFailed"), "error");
 		} finally {
 			setSaving(false);
 		}
@@ -194,7 +196,7 @@ export default function CategoriesPage() {
 	// Subcategory CRUD
 	const handleAddSubcategory = async (categoryId: string) => {
 		if (!subcategoryName.trim()) {
-			addToast("Please enter a subcategory name", "error");
+			addToast(t("admin.enterSubcategoryName"), "error");
 			return;
 		}
 
@@ -214,12 +216,12 @@ export default function CategoriesPage() {
 				throw new Error(data.error || "Failed to create subcategory");
 			}
 
-			addToast("Subcategory created successfully", "success");
+			addToast(t("admin.subcategoryCreated"), "success");
 			setSubcategoryName("");
 			setAddingSubcategoryTo(null);
 			invalidateCategories();
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to create subcategory", "error");
+			addToast(error instanceof Error ? error.message : t("admin.subcategoryCreateFailed"), "error");
 		} finally {
 			setSaving(false);
 		}
@@ -241,12 +243,12 @@ export default function CategoriesPage() {
 				throw new Error(data.error || "Failed to update subcategory");
 			}
 
-			addToast("Subcategory updated successfully", "success");
+			addToast(t("admin.subcategoryUpdated"), "success");
 			setSubcategoryName("");
 			setEditingSubcategory(null);
 			invalidateCategories();
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to update subcategory", "error");
+			addToast(error instanceof Error ? error.message : t("admin.subcategoryUpdateFailed"), "error");
 		} finally {
 			setSaving(false);
 		}
@@ -266,11 +268,11 @@ export default function CategoriesPage() {
 				throw new Error(data.error || "Failed to delete subcategory");
 			}
 
-			addToast("Subcategory deleted successfully", "success");
+			addToast(t("admin.subcategoryDeleted"), "success");
 			setDeletingSubcategory(null);
 			invalidateCategories();
 		} catch (error) {
-			addToast(error instanceof Error ? error.message : "Failed to delete subcategory", "error");
+			addToast(error instanceof Error ? error.message : t("admin.subcategoryDeleteFailed"), "error");
 		} finally {
 			setSaving(false);
 		}
@@ -279,7 +281,7 @@ export default function CategoriesPage() {
 	if (isLoading) {
 		return (
 			<div>
-				<h1 className="mb-6 text-2xl font-bold">Categories</h1>
+				<h1 className="mb-6 text-2xl font-bold">{t("admin.categories")}</h1>
 				<div className="space-y-4">
 					{[...Array(3)].map((_, i) => (
 						<Skeleton key={i} className="h-16 w-full rounded-lg" />
@@ -293,14 +295,14 @@ export default function CategoriesPage() {
 		<div>
 			<div className="mb-6 flex items-center justify-between">
 				<div>
-					<h1 className="text-2xl font-bold">Categories</h1>
+					<h1 className="text-2xl font-bold">{t("admin.categories")}</h1>
 					<p className="text-muted-foreground">
-						Manage product categories and subcategories
+						{t("admin.categoriesSubtitle")}
 					</p>
 				</div>
 				<Button onClick={() => setShowAddCategory(true)}>
 					<Plus className="h-4 w-4" />
-					Add Category
+					{t("admin.addCategory")}
 				</Button>
 			</div>
 
@@ -326,10 +328,10 @@ export default function CategoriesPage() {
 									<FolderTree className="h-5 w-5 text-muted-foreground" />
 									<span className="font-medium">{category.name}</span>
 									<Badge variant="outline" className="text-xs">
-										{category.subcategories.length} subcategories
+										{category.subcategories.length} {t("admin.subcategories")}
 									</Badge>
 									<Badge variant="secondary" className="text-xs">
-										{totalCharts} charts
+										{totalCharts} {t("admin.charts")}
 									</Badge>
 								</div>
 								<div className="flex items-center gap-1">
@@ -340,7 +342,7 @@ export default function CategoriesPage() {
 											setEditingCategory(category);
 										}}
 										className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
-										title="Edit category"
+										title={t("admin.editCategoryTitle")}
 									>
 										<Pencil className="h-4 w-4" />
 									</button>
@@ -350,7 +352,7 @@ export default function CategoriesPage() {
 											setDeletingCategory(category);
 										}}
 										className="rounded p-1.5 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20"
-										title="Delete category"
+										title={t("admin.deleteCategoryTitle")}
 									>
 										<Trash2 className="h-4 w-4" />
 									</button>
@@ -361,7 +363,7 @@ export default function CategoriesPage() {
 								<div className="border-t">
 									{category.subcategories.length === 0 ? (
 										<div className="px-12 py-4 text-sm text-muted-foreground">
-											No subcategories yet
+											{t("admin.noSubcategories")}
 										</div>
 									) : (
 										<div className="divide-y">
@@ -389,7 +391,7 @@ export default function CategoriesPage() {
 																<TableProperties className="h-4 w-4 text-muted-foreground" />
 																<span>{subcategory.name}</span>
 																<Badge variant="secondary" className="text-xs">
-																	{subcategory._count.sizeCharts} charts
+																	{subcategory._count.sizeCharts} {t("admin.charts")}
 																</Badge>
 															</div>
 															<div className="flex items-center gap-1">
@@ -400,7 +402,7 @@ export default function CategoriesPage() {
 																		setEditingSubcategory({ sub: subcategory, categoryId: category.id });
 																	}}
 																	className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground"
-																	title="Edit subcategory"
+																	title={t("admin.editSubcategoryTitle")}
 																>
 																	<Pencil className="h-3.5 w-3.5" />
 																</button>
@@ -410,7 +412,7 @@ export default function CategoriesPage() {
 																		setDeletingSubcategory(subcategory);
 																	}}
 																	className="rounded p-1 text-muted-foreground hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-900/20"
-																	title="Delete subcategory"
+																	title={t("admin.deleteSubcategoryTitle")}
 																>
 																	<Trash2 className="h-3.5 w-3.5" />
 																</button>
@@ -429,11 +431,11 @@ export default function CategoriesPage() {
 																			<span className="text-sm">{sizeChart.name}</span>
 																			{sizeChart.isPublished ? (
 																				<Badge variant="default" className="text-xs">
-																					Published
+																					{t("admin.published")}
 																				</Badge>
 																			) : (
 																				<Badge variant="outline" className="text-xs">
-																					Draft
+																					{t("admin.draft")}
 																				</Badge>
 																			)}
 																		</div>
@@ -442,7 +444,7 @@ export default function CategoriesPage() {
 																			className="flex items-center gap-1 text-xs text-primary hover:underline"
 																			onClick={(e) => e.stopPropagation()}
 																		>
-																			Edit <ExternalLink className="h-3 w-3" />
+																			{t("admin.edit")} <ExternalLink className="h-3 w-3" />
 																		</Link>
 																	</div>
 																))}
@@ -459,7 +461,7 @@ export default function CategoriesPage() {
 											<Input
 												value={subcategoryName}
 												onChange={(e) => setSubcategoryName(e.target.value)}
-												placeholder="Subcategory name"
+												placeholder={t("admin.subcategoryNamePlaceholder")}
 												className="max-w-xs"
 												onKeyDown={(e) => {
 													if (e.key === "Enter") {
@@ -477,7 +479,7 @@ export default function CategoriesPage() {
 												onClick={() => handleAddSubcategory(category.id)}
 												disabled={saving}
 											>
-												Add
+												{t("admin.add")}
 											</Button>
 											<Button
 												size="sm"
@@ -487,7 +489,7 @@ export default function CategoriesPage() {
 													setSubcategoryName("");
 												}}
 											>
-												Cancel
+												{t("admin.cancel")}
 											</Button>
 										</div>
 									) : (
@@ -501,7 +503,7 @@ export default function CategoriesPage() {
 												}}
 											>
 												<Plus className="h-4 w-4" />
-												Add Subcategory
+												{t("admin.addSubcategory")}
 											</Button>
 										</div>
 									)}
@@ -516,23 +518,23 @@ export default function CategoriesPage() {
 			<Dialog open={showAddCategory} onOpenChange={setShowAddCategory}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Add Category</DialogTitle>
+						<DialogTitle>{t("admin.addCategory")}</DialogTitle>
 					</DialogHeader>
 					<div className="py-4">
 						<InputWithLabel
-							label="Category Name"
+							label={t("admin.categoryName")}
 							value={categoryName}
 							onChange={(e) => setCategoryName(e.target.value)}
-							placeholder="e.g., Men's, Women's, Kids"
+							placeholder={t("admin.categoryPlaceholder")}
 							onKeyDown={(e) => e.key === "Enter" && handleAddCategory()}
 						/>
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setShowAddCategory(false)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button onClick={handleAddCategory} disabled={saving}>
-							{saving ? "Creating..." : "Create Category"}
+							{saving ? t("admin.creating") : t("admin.createCategory")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -542,23 +544,23 @@ export default function CategoriesPage() {
 			<Dialog open={!!editingCategory} onOpenChange={() => setEditingCategory(null)}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Edit Category</DialogTitle>
+						<DialogTitle>{t("admin.editCategoryTitle")}</DialogTitle>
 					</DialogHeader>
 					<div className="py-4">
 						<InputWithLabel
-							label="Category Name"
+							label={t("admin.categoryName")}
 							value={categoryName}
 							onChange={(e) => setCategoryName(e.target.value)}
-							placeholder="Category name"
+							placeholder={t("admin.categoryName")}
 							onKeyDown={(e) => e.key === "Enter" && handleEditCategory()}
 						/>
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setEditingCategory(null)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button onClick={handleEditCategory} disabled={saving}>
-							{saving ? "Saving..." : "Save Changes"}
+							{saving ? t("admin.saving") : t("admin.saveChanges")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -568,28 +570,28 @@ export default function CategoriesPage() {
 			<Dialog open={!!deletingCategory} onOpenChange={() => setDeletingCategory(null)}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Delete Category</DialogTitle>
+						<DialogTitle>{t("admin.deleteCategoryTitle")}</DialogTitle>
 					</DialogHeader>
 					<div className="py-4">
 						<p className="text-muted-foreground">
-							Are you sure you want to delete <strong>{deletingCategory?.name}</strong>?
+							{t("admin.confirmDelete")} <strong>{deletingCategory?.name}</strong>?
 						</p>
 						{deletingCategory && deletingCategory.subcategories.some((s) => s._count.sizeCharts > 0) && (
 							<p className="mt-2 text-sm text-amber-600">
-								This category contains size charts. You must remove or reassign all charts before deleting.
+								{t("admin.categoryHasCharts")}
 							</p>
 						)}
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setDeletingCategory(null)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button
 							variant="destructive"
 							onClick={handleDeleteCategory}
 							disabled={saving}
 						>
-							{saving ? "Deleting..." : "Delete Category"}
+							{saving ? t("admin.deleting") : t("admin.deleteCategoryBtn")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -599,23 +601,23 @@ export default function CategoriesPage() {
 			<Dialog open={!!editingSubcategory} onOpenChange={() => setEditingSubcategory(null)}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Edit Subcategory</DialogTitle>
+						<DialogTitle>{t("admin.editSubcategoryTitle")}</DialogTitle>
 					</DialogHeader>
 					<div className="py-4">
 						<InputWithLabel
-							label="Subcategory Name"
+							label={t("admin.subcategoryName")}
 							value={subcategoryName}
 							onChange={(e) => setSubcategoryName(e.target.value)}
-							placeholder="Subcategory name"
+							placeholder={t("admin.subcategoryNamePlaceholder")}
 							onKeyDown={(e) => e.key === "Enter" && handleEditSubcategory()}
 						/>
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setEditingSubcategory(null)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button onClick={handleEditSubcategory} disabled={saving}>
-							{saving ? "Saving..." : "Save Changes"}
+							{saving ? t("admin.saving") : t("admin.saveChanges")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
@@ -625,29 +627,28 @@ export default function CategoriesPage() {
 			<Dialog open={!!deletingSubcategory} onOpenChange={() => setDeletingSubcategory(null)}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Delete Subcategory</DialogTitle>
+						<DialogTitle>{t("admin.deleteSubcategoryTitle")}</DialogTitle>
 					</DialogHeader>
 					<div className="py-4">
 						<p className="text-muted-foreground">
-							Are you sure you want to delete <strong>{deletingSubcategory?.name}</strong>?
+							{t("admin.confirmDelete")} <strong>{deletingSubcategory?.name}</strong>?
 						</p>
 						{deletingSubcategory && deletingSubcategory._count.sizeCharts > 0 && (
 							<p className="mt-2 text-sm text-amber-600">
-								This subcategory contains {deletingSubcategory._count.sizeCharts} size chart(s).
-								You must remove or reassign all charts before deleting.
+								{t("admin.subcategoryHasCharts")}
 							</p>
 						)}
 					</div>
 					<DialogFooter>
 						<Button variant="outline" onClick={() => setDeletingSubcategory(null)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
 						<Button
 							variant="destructive"
 							onClick={handleDeleteSubcategory}
 							disabled={saving}
 						>
-							{saving ? "Deleting..." : "Delete Subcategory"}
+							{saving ? t("admin.deleting") : t("admin.deleteSubcategoryBtn")}
 						</Button>
 					</DialogFooter>
 				</DialogContent>
