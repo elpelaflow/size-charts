@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Code2, FileText, Ruler, Menu, X, LayoutTemplate, Play } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { GITHUB_URL } from "@/lib/constants";
 
 const navLinks = [
 	{ name: "Size Guide", href: "/size-guide", icon: Ruler },
@@ -98,7 +99,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
 						{/* GitHub Icon */}
 						<a
-							href="https://github.com/mattdecrevel/size-charts"
+							href={GITHUB_URL}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="hidden sm:flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
@@ -166,7 +167,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
 						{/* GitHub link in mobile menu */}
 						<a
-							href="https://github.com/mattdecrevel/size-charts"
+							href={GITHUB_URL}
 							target="_blank"
 							rel="noopener noreferrer"
 							onClick={handleNavClick}
@@ -206,7 +207,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 								Examples
 							</Link>
 							<a
-								href="https://github.com/mattdecrevel/size-charts"
+								href={GITHUB_URL}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="hover:text-foreground transition-colors"

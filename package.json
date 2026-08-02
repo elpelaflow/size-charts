@@ -7,10 +7,10 @@
    "homepage": "https://www.sizecharts.dev",
    "repository": {
       "type": "git",
-      "url": "https://github.com/mattdecrevel/size-charts.git"
+      "url": "https://github.com/elpelaflow/size-charts.git"
    },
    "bugs": {
-      "url": "https://github.com/mattdecrevel/size-charts/issues"
+      "url": "https://github.com/elpelaflow/size-charts/issues"
    },
    "keywords": [
       "size-chart",

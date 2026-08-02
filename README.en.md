@@ -6,9 +6,9 @@
 
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://www.sizecharts.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/mattdecrevel/size-charts?style=social)](https://github.com/mattdecrevel/size-charts)
+[![GitHub stars](https://img.shields.io/github/stars/elpelaflow/size-charts?style=social)](https://github.com/elpelaflow/size-charts)
 
-[Live Demo](https://www.sizecharts.dev) · [Documentation](https://www.sizecharts.dev/docs) · [Report Bug](https://github.com/mattdecrevel/size-charts/issues)
+[Live Demo](https://www.sizecharts.dev) · [Documentation](https://www.sizecharts.dev/docs) · [Report Bug](https://github.com/elpelaflow/size-charts/issues)
 
 **English** · [Español](README.md)
 
@@ -49,7 +49,7 @@ A production-ready size chart system with an admin panel, REST API, and embeddab
 
 ### Option 1: Deploy to Vercel (Recommended)
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mattdecrevel/size-charts&env=DATABASE_URL&envDescription=PostgreSQL%20connection%20string&envLink=https://github.com/mattdecrevel/size-charts%23environment-variables)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/elpelaflow/size-charts&env=DATABASE_URL&envDescription=PostgreSQL%20connection%20string&envLink=https://github.com/elpelaflow/size-charts%23environment-variables)
 
 1. Click the button above
 2. Connect a PostgreSQL database ([Neon](https://neon.tech), [Supabase](https://supabase.com), or [Railway](https://railway.app))
@@ -60,7 +60,7 @@ A production-ready size chart system with an admin panel, REST API, and embeddab
 
 ```bash
 # Clone and install
-git clone https://github.com/mattdecrevel/size-charts.git
+git clone https://github.com/elpelaflow/size-charts.git
 cd size-charts
 npm install
 
@@ -199,7 +199,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 <div align="center">
 
-**[Website](https://www.sizecharts.dev)** · **[Documentation](https://www.sizecharts.dev/docs)** · **[GitHub](https://github.com/mattdecrevel/size-charts)**
+**[Website](https://www.sizecharts.dev)** · **[Documentation](https://www.sizecharts.dev/docs)** · **[GitHub](https://github.com/elpelaflow/size-charts)**
 
 Built with [Next.js](https://nextjs.org/) · UI by [shadcn/ui](https://ui.shadcn.com/) · Database by [Prisma](https://www.prisma.io/)
 

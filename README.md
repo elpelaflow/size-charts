@@ -6,9 +6,9 @@
 
 [![Demo en vivo](https://img.shields.io/badge/demo-en_vivo-brightgreen)](https://www.sizecharts.dev)
 [![Licencia: MIT](https://img.shields.io/badge/Licencia-MIT-blue.svg)](LICENSE)
-[![Estrellas en GitHub](https://img.shields.io/github/stars/mattdecrevel/size-charts?style=social)](https://github.com/mattdecrevel/size-charts)
+[![Estrellas en GitHub](https://img.shields.io/github/stars/elpelaflow/size-charts?style=social)](https://github.com/elpelaflow/size-charts)
 
-[Demo en vivo](https://www.sizecharts.dev) · [Documentación](https://www.sizecharts.dev/docs) · [Reportar un error](https://github.com/mattdecrevel/size-charts/issues)
+[Demo en vivo](https://www.sizecharts.dev) · [Documentación](https://www.sizecharts.dev/docs) · [Reportar un error](https://github.com/elpelaflow/size-charts/issues)
 
 [English](README.en.md) · **Español**
 
@@ -49,7 +49,7 @@ Un sistema de tablas de tallas listo para producción con panel de administraci�
 
 ### Opción 1: Desplegar en Vercel (Recomendado)
 
-[![Desplegar con Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/mattdecrevel/size-charts&env=DATABASE_URL&envDescription=Cadena%20de%20conexi%C3%B3n%20PostgreSQL&envLink=https://github.com/mattdecrevel/size-charts%23environment-variables)
+[![Desplegar con Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/elpelaflow/size-charts&env=DATABASE_URL&envDescription=Cadena%20de%20conexi%C3%B3n%20PostgreSQL&envLink=https://github.com/elpelaflow/size-charts%23environment-variables)
 
 1. Haz clic en el botón de arriba
 2. Conecta una base de datos PostgreSQL ([Neon](https://neon.tech), [Supabase](https://supabase.com) o [Railway](https://railway.app))
@@ -60,7 +60,7 @@ Un sistema de tablas de tallas listo para producción con panel de administraci�
 
 ```bash
 # Clonar e instalar
-git clone https://github.com/mattdecrevel/size-charts.git
+git clone https://github.com/elpelaflow/size-charts.git
 cd size-charts
 npm install
 
@@ -199,7 +199,7 @@ Licencia MIT - consulta [LICENSE](LICENSE) para más detalles.
 
 <div align="center">
 
-**[Sitio web](https://www.sizecharts.dev)** · **[Documentación](https://www.sizecharts.dev/docs)** · **[GitHub](https://github.com/mattdecrevel/size-charts)**
+**[Sitio web](https://www.sizecharts.dev)** · **[Documentación](https://www.sizecharts.dev/docs)** · **[GitHub](https://github.com/elpelaflow/size-charts)**
 
 Hecho con [Next.js](https://nextjs.org/) · UI por [shadcn/ui](https://ui.shadcn.com/) · Base de datos por [Prisma](https://www.prisma.io/)
 

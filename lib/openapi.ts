@@ -1,3 +1,6 @@
+export const GITHUB_URL =
+	process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/elpelaflow/size-charts";
+
 export const openApiSpec = {
 	openapi: "3.0.3",
 	info: {
@@ -29,7 +32,7 @@ Your application should translate these keys to locale-specific values.
 		},
 		contact: {
 			name: "GitHub Issues",
-			url: "https://github.com/mattdecrevel/size-charts/issues",
+			url: `${GITHUB_URL}/issues`,
 		},
 	},
 	servers: [

@@ -1,3 +1,7 @@
+// Repository URL - configurable via environment variable
+export const GITHUB_URL =
+  process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/elpelaflow/size-charts";
+
 export const CATEGORIES = [
   { id: "mens", name: "Men's", slug: "mens" },
   { id: "womens", name: "Women's", slug: "womens" },
