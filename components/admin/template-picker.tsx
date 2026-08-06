@@ -20,6 +20,8 @@ import {
 } from "@/components/ui";
 import { LayoutTemplate, Search, Shirt, Users, Footprints, Watch, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/hooks/use-locale";
+import { translateChartName, translateChartDescription, translateColumnName } from "@/lib/i18n/data-translations";
 
 interface Template {
 	id: string;
@@ -49,12 +51,12 @@ const categoryIcons: Record<CategoryFilter, React.ReactNode> = {
 	accessories: <Watch className="h-4 w-4" />,
 };
 
-const categoryLabels: Record<CategoryFilter, string> = {
-	all: "All Templates",
-	apparel: "Apparel",
-	youth: "Youth",
-	footwear: "Footwear",
-	accessories: "Accessories",
+const categoryKeys: Record<CategoryFilter, string> = {
+	all: "templates.all",
+	apparel: "templates.apparel",
+	youth: "templates.youth",
+	footwear: "templates.footwear",
+	accessories: "templates.accessories",
 };
 
 export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
@@ -66,6 +68,8 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
 	const [selectedVariant, setSelectedVariant] = useState<string | undefined>();
+
+	const { t, locale } = useLocale();
 
 	useEffect(() => {
 		if (open) {
@@ -137,22 +141,22 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 				{trigger || (
 					<Button variant="outline">
 						<LayoutTemplate className="h-4 w-4" />
-						Start from Template
+						{t("templates.startFromTemplate")}
 					</Button>
 				)}
 			</DialogTrigger>
 			<DialogContent className="w-[95vw] max-w-[900px] md:max-w-[1100px] lg:max-w-[1300px] max-h-[90vh] overflow-hidden flex flex-col">
 				<DialogHeader>
-					<DialogTitle>Choose a Template</DialogTitle>
+					<DialogTitle>{t("templates.chooseTemplate")}</DialogTitle>
 					<DialogDescription>
-						Select a template to quickly create a new size chart with pre-configured columns and sample data.
+						{t("templates.chooseTemplateDesc")}
 					</DialogDescription>
 				</DialogHeader>
 
 				<div className="flex gap-4 flex-1 min-h-0">
 					{/* Left sidebar - Category filter (hidden on mobile) */}
 					<div className="hidden md:block w-48 flex-shrink-0 space-y-1">
-						{(Object.keys(categoryLabels) as CategoryFilter[]).map((cat) => (
+						{(Object.keys(categoryKeys) as CategoryFilter[]).map((cat) => (
 							<button
 								key={cat}
 								onClick={() => setSelectedCategory(cat)}
@@ -164,7 +168,7 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 								)}
 							>
 								{categoryIcons[cat]}
-								<span className="flex-1 text-left">{categoryLabels[cat]}</span>
+								<span className="flex-1 text-left">{t(categoryKeys[cat])}</span>
 								{cat !== "all" && categoryCounts[cat] !== undefined && (
 									<span className="text-xs opacity-70">{categoryCounts[cat]}</span>
 								)}
@@ -176,7 +180,7 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 					<div className="flex-1 min-w-0 flex flex-col">
 						{/* Mobile category filter */}
 						<div className="flex md:hidden gap-2 mb-4 overflow-x-auto pb-2">
-							{(Object.keys(categoryLabels) as CategoryFilter[]).map((cat) => (
+							{(Object.keys(categoryKeys) as CategoryFilter[]).map((cat) => (
 								<button
 									key={cat}
 									onClick={() => setSelectedCategory(cat)}
@@ -188,7 +192,7 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 									)}
 								>
 									{categoryIcons[cat]}
-									<span>{categoryLabels[cat]}</span>
+									<span>{t(categoryKeys[cat])}</span>
 								</button>
 							))}
 						</div>
@@ -197,7 +201,7 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 						<div className="relative mb-4">
 							<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
 							<Input
-								placeholder="Search templates..."
+								placeholder={t("templates.searchPlaceholder")}
 								value={searchQuery}
 								onChange={(e) => setSearchQuery(e.target.value)}
 								className="pl-9"
@@ -220,7 +224,7 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 										className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
 									>
 										<X className="h-4 w-4" />
-										Back to templates
+										{t("templates.backToTemplates")}
 									</button>
 
 									{/* Template detail */}
@@ -229,22 +233,22 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 											{categoryIcons[selectedTemplate.category as CategoryFilter] || <LayoutTemplate className="h-5 w-5" />}
 										</div>
 										<div>
-											<h3 className="font-semibold">{selectedTemplate.name}</h3>
-											<p className="text-sm text-muted-foreground">{selectedTemplate.description}</p>
+											<h3 className="font-semibold">{translateChartName(selectedTemplate.id, selectedTemplate.name, locale)}</h3>
+											<p className="text-sm text-muted-foreground">{translateChartDescription(selectedTemplate.id, selectedTemplate.description, locale)}</p>
 										</div>
 									</div>
 
 									{/* Variant selector */}
 									{selectedTemplate.variants && Object.keys(selectedTemplate.variants).length > 0 && (
 										<div>
-											<p className="text-sm font-medium mb-2">Select Variant:</p>
+											<p className="text-sm font-medium mb-2">{t("templates.selectVariant")}</p>
 											<div className="flex flex-wrap gap-2">
 												<Button
 													variant={selectedVariant === undefined ? "default" : "outline"}
 													size="sm"
 													onClick={() => setSelectedVariant(undefined)}
 												>
-													Default
+													{t("templates.default")}
 												</Button>
 												{Object.entries(selectedTemplate.variants).map(([key, variant]) => (
 													<Button
@@ -267,7 +271,7 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 												<TableRow>
 													{selectedTemplate.columns.map((col) => (
 														<TableHead key={col.name} className="text-xs">
-															{col.name}
+															{translateColumnName(col.name, locale)}
 														</TableHead>
 													))}
 												</TableRow>
@@ -286,14 +290,14 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 										</Table>
 										{((selectedVariant ? selectedTemplate.variants?.[selectedVariant]?.rows.length : selectedTemplate.rows.length) || 0) > 4 && (
 											<p className="text-xs text-muted-foreground text-center py-2 border-t">
-												+ {((selectedVariant ? selectedTemplate.variants?.[selectedVariant]?.rows.length : selectedTemplate.rows.length) || 0) - 4} more rows
+												{t("templates.moreRows").replace("{count}", String(((selectedVariant ? selectedTemplate.variants?.[selectedVariant]?.rows.length : selectedTemplate.rows.length) || 0) - 4))}
 											</p>
 										)}
 									</div>
 
 									{/* Use template button */}
 									<Button onClick={handleConfirm} className="w-full">
-										Use This Template
+										{t("templates.useTemplate")}
 										<ChevronRight className="h-4 w-4" />
 									</Button>
 								</div>
@@ -310,16 +314,16 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 													{categoryIcons[template.category as CategoryFilter] || <LayoutTemplate className="h-4 w-4" />}
 												</div>
 												<div className="flex-1 min-w-0">
-													<p className="font-medium text-sm leading-tight truncate">{template.name}</p>
+													<p className="font-medium text-sm leading-tight truncate">{translateChartName(template.id, template.name, locale)}</p>
 													<p className="text-xs text-muted-foreground">
-														{template.rows.length} sizes · {template.columns.length} cols
-														{template.variants && ` · ${Object.keys(template.variants).length} var`}
+														{t("templates.summaryCompact").replace("{sizes}", String(template.rows.length)).replace("{cols}", String(template.columns.length))}
+														{template.variants && ` · ${t("templates.variants").replace("{count}", String(Object.keys(template.variants).length))}`}
 													</p>
 												</div>
 												<ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0" />
 											</div>
 											<p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 mb-2">
-												{template.description}
+												{translateChartDescription(template.id, template.description, locale)}
 											</p>
 											<div className="flex flex-wrap gap-1">
 												{template.tags.slice(0, 3).map((tag) => (
@@ -337,7 +341,7 @@ export function TemplatePicker({ onSelect, trigger }: TemplatePickerProps) {
 									))}
 									{filteredTemplates.length === 0 && (
 										<div className="col-span-full text-center py-8 text-muted-foreground">
-											No templates found matching your criteria.
+											{t("templates.noTemplatesFound")}
 										</div>
 									)}
 								</div>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Script from "next/script";
 import { Copy, Check, RefreshCw } from "lucide-react";
+import { useLocale } from "@/hooks/use-locale";
 
 export function LiveBuilder() {
 	const [chartSlug, setChartSlug] = useState("mens-tops");
@@ -11,6 +12,8 @@ export function LiveBuilder() {
 	const [compact, setCompact] = useState(false);
 	const [copied, setCopied] = useState(false);
 	const [previewKey, setPreviewKey] = useState(0);
+
+	const { t } = useLocale();
 
 	const getBaseUrl = () => {
 		if (typeof window !== "undefined") return window.location.origin;
@@ -42,37 +45,37 @@ export function LiveBuilder() {
 	return (
 		<div className="max-w-5xl">
 			<div className="mb-8">
-				<h1 className="text-2xl font-bold">Live Builder</h1>
+				<h1 className="text-2xl font-bold">{t("examples.live.title")}</h1>
 				<p className="mt-2 text-muted-foreground">
-					Configure your widget settings and see a live preview.
+					{t("examples.builder.subtitle")}
 				</p>
 			</div>
 
 			<div className="grid gap-8 lg:grid-cols-2">
 				{/* Configuration Panel */}
 				<div>
-					<h2 className="text-lg font-semibold mb-4">Configuration</h2>
+					<h2 className="text-lg font-semibold mb-4">{t("examples.builder.configuration")}</h2>
 
 					<div className="space-y-4">
 						<div>
 							<label className="block text-sm font-medium mb-1">
-								Chart Slug
+								{t("docs.embed.chartSlug")}
 							</label>
 							<input
 								type="text"
 								value={chartSlug}
 								onChange={(e) => setChartSlug(e.target.value)}
 								className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm"
-								placeholder="e.g., mens-tops"
+								placeholder={t("examples.builder.slugPlaceholder")}
 							/>
 							<p className="mt-1 text-xs text-muted-foreground">
-								Available: mens-tops, womens-bottoms, mens-gloves, etc.
+								{t("examples.builder.slugHint")}
 							</p>
 						</div>
 
 						<div>
 							<label className="block text-sm font-medium mb-1">
-								Theme
+								{t("docs.embed.theme")}
 							</label>
 							<div className="flex gap-2">
 								<button
@@ -82,7 +85,7 @@ export function LiveBuilder() {
 											: "border-border hover:bg-muted"
 										}`}
 								>
-									Light
+									{t("docs.embed.light")}
 								</button>
 								<button
 									onClick={() => setTheme("dark")}
@@ -91,14 +94,14 @@ export function LiveBuilder() {
 											: "border-border hover:bg-muted"
 										}`}
 								>
-									Dark
+									{t("docs.embed.dark")}
 								</button>
 							</div>
 						</div>
 
 						<div>
 							<label className="block text-sm font-medium mb-1">
-								Default Unit
+								{t("docs.embed.defaultUnit")}
 							</label>
 							<div className="flex gap-2">
 								<button
@@ -108,7 +111,7 @@ export function LiveBuilder() {
 											: "border-border hover:bg-muted"
 										}`}
 								>
-									Inches
+									{t("docs.embed.inches")}
 								</button>
 								<button
 									onClick={() => setUnit("cm")}
@@ -117,7 +120,7 @@ export function LiveBuilder() {
 											: "border-border hover:bg-muted"
 										}`}
 								>
-									Centimeters
+									{t("docs.embed.centimeters")}
 								</button>
 							</div>
 						</div>
@@ -131,11 +134,11 @@ export function LiveBuilder() {
 									className="rounded border-border"
 								/>
 								<span className="text-sm font-medium">
-									Compact Mode
+									{t("docs.embed.compactMode")}
 								</span>
 							</label>
 							<p className="mt-1 text-xs text-muted-foreground ml-6">
-								Reduces padding for smaller spaces
+								{t("examples.builder.compactDesc")}
 							</p>
 						</div>
 					</div>
@@ -143,13 +146,13 @@ export function LiveBuilder() {
 					{/* Generated Code */}
 					<div className="mt-6">
 						<div className="flex items-center justify-between mb-2">
-							<h3 className="text-sm font-semibold">Embed Code</h3>
+							<h3 className="text-sm font-semibold">{t("examples.builder.embedCode")}</h3>
 							<button
 								onClick={copyToClipboard}
 								className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
 							>
 								{copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-								{copied ? "Copied!" : "Copy"}
+								{copied ? t("docs.embed.copied") : t("docs.embed.copy")}
 							</button>
 						</div>
 						<pre className="rounded-lg bg-zinc-950 p-3 text-xs text-zinc-100 overflow-x-auto">
@@ -161,13 +164,13 @@ export function LiveBuilder() {
 				{/* Preview Panel */}
 				<div>
 					<div className="flex items-center justify-between mb-4">
-						<h2 className="text-lg font-semibold">Preview</h2>
+						<h2 className="text-lg font-semibold">{t("examples.builder.preview")}</h2>
 						<button
 							onClick={refreshPreview}
 							className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
 						>
 							<RefreshCw className="h-4 w-4" />
-							Refresh
+							{t("examples.builder.refresh")}
 						</button>
 					</div>
 

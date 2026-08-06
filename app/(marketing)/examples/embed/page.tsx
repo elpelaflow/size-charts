@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
 import { EmbedExample } from "@/components/examples/embed-example";
+import { getT } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-	title: "Embed Examples",
-	description: "Pre-configured widget examples showing light and dark themes, different units, and compact mode for the size chart embed.",
-	openGraph: {
-		title: "Embed Examples | Size Charts",
-		description: "Pre-configured widget examples showing light and dark themes, different units, and compact mode.",
-	},
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getT();
+	return {
+		title: t("seo.embedExamples.title"),
+		description: t("seo.embedExamples.desc"),
+		openGraph: {
+			title: `${t("seo.embedExamples.title")} | Size Charts`,
+			description: t("seo.embedExamples.desc"),
+		},
+	};
+}
 
 export default function EmbedExamplePage() {
 	return <EmbedExample />;

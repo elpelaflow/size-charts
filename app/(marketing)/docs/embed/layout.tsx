@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
+import { getT } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-	title: "Embed Widget",
-	description: "Add size charts to any website with a simple script tag. Configure themes, units, and display options with our live builder.",
-	openGraph: {
-		title: "Embed Widget | Size Charts",
-		description: "Add size charts to any website with a simple script tag. Configure themes, units, and display options.",
-	},
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getT();
+	return {
+		title: t("seo.embedWidget.title"),
+		description: t("seo.embedWidget.desc"),
+		openGraph: {
+			title: `${t("seo.embedWidget.title")} | Size Charts`,
+			description: t("seo.embedWidget.desc"),
+		},
+	};
+}
 
 export default function EmbedDocsLayout({
 	children,

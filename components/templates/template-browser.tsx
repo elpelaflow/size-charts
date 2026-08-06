@@ -35,6 +35,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useLocale } from "@/hooks/use-locale";
+import { translateChartName, translateChartDescription, translateColumnName } from "@/lib/i18n/data-translations";
 
 export interface Template {
 	id: string;
@@ -59,12 +61,12 @@ const categoryIcons: Record<CategoryFilter, React.ReactNode> = {
 	accessories: <Watch className="h-4 w-4" />,
 };
 
-const categoryLabels: Record<CategoryFilter, string> = {
-	all: "All Templates",
-	apparel: "Apparel",
-	youth: "Youth",
-	footwear: "Footwear",
-	accessories: "Accessories",
+const categoryKeys: Record<CategoryFilter, string> = {
+	all: "templates.all",
+	apparel: "templates.apparel",
+	youth: "templates.youth",
+	footwear: "templates.footwear",
+	accessories: "templates.accessories",
 };
 
 interface TemplateBrowserProps {
@@ -88,6 +90,8 @@ export function TemplateBrowser({
 	const [searchQuery, setSearchQuery] = useState("");
 	const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
 	const [selectedVariant, setSelectedVariant] = useState<string | undefined>();
+
+	const { t, locale } = useLocale();
 
 	const { data, isLoading } = useQuery<{
 		templates: Template[];
@@ -166,14 +170,14 @@ export function TemplateBrowser({
 									{categoryIcons[template.category as CategoryFilter] || <LayoutTemplate className="h-4 w-4" />}
 								</div>
 								<div className="flex-1 min-w-0">
-									<p className="font-medium text-sm leading-tight truncate">{template.name}</p>
+									<p className="font-medium text-sm leading-tight truncate">{translateChartName(template.id, template.name, locale)}</p>
 									<p className="text-xs text-muted-foreground">
-										{template.rows.length} sizes · {template.columns.length} cols
+										{t("templates.summaryCompact").replace("{sizes}", String(template.rows.length)).replace("{cols}", String(template.columns.length))}
 									</p>
 								</div>
 							</div>
 							<p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
-								{template.description}
+								{translateChartDescription(template.id, template.description, locale)}
 							</p>
 						</button>
 					))}
@@ -198,7 +202,7 @@ export function TemplateBrowser({
 		<div className="flex gap-6">
 			{/* Sidebar - Category filter */}
 			<div className="hidden md:block w-48 flex-shrink-0 space-y-1">
-				{(Object.keys(categoryLabels) as CategoryFilter[]).map((cat) => (
+				{(Object.keys(categoryKeys) as CategoryFilter[]).map((cat) => (
 					<button
 						key={cat}
 						onClick={() => setSelectedCategory(cat)}
@@ -210,7 +214,7 @@ export function TemplateBrowser({
 						)}
 					>
 						{categoryIcons[cat]}
-						<span className="flex-1 text-left">{categoryLabels[cat]}</span>
+						<span className="flex-1 text-left">{t(categoryKeys[cat])}</span>
 						{cat !== "all" && categoryCounts[cat] !== undefined && (
 							<span className="text-xs opacity-70">{categoryCounts[cat]}</span>
 						)}
@@ -222,7 +226,7 @@ export function TemplateBrowser({
 			<div className="flex-1 min-w-0">
 				{/* Mobile category filter */}
 				<div className="flex md:hidden gap-2 mb-4 overflow-x-auto pb-2">
-					{(Object.keys(categoryLabels) as CategoryFilter[]).map((cat) => (
+					{(Object.keys(categoryKeys) as CategoryFilter[]).map((cat) => (
 						<button
 							key={cat}
 							onClick={() => setSelectedCategory(cat)}
@@ -234,7 +238,7 @@ export function TemplateBrowser({
 							)}
 						>
 							{categoryIcons[cat]}
-							<span>{categoryLabels[cat]}</span>
+							<span>{t(categoryKeys[cat])}</span>
 						</button>
 					))}
 				</div>
@@ -242,8 +246,8 @@ export function TemplateBrowser({
 				{/* Search */}
 				<div className="relative mb-4">
 					<Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-					<Input
-						placeholder="Search templates..."
+<Input
+						placeholder={t("templates.searchPlaceholder")}
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="pl-9"
@@ -265,17 +269,17 @@ export function TemplateBrowser({
 								<div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
 									{categoryIcons[template.category as CategoryFilter] || <LayoutTemplate className="h-4 w-4" />}
 								</div>
-								<div className="flex-1 min-w-0">
-									<p className="font-medium text-sm leading-tight truncate">{template.name}</p>
-									<p className="text-xs text-muted-foreground">
-										{template.rows.length} sizes · {template.columns.length} columns
-										{template.variants && Object.keys(template.variants).length > 0 && ` · ${Object.keys(template.variants).length} variants`}
-									</p>
-								</div>
+<div className="flex-1 min-w-0">
+								<p className="font-medium text-sm leading-tight truncate">{translateChartName(template.id, template.name, locale)}</p>
+								<p className="text-xs text-muted-foreground">
+									{t("templates.summary").replace("{sizes}", String(template.rows.length)).replace("{cols}", String(template.columns.length))}
+									{template.variants && Object.keys(template.variants).length > 0 && ` · ${t("templates.variants").replace("{count}", String(Object.keys(template.variants).length))}`}
+								</p>
 							</div>
-							<p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 mb-3">
-								{template.description}
-							</p>
+						</div>
+						<p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 mb-3">
+							{translateChartDescription(template.id, template.description, locale)}
+						</p>
 							<div className="flex flex-wrap gap-1">
 								{template.tags.slice(0, 4).map((tag) => (
 									<Badge key={tag} variant="secondary" className="text-[10px] px-1.5 py-0">
@@ -292,7 +296,7 @@ export function TemplateBrowser({
 					))}
 					{filteredTemplates.length === 0 && (
 						<div className="col-span-full text-center py-8 text-muted-foreground">
-							No templates found matching your criteria.
+							{t("templates.noTemplatesFound")}
 						</div>
 					)}
 				</div>
@@ -336,6 +340,7 @@ function TemplateDialog({
 	getPreviewRows,
 	categoryIcons,
 }: TemplateDialogProps) {
+	const { t, locale } = useLocale();
 	if (!template) return null;
 
 	return (
@@ -347,8 +352,8 @@ function TemplateDialog({
 							{categoryIcons[template.category] || <LayoutTemplate className="h-5 w-5" />}
 						</div>
 						<div>
-							<DialogTitle>{template.name}</DialogTitle>
-							<DialogDescription>{template.description}</DialogDescription>
+							<DialogTitle>{translateChartName(template.id, template.name, locale)}</DialogTitle>
+							<DialogDescription>{translateChartDescription(template.id, template.description, locale)}</DialogDescription>
 						</div>
 					</div>
 				</DialogHeader>
@@ -366,14 +371,14 @@ function TemplateDialog({
 					{/* Variant selector */}
 					{template.variants && Object.keys(template.variants).length > 0 && (
 						<div>
-							<p className="text-sm font-medium mb-2">Select Variant:</p>
+							<p className="text-sm font-medium mb-2">{t("templates.selectVariant")}</p>
 							<div className="flex flex-wrap gap-2">
 								<Button
 									variant={selectedVariant === undefined ? "default" : "outline"}
 									size="sm"
 									onClick={() => onVariantChange(undefined)}
 								>
-									Default
+									{t("templates.default")}
 								</Button>
 								{Object.entries(template.variants).map(([key, variant]) => (
 									<Button
@@ -391,14 +396,14 @@ function TemplateDialog({
 
 					{/* Preview table */}
 					<div>
-						<p className="text-sm font-medium mb-2">Preview:</p>
+						<p className="text-sm font-medium mb-2">{t("templates.previewLabel")}</p>
 						<div className="rounded-md border">
 							<Table>
 								<TableHeader>
 									<TableRow>
 										{template.columns.map((col) => (
 											<TableHead key={col.name} className="text-xs">
-												{col.name}
+												{translateColumnName(col.name, locale)}
 											</TableHead>
 										))}
 									</TableRow>
@@ -417,7 +422,7 @@ function TemplateDialog({
 							</Table>
 							{((selectedVariant ? template.variants?.[selectedVariant]?.rows.length : template.rows.length) || 0) > 4 && (
 								<p className="text-xs text-muted-foreground text-center py-2 border-t">
-									+ {((selectedVariant ? template.variants?.[selectedVariant]?.rows.length : template.rows.length) || 0) - 4} more rows
+									{t("templates.moreRows").replace("{count}", String(((selectedVariant ? template.variants?.[selectedVariant]?.rows.length : template.rows.length) || 0) - 4))}
 								</p>
 							)}
 						</div>
@@ -427,7 +432,7 @@ function TemplateDialog({
 					<div className="grid grid-cols-3 gap-4 text-sm">
 						<div className="rounded-lg border p-3 text-center">
 							<p className="text-2xl font-semibold text-primary">{template.columns.length}</p>
-							<p className="text-xs text-muted-foreground">Columns</p>
+							<p className="text-xs text-muted-foreground">{t("templates.columns")}</p>
 						</div>
 						<div className="rounded-lg border p-3 text-center">
 							<p className="text-2xl font-semibold text-primary">
@@ -435,13 +440,13 @@ function TemplateDialog({
 									? template.variants?.[selectedVariant]?.rows.length
 									: template.rows.length}
 							</p>
-							<p className="text-xs text-muted-foreground">Sizes</p>
+							<p className="text-xs text-muted-foreground">{t("templates.sizes")}</p>
 						</div>
 						<div className="rounded-lg border p-3 text-center">
 							<p className="text-2xl font-semibold text-primary">
 								{template.measurementInstructions.length}
 							</p>
-							<p className="text-xs text-muted-foreground">Instructions</p>
+							<p className="text-xs text-muted-foreground">{t("templates.instructions")}</p>
 						</div>
 					</div>
 				</div>
@@ -453,13 +458,13 @@ function TemplateDialog({
 						className="w-full"
 					>
 						<Plus className="h-4 w-4" />
-						Create Size Chart from Template
+						{t("templates.createChartFromTemplate")}
 					</Button>
 				) : (
 					<Button asChild className="w-full">
 						<Link href="/admin">
 							<Play className="h-4 w-4" />
-							Try in Demo Mode
+							{t("templates.tryInDemo")}
 						</Link>
 					</Button>
 				)}

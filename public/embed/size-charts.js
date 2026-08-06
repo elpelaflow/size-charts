@@ -13,6 +13,7 @@
  *   data-unit: "in" or "cm" (default: "in")
  *   data-theme: "light" or "dark" (default: "light")
  *   data-compact: "true" for compact mode
+ *   data-lang: "en" or "es" (optional, overrides cookie)
  */
 
 (function() {
@@ -21,6 +22,32 @@
   // Get script element and API URL
   const currentScript = document.currentScript;
   const apiUrl = currentScript?.getAttribute('data-api') || '';
+
+  // Locale handling: prefer a data-lang attribute, then the embedded locale cookie,
+  // and finally fall back to English.
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return match ? decodeURIComponent(match[1]) : '';
+  }
+
+  const messages = {
+    en: {
+      loading: 'Loading...',
+      missingChart: 'Missing data-chart attribute',
+      notFound: 'Chart not found',
+      failed: 'Failed to load chart'
+    },
+    es: {
+      loading: 'Cargando...',
+      missingChart: 'Falta el atributo data-chart',
+      notFound: 'Tabla de tallas no encontrada',
+      failed: 'No se pudo cargar la tabla de tallas'
+    }
+  };
+
+  let lang = (currentScript && (currentScript.getAttribute('data-lang') || '')) || getCookie('locale') || 'en';
+  if (lang !== 'es') lang = 'en';
+  const msg = messages[lang];
 
   // CSS styles for the widget
   const styles = `
@@ -313,7 +340,7 @@
     });
 
     if (!response.ok) {
-      throw new Error(response.status === 404 ? 'Chart not found' : 'Failed to load chart');
+      throw new Error(response.status === 404 ? msg.notFound : msg.failed);
     }
 
     return response.json();
@@ -323,7 +350,7 @@
   async function initWidget(container) {
     const chartSlug = container.getAttribute('data-chart');
     if (!chartSlug) {
-      container.innerHTML = '<div class="sc-error">Missing data-chart attribute</div>';
+      container.innerHTML = '<div class="sc-error">' + msg.missingChart + '</div>';
       return;
     }
 
@@ -337,7 +364,7 @@
     const theme = options.theme;
 
     // Show loading state
-    container.innerHTML = `<div class="sc-widget sc-${theme}"><div class="sc-loading">Loading...</div></div>`;
+    container.innerHTML = `<div class="sc-widget sc-${theme}"><div class="sc-loading">${msg.loading}</div></div>`;
 
     try {
       const data = await fetchChart(chartSlug, apiKey);

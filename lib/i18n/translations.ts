@@ -14,6 +14,15 @@ export const en = {
   "nav.openMenu": "Open menu",
   "nav.closeMenu": "Close menu",
 
+  // Accessibility
+  "a11y.switchLanguage": "Switch language",
+  "a11y.switchToSpanish": "Switch to Spanish",
+  "a11y.switchToEnglish": "Switch to English",
+  "a11y.switchToDark": "Switch to dark mode",
+  "a11y.switchToLight": "Switch to light mode",
+  "a11y.toggleTheme": "Toggle theme",
+  "a11y.toggleSidebar": "Toggle Sidebar",
+
   // Footer
   "footer.brand": "Size Charts API",
 
@@ -292,8 +301,9 @@ export const en = {
   "docs.api.err429": "Rate limit exceeded (100 req/min)",
   "docs.api.err500": "Server error",
 
-  // Admin
+// Admin
   "admin.title": "Admin Panel",
+  "admin.breadcrumb": "Admin",
   "admin.signIn": "Sign in",
   "admin.signingIn": "Signing in...",
   "admin.username": "Username",
@@ -590,6 +600,79 @@ export const en = {
   "admin.chartSaved": "Size chart saved successfully",
   "admin.chartSaveFailed": "Failed to save size chart",
   "admin.publishStatusFailed": "Failed to update publish status",
+  "admin.new": "New",
+  "admin.embedExamples": "Embed Examples",
+
+  // Admin - Size Chart Editor UI
+  "editor.noColumns": "No columns defined yet. Add your first column to start building the size chart.",
+  "editor.addColumn": "Add Column",
+  "editor.addRow": "Add Row",
+  "editor.deleteRow": "Delete row",
+  "editor.configureColumn": "Configure Column",
+  "editor.configureColumnTitle": "Configure column",
+  "editor.columnName": "Column Name",
+  "editor.columnNamePlaceholder": "e.g., Waist, Size, US",
+  "editor.columnType": "Column Type",
+  "editor.labelType": "Label Type",
+  "editor.allLabels": "All Labels (no filter)",
+  "editor.columnFilterHint": "Selecting a label type will filter the dropdown options when editing cells in this column.",
+  "editor.deleteColumn": "Delete Column",
+  "editor.select": "— Select —",
+  "editor.min": "Min",
+  "editor.max": "Max",
+  "editor.howToMeasure": "How to Measure",
+  "editor.noInstructions": "No measurement instructions available. Create some in the admin settings.",
+  "editor.selectedInstructions": "Selected instructions (in order shown):",
+  "editor.selectedCount": "{count} selected",
+
+  // Templates
+  "templates.chooseTemplate": "Choose a Template",
+  "templates.chooseTemplateDesc": "Select a template to quickly create a new size chart with pre-configured columns and sample data.",
+  "templates.startFromTemplate": "Start from Template",
+  "templates.searchPlaceholder": "Search templates...",
+  "templates.backToTemplates": "Back to templates",
+  "templates.selectVariant": "Select Variant:",
+  "templates.default": "Default",
+  "templates.previewLabel": "Preview:",
+  "templates.sizes": "Sizes",
+  "templates.instructions": "Instructions",
+  "templates.moreRows": "+ {count} more rows",
+  "templates.createChartFromTemplate": "Create Size Chart from Template",
+  "templates.tryInDemo": "Try in Demo Mode",
+  "templates.summary": "{sizes} sizes · {cols} columns",
+  "templates.summaryCompact": "{sizes} sizes · {cols} cols",
+  "templates.variants": "{count} variants",
+  "templates.noTemplatesFound": "No templates found matching your criteria.",
+
+  // Examples - Live Builder & Embed
+  "examples.builder.subtitle": "Configure your widget settings and see a live preview.",
+  "examples.builder.configuration": "Configuration",
+  "examples.builder.slugPlaceholder": "e.g., mens-tops",
+  "examples.builder.slugHint": "Available: mens-tops, womens-bottoms, mens-gloves, etc.",
+  "examples.builder.compactDesc": "Reduces padding for smaller spaces",
+  "examples.builder.embedCode": "Embed Code",
+  "examples.builder.preview": "Preview",
+  "examples.builder.refresh": "Refresh",
+  "examples.embedExamples.title": "Embed Widget Examples",
+  "examples.embedExamples.subtitle": "Pre-configured examples showing different theme and configuration options.",
+  "examples.embed.lightTheme": "Light Theme (Inches)",
+  "examples.embed.darkTheme": "Dark Theme (Centimeters)",
+  "examples.embed.compactTheme": "Compact Mode",
+  "examples.embed.configOptions": "Configuration Options",
+  "examples.embed.values": "Values",
+  "examples.embed.apiKeyString": "API key string",
+  "examples.standaloneHtml": "Standalone HTML",
+
+  // Error & Not Found
+  "notFound.title": "Page Not Found",
+  "notFound.description": "The page you're looking for doesn't exist or has been moved. Check the URL or navigate back to a known page.",
+  "notFound.goBack": "Go Back",
+  "error.title": "Something went wrong",
+  "error.description": "An unexpected error occurred. Please try again or contact support if the problem persists.",
+  "error.tryAgain": "Try Again",
+  "error.errorId": "Error ID: {digest}",
+  "error.critical": "A critical error occurred. Please refresh the page or try again later.",
+  "common.home": "Home",
 
   // Common
   "common.loading": "Loading...",
@@ -597,6 +680,31 @@ export const en = {
   "common.noResults": "No results found",
   "common.viewAll": "View all",
   "common.learnMore": "Learn more",
+
+  // SEO / Metadata
+  "seo.templates.title": "Size Chart Templates",
+  "seo.templates.desc": "Browse pre-built size chart templates for clothing, footwear, accessories, and more. Start with a template and customize for your needs.",
+  "seo.changelog.title": "Changelog",
+  "seo.changelog.desc": "See what's been built, what's in progress, and what's planned for the Size Charts platform.",
+  "seo.embedWidget.title": "Embed Widget",
+  "seo.embedWidget.desc": "Add size charts to any website with a simple script tag. Configure themes, units, and display options with our live builder.",
+  "seo.embedExamples.title": "Embed Examples",
+  "seo.embedExamples.desc": "Pre-configured widget examples showing light and dark themes, different units, and compact mode for the size chart embed.",
+  "seo.gettingStarted.title": "Getting Started",
+  "seo.gettingStarted.desc": "Learn how to set up size charts from scratch. Covers categories, labels, and creating your first chart.",
+  "seo.examples.title": "Examples",
+  "seo.examples.desc": "Explore different ways to use the size chart widget. View pre-configured examples, use the live builder, or check out standalone HTML integration.",
+  "seo.api.title": "API Reference",
+  "seo.api.desc": "Complete REST API documentation for integrating size charts into your application. Includes endpoints for charts, categories, and labels.",
+  "seo.liveBuilder.title": "Live Builder",
+  "seo.liveBuilder.desc": "Interactive builder to configure and preview the size chart widget with your custom settings. Generate embed code instantly.",
+
+  // SEO default
+  "seo.default.title": "Size Charts - Open Source Size Chart Management",
+  "seo.default.desc": "Open-source size chart management system for e-commerce. Create, manage, and embed size charts with a REST API and embeddable widget.",
+  "seo.default.ogDesc": "Create, manage, and embed size charts for your e-commerce platform. Free and open source.",
+  "seo.sizeGuide.title": "Size Guide",
+  "seo.sizeGuide.desc": "Find the perfect fit with our comprehensive size charts. Browse sizing guides by category for clothing, footwear, and accessories.",
 } as const;
 
 export const es: Record<keyof typeof en, string> = {
@@ -609,6 +717,15 @@ export const es: Record<keyof typeof en, string> = {
   "nav.admin": "Admin",
   "nav.openMenu": "Abrir menú",
   "nav.closeMenu": "Cerrar menú",
+
+  // Accessibility
+  "a11y.switchLanguage": "Cambiar idioma",
+  "a11y.switchToSpanish": "Cambiar a Español",
+  "a11y.switchToEnglish": "Cambiar a Inglés",
+  "a11y.switchToDark": "Cambiar al modo oscuro",
+  "a11y.switchToLight": "Cambiar al modo claro",
+  "a11y.toggleTheme": "Alternar tema",
+  "a11y.toggleSidebar": "Alternar barra lateral",
 
   // Footer
   "footer.brand": "Size Charts API",
@@ -890,6 +1007,7 @@ export const es: Record<keyof typeof en, string> = {
 
   // Admin
   "admin.title": "Panel de Administración",
+  "admin.breadcrumb": "Admin",
   "admin.signIn": "Iniciar sesión",
   "admin.signingIn": "Iniciando sesión...",
   "admin.username": "Usuario",
@@ -1186,6 +1304,79 @@ export const es: Record<keyof typeof en, string> = {
   "admin.chartSaved": "Tabla de tallas guardada exitosamente",
   "admin.chartSaveFailed": "Error al guardar la tabla de tallas",
   "admin.publishStatusFailed": "Error al actualizar el estado de publicación",
+  "admin.new": "Nuevo",
+  "admin.embedExamples": "Ejemplos de Integración",
+
+  // Admin - Size Chart Editor UI
+  "editor.noColumns": "Aún no hay columnas definidas. Agrega tu primera columna para empezar a construir la tabla de tallas.",
+  "editor.addColumn": "Agregar Columna",
+  "editor.addRow": "Agregar Fila",
+  "editor.deleteRow": "Eliminar fila",
+  "editor.configureColumn": "Configurar Columna",
+  "editor.configureColumnTitle": "Configurar columna",
+  "editor.columnName": "Nombre de Columna",
+  "editor.columnNamePlaceholder": "ej., Cintura, Talla, US",
+  "editor.columnType": "Tipo de Columna",
+  "editor.labelType": "Tipo de Etiqueta",
+  "editor.allLabels": "Todas las Etiquetas (sin filtro)",
+  "editor.columnFilterHint": "Al seleccionar un tipo de etiqueta se filtrarán las opciones del desplegable al editar celdas en esta columna.",
+  "editor.deleteColumn": "Eliminar Columna",
+  "editor.select": "— Seleccionar —",
+  "editor.min": "Mín",
+  "editor.max": "Máx",
+  "editor.howToMeasure": "Cómo Medir",
+  "editor.noInstructions": "No hay instrucciones de medición disponibles. Crea algunas en la configuración del admin.",
+  "editor.selectedInstructions": "Instrucciones seleccionadas (en el orden mostrado):",
+  "editor.selectedCount": "{count} seleccionadas",
+
+  // Templates
+  "templates.chooseTemplate": "Elegir una Plantilla",
+  "templates.chooseTemplateDesc": "Selecciona una plantilla para crear rápidamente una nueva tabla de tallas con columnas preconfiguradas y datos de ejemplo.",
+  "templates.startFromTemplate": "Usar Plantilla",
+  "templates.searchPlaceholder": "Buscar plantillas...",
+  "templates.backToTemplates": "Volver a las plantillas",
+  "templates.selectVariant": "Seleccionar Variante:",
+  "templates.default": "Predeterminada",
+  "templates.previewLabel": "Vista previa:",
+  "templates.sizes": "Tallas",
+  "templates.instructions": "Instrucciones",
+  "templates.moreRows": "+ {count} filas más",
+  "templates.createChartFromTemplate": "Crear Tabla de Tallas desde Plantilla",
+  "templates.tryInDemo": "Probar en Modo Demo",
+  "templates.summary": "{sizes} tallas · {cols} columnas",
+  "templates.summaryCompact": "{sizes} tallas · {cols} cols",
+  "templates.variants": "{count} variantes",
+  "templates.noTemplatesFound": "No se encontraron plantillas que coincidan con tus criterios.",
+
+  // Examples - Live Builder & Embed
+  "examples.builder.subtitle": "Configura los ajustes de tu widget y mira una vista previa en vivo.",
+  "examples.builder.configuration": "Configuración",
+  "examples.builder.slugPlaceholder": "ej., mens-tops",
+  "examples.builder.slugHint": "Disponibles: mens-tops, womens-bottoms, mens-gloves, etc.",
+  "examples.builder.compactDesc": "Reduce el espaciado para espacios más pequeños",
+  "examples.builder.embedCode": "Código de Integración",
+  "examples.builder.preview": "Vista previa",
+  "examples.builder.refresh": "Actualizar",
+  "examples.embedExamples.title": "Ejemplos del Widget Integrable",
+  "examples.embedExamples.subtitle": "Ejemplos preconfigurados que muestran diferentes temas y opciones de configuración.",
+  "examples.embed.lightTheme": "Tema Claro (Pulgadas)",
+  "examples.embed.darkTheme": "Tema Oscuro (Centímetros)",
+  "examples.embed.compactTheme": "Modo Compacto",
+  "examples.embed.configOptions": "Opciones de Configuración",
+  "examples.embed.values": "Valores",
+  "examples.embed.apiKeyString": "Cadena de clave de API",
+  "examples.standaloneHtml": "HTML Independiente",
+
+  // Error & Not Found
+  "notFound.title": "Página No Encontrada",
+  "notFound.description": "La página que buscas no existe o ha sido movida. Revisa la URL o navega de vuelta a una página conocida.",
+  "notFound.goBack": "Volver",
+  "error.title": "Algo salió mal",
+  "error.description": "Ocurrió un error inesperado. Inténtalo de nuevo o contacta con soporte si el problema persiste.",
+  "error.tryAgain": "Intentar de nuevo",
+  "error.errorId": "ID de error: {digest}",
+  "error.critical": "Ocurrió un error crítico. Recarga la página o inténtalo de nuevo más tarde.",
+  "common.home": "Inicio",
 
   // Common
   "common.loading": "Cargando...",
@@ -1193,6 +1384,31 @@ export const es: Record<keyof typeof en, string> = {
   "common.noResults": "No se encontraron resultados",
   "common.viewAll": "Ver todo",
   "common.learnMore": "Más información",
+
+  // SEO / Metadata
+  "seo.templates.title": "Plantillas de Tablas de Tallas",
+  "seo.templates.desc": "Explora plantillas prediseñadas de tablas de tallas para ropa, calzado, accesorios y más. Comienza con una plantilla y personalízala según tus necesidades.",
+  "seo.changelog.title": "Registro de Cambios",
+  "seo.changelog.desc": "Consulta lo que se ha construido, lo que está en curso y lo que se planea para la plataforma Size Charts.",
+  "seo.embedWidget.title": "Widget de Inserción",
+  "seo.embedWidget.desc": "Añade tablas de tallas a cualquier sitio web con una simple etiqueta script. Configura temas, unidades y opciones de visualización con nuestro generador en vivo.",
+  "seo.embedExamples.title": "Ejemplos de Inserción",
+  "seo.embedExamples.desc": "Ejemplos preconfigurados del widget que muestran temas claros y oscuros, diferentes unidades y modo compacto para insertar tablas de tallas.",
+  "seo.gettingStarted.title": "Primeros Pasos",
+  "seo.gettingStarted.desc": "Aprende a configurar tablas de tallas desde cero. Cubre categorías, etiquetas y la creación de tu primera tabla.",
+  "seo.examples.title": "Ejemplos",
+  "seo.examples.desc": "Explora diferentes formas de usar el widget de tablas de tallas. Consulta ejemplos preconfigurados, usa el generador en vivo o mira la integración HTML independiente.",
+  "seo.api.title": "Referencia de la API",
+  "seo.api.desc": "Documentación completa de la API REST para integrar tablas de tallas en tu aplicación. Incluye puntos finales para tablas, categorías y etiquetas.",
+  "seo.liveBuilder.title": "Generador en Vivo",
+  "seo.liveBuilder.desc": "Generador interactivo para configurar y previsualizar el widget de tablas de tallas con tus ajustes personalizados. Genera el código de inserción al instante.",
+
+  // SEO default
+  "seo.default.title": "Size Charts - Gestión de Tablas de Tallas de Código Abierto",
+  "seo.default.desc": "Sistema de gestión de tablas de tallas de código abierto para e-commerce. Crea, gestiona e inserta tablas de tallas con una API REST y un widget insertable.",
+  "seo.default.ogDesc": "Crea, gestiona e inserta tablas de tallas para tu plataforma de e-commerce. Gratis y de código abierto.",
+  "seo.sizeGuide.title": "Guía de Tallas",
+  "seo.sizeGuide.desc": "Encuentra el ajuste perfecto con nuestras tablas de tallas completas. Explora guías de tallas por categoría para ropa, calzado y accesorios.",
 };
 
 export const translations = { en, es };

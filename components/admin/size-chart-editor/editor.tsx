@@ -8,6 +8,7 @@ import { ColumnConfig } from "./column-config";
 import { Plus, Trash2 } from "lucide-react";
 import type { EditorState, EditorColumn, EditorRow, EditorCell, CellPosition } from "./types";
 import type { SizeLabel } from "@prisma/client";
+import { useLocale } from "@/hooks/use-locale";
 
 interface EditorProps {
   state: EditorState;
@@ -17,6 +18,7 @@ interface EditorProps {
 
 export function SizeChartEditor({ state, onChange, labels = [] }: EditorProps) {
   const [editingCell, setEditingCell] = useState<CellPosition | null>(null);
+  const { t } = useLocale();
 
   const updateColumn = useCallback(
     (index: number, column: EditorColumn) => {
@@ -144,11 +146,11 @@ export function SizeChartEditor({ state, onChange, labels = [] }: EditorProps) {
     return (
       <div className="rounded-lg border-2 border-dashed border-zinc-300 p-8 text-center dark:border-zinc-700">
         <p className="mb-4 text-zinc-600 dark:text-zinc-400">
-          No columns defined yet. Add your first column to start building the size chart.
+          {t("editor.noColumns")}
         </p>
         <Button onClick={addColumn}>
           <Plus className="h-4 w-4" />
-          Add Column
+          {t("editor.addColumn")}
         </Button>
       </div>
     );
@@ -190,7 +192,7 @@ export function SizeChartEditor({ state, onChange, labels = [] }: EditorProps) {
                     <button
                       onClick={() => deleteRow(rowIndex)}
                       className="invisible rounded p-0.5 text-zinc-400 hover:bg-red-50 hover:text-red-500 group-hover:visible dark:hover:bg-red-900/20"
-                      title="Delete row"
+                      title={t("editor.deleteRow")}
                     >
                       <Trash2 className="h-3 w-3" />
                     </button>
@@ -234,7 +236,7 @@ export function SizeChartEditor({ state, onChange, labels = [] }: EditorProps) {
 
       <Button variant="outline" onClick={addRow}>
         <Plus className="h-4 w-4" />
-        Add Row
+        {t("editor.addRow")}
       </Button>
     </div>
   );

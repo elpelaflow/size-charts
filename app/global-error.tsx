@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import * as Sentry from "@sentry/nextjs";
+import { useLocale } from "@/hooks/use-locale";
 
 export default function GlobalError({
 	error,
@@ -14,8 +15,10 @@ export default function GlobalError({
 		Sentry.captureException(error);
 	}, [error]);
 
+	const { t, locale } = useLocale();
+
 	return (
-		<html lang="en">
+		<html lang={locale}>
 			<body style={{ margin: 0, fontFamily: "system-ui, sans-serif" }}>
 				<div
 					style={{
@@ -65,7 +68,7 @@ export default function GlobalError({
 							margin: "0 0 8px 0",
 						}}
 					>
-						Something went wrong
+						{t("error.title")}
 					</h1>
 
 					<p
@@ -75,8 +78,7 @@ export default function GlobalError({
 							margin: "0 0 8px 0",
 						}}
 					>
-						A critical error occurred. Please refresh the page or try again
-						later.
+						{t("error.critical")}
 					</p>
 
 					{error.digest && (
@@ -88,7 +90,7 @@ export default function GlobalError({
 								margin: "0 0 24px 0",
 							}}
 						>
-							Error ID: {error.digest}
+							{t("error.errorId").replace("{digest}", error.digest)}
 						</p>
 					)}
 
@@ -106,7 +108,7 @@ export default function GlobalError({
 								cursor: "pointer",
 							}}
 						>
-							Try Again
+							{t("error.tryAgain")}
 						</button>
 						<a
 							href="/"
@@ -122,7 +124,7 @@ export default function GlobalError({
 								cursor: "pointer",
 							}}
 						>
-							Home
+							{t("common.home")}
 						</a>
 					</div>
 				</div>

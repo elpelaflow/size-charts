@@ -5,14 +5,17 @@ import { getT, getLocale } from "@/lib/i18n";
 import { translateCategoryName } from "@/lib/i18n/data-translations";
 import { ChevronRight } from "lucide-react";
 
-export const metadata: Metadata = {
-	title: "Size Guide",
-	description: "Find the perfect fit with our comprehensive size charts. Browse sizing guides by category for clothing, footwear, and accessories.",
-	openGraph: {
-		title: "Size Guide | Size Charts",
-		description: "Find the perfect fit with our comprehensive size charts for clothing, footwear, and accessories.",
-	},
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getT();
+	return {
+		title: t("seo.sizeGuide.title"),
+		description: t("seo.sizeGuide.desc"),
+		openGraph: {
+			title: `${t("seo.sizeGuide.title")} | Size Charts`,
+			description: t("seo.sizeGuide.desc"),
+		},
+	};
+}
 
 export default async function SizeGuidePage() {
 	const t = await getT();

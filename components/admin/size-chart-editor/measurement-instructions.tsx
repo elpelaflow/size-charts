@@ -2,6 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { useMeasurementInstructions } from "@/hooks/use-measurement-instructions";
+import { useLocale } from "@/hooks/use-locale";
+import { translateInstructionName, translateInstructionText } from "@/lib/i18n/data-translations";
 import { Check, Info, Ruler } from "lucide-react";
 
 interface MeasurementInstructionsSelectorProps {
@@ -14,6 +16,7 @@ export function MeasurementInstructionsSelector({
 	onChange,
 }: MeasurementInstructionsSelectorProps) {
 	const { data: instructions, isLoading } = useMeasurementInstructions();
+	const { t, locale } = useLocale();
 
 	const toggleInstruction = (id: string) => {
 		if (selectedIds.includes(id)) {
@@ -28,7 +31,7 @@ export function MeasurementInstructionsSelector({
 			<div className="space-y-2">
 				<div className="flex items-center gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
 					<Ruler className="h-4 w-4" />
-					How to Measure
+					{t("editor.howToMeasure")}
 				</div>
 				<div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
 					{[1, 2, 3].map((i) => (
@@ -47,10 +50,10 @@ export function MeasurementInstructionsSelector({
 			<div className="space-y-2">
 				<div className="flex items-center gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
 					<Ruler className="h-4 w-4" />
-					How to Measure
+					{t("editor.howToMeasure")}
 				</div>
 				<p className="text-sm text-neutral-500 dark:text-neutral-400">
-					No measurement instructions available. Create some in the admin settings.
+					{t("editor.noInstructions")}
 				</p>
 			</div>
 		);
@@ -61,11 +64,11 @@ export function MeasurementInstructionsSelector({
 			<div className="flex items-center justify-between">
 				<div className="flex items-center gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
 					<Ruler className="h-4 w-4" />
-					How to Measure
+					{t("editor.howToMeasure")}
 				</div>
 				{selectedIds.length > 0 && (
 					<span className="text-xs text-neutral-500">
-						{selectedIds.length} selected
+						{t("editor.selectedCount").replace("{count}", String(selectedIds.length))}
 					</span>
 				)}
 			</div>
@@ -96,10 +99,12 @@ export function MeasurementInstructionsSelector({
 							>
 								{isSelected && <Check className="h-3 w-3" />}
 							</div>
-							<span className="truncate font-medium">{instruction.name}</span>
+							<span className="truncate font-medium">
+								{translateInstructionName(instruction.name, locale)}
+							</span>
 							<div
 								className="ml-auto opacity-0 group-hover:opacity-100 transition-opacity"
-								title={instruction.instruction}
+								title={translateInstructionText(instruction.instruction, locale)}
 							>
 								<Info className="h-3.5 w-3.5 text-neutral-400" />
 							</div>
@@ -111,7 +116,7 @@ export function MeasurementInstructionsSelector({
 			{selectedIds.length > 0 && (
 				<div className="mt-3 p-3 rounded-md bg-neutral-50 dark:bg-neutral-800/50 border border-neutral-200 dark:border-neutral-700">
 					<p className="text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-2">
-						Selected instructions (in order shown):
+						{t("editor.selectedInstructions")}
 					</p>
 					<div className="space-y-1.5">
 						{selectedIds.map((id, index) => {
@@ -126,9 +131,11 @@ export function MeasurementInstructionsSelector({
 										{index + 1}.
 									</span>
 									<div>
-										<span className="font-medium">{instruction.name}:</span>{" "}
+										<span className="font-medium">
+											{translateInstructionName(instruction.name, locale)}:
+										</span>{" "}
 										<span className="text-neutral-500 dark:text-neutral-400">
-											{instruction.instruction}
+											{translateInstructionText(instruction.instruction, locale)}
 										</span>
 									</div>
 								</div>

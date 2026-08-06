@@ -13,6 +13,7 @@ import {
 } from "@/components/ui";
 import { COLUMN_TYPES, LABEL_TYPES } from "@/lib/constants";
 import { useLabelTypeConfigs } from "@/hooks/use-labels";
+import { useLocale } from "@/hooks/use-locale";
 import { Trash2, Settings } from "lucide-react";
 import type { EditorColumn } from "./types";
 import type { ColumnType, LabelType } from "@prisma/client";
@@ -31,6 +32,7 @@ export function ColumnConfig({ column, onUpdate, onDelete, canDelete }: ColumnCo
 	const [labelType, setLabelType] = useState<LabelType | "">(column.labelType || "");
 
 	const { data: labelTypeConfigs } = useLabelTypeConfigs();
+	const { t } = useLocale();
 
 	// Helper to get label type display name
 	const getLabelTypeName = (type: string) => {
@@ -82,7 +84,7 @@ export function ColumnConfig({ column, onUpdate, onDelete, canDelete }: ColumnCo
 				<button
 					onClick={() => setIsOpen(true)}
 					className="p-1 rounded hover:bg-accent flex-shrink-0"
-					title="Configure column"
+					title={t("editor.configureColumnTitle")}
 				>
 					<Settings className="h-3.5 w-3.5 text-muted-foreground" />
 				</button>
@@ -91,18 +93,18 @@ export function ColumnConfig({ column, onUpdate, onDelete, canDelete }: ColumnCo
 			<Dialog open={isOpen} onOpenChange={setIsOpen}>
 				<DialogContent>
 					<DialogHeader>
-						<DialogTitle>Configure Column</DialogTitle>
+						<DialogTitle>{t("editor.configureColumn")}</DialogTitle>
 					</DialogHeader>
 					<div className="space-y-4 py-4">
 						<InputWithLabel
-							label="Column Name"
+							label={t("editor.columnName")}
 							value={name}
 							onChange={(e) => setName(e.target.value)}
-							placeholder="e.g., Waist, Size, US"
+							placeholder={t("editor.columnNamePlaceholder")}
 						/>
 
 						<SelectWithLabel
-							label="Column Type"
+							label={t("editor.columnType")}
 							options={COLUMN_TYPES.map((t) => ({
 								value: t.value,
 								label: `${t.label} - ${t.description}`,
@@ -113,9 +115,9 @@ export function ColumnConfig({ column, onUpdate, onDelete, canDelete }: ColumnCo
 
 						{showsLabelType && (
 							<SelectWithLabel
-								label="Label Type"
+								label={t("editor.labelType")}
 								options={[
-									{ value: "", label: "All Labels (no filter)" },
+									{ value: "", label: t("editor.allLabels") },
 									...(labelTypeConfigs || LABEL_TYPES.map((lt) => ({ labelType: lt.value, displayName: lt.label, description: lt.description }))).map((c) => {
 										const defaultDesc = LABEL_TYPES.find((t) => t.value === c.labelType)?.description;
 										return {
@@ -130,7 +132,7 @@ export function ColumnConfig({ column, onUpdate, onDelete, canDelete }: ColumnCo
 						)}
 						{showsLabelType && (
 							<p className="text-xs text-muted-foreground">
-								Selecting a label type will filter the dropdown options when editing cells in this column.
+								{t("editor.columnFilterHint")}
 							</p>
 						)}
 					</div>
@@ -146,13 +148,13 @@ export function ColumnConfig({ column, onUpdate, onDelete, canDelete }: ColumnCo
 								className="mr-auto"
 							>
 								<Trash2 className="h-4 w-4" />
-								Delete Column
+								{t("editor.deleteColumn")}
 							</Button>
 						)}
 						<Button variant="outline" onClick={() => setIsOpen(false)}>
-							Cancel
+							{t("admin.cancel")}
 						</Button>
-						<Button onClick={handleSave}>Save</Button>
+						<Button onClick={handleSave}>{t("admin.save")}</Button>
 					</DialogFooter>
 				</DialogContent>
 			</Dialog>

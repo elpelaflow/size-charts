@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
 import { GettingStartedContent } from "@/components/docs";
+import { getT } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-	title: "Getting Started",
-	description: "Learn how to set up size charts from scratch. Covers categories, labels, and creating your first chart.",
-	openGraph: {
-		title: "Getting Started | Size Charts",
-		description: "Learn how to set up size charts from scratch. Covers categories, labels, and creating your first chart.",
-	},
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getT();
+	return {
+		title: t("seo.gettingStarted.title"),
+		description: t("seo.gettingStarted.desc"),
+		openGraph: {
+			title: `${t("seo.gettingStarted.title")} | Size Charts`,
+			description: t("seo.gettingStarted.desc"),
+		},
+	};
+}
 
 export default function GettingStartedPage() {
 	return <GettingStartedContent showAdminLinks={false} />;

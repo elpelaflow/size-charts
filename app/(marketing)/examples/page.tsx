@@ -4,14 +4,17 @@ import { Code2, Wand2, ExternalLink, ArrowRight, ChevronRight } from "lucide-rea
 import { db } from "@/lib/db";
 import { getT } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-	title: "Examples",
-	description: "Explore different ways to use the size chart widget. View pre-configured examples, use the live builder, or check out standalone HTML integration.",
-	openGraph: {
-		title: "Examples | Size Charts",
-		description: "Explore different ways to use the size chart widget with live examples and code snippets.",
-	},
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const seoT = await getT();
+	return {
+		title: seoT("seo.examples.title"),
+		description: seoT("seo.examples.desc"),
+		openGraph: {
+			title: `${seoT("seo.examples.title")} | Size Charts`,
+			description: seoT("seo.examples.desc"),
+		},
+	};
+}
 
 const exampleDefs = [
 	{

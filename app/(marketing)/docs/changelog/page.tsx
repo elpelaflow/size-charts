@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
 import { ChangelogContent } from "@/components/docs";
+import { getT } from "@/lib/i18n";
 
-export const metadata: Metadata = {
-	title: "Changelog",
-	description: "See what's been built, what's in progress, and what's planned for the Size Charts platform.",
-	openGraph: {
-		title: "Changelog | Size Charts",
-		description: "See what's been built, what's in progress, and what's planned for the Size Charts platform.",
-	},
-};
+export async function generateMetadata(): Promise<Metadata> {
+	const t = await getT();
+	return {
+		title: t("seo.changelog.title"),
+		description: t("seo.changelog.desc"),
+		openGraph: {
+			title: `${t("seo.changelog.title")} | Size Charts`,
+			description: t("seo.changelog.desc"),
+		},
+	};
+}
 
 export default function ChangelogPage() {
 	return (

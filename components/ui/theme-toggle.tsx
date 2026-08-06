@@ -3,9 +3,11 @@
 import { useTheme } from "next-themes";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLocale } from "@/hooks/use-locale";
 
 export function ThemeToggle() {
 	const { theme, setTheme } = useTheme();
+	const { t } = useLocale();
 	const [mounted, setMounted] = useState(false);
 
 	// Avoid hydration mismatch
@@ -17,7 +19,7 @@ export function ThemeToggle() {
 		return (
 			<button
 				className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground"
-				aria-label="Toggle theme"
+				aria-label={t("a11y.toggleTheme")}
 			>
 				<Sun className="h-5 w-5" />
 			</button>
@@ -28,7 +30,7 @@ export function ThemeToggle() {
 		<button
 			onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
 			className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
-			aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+			aria-label={theme === "dark" ? t("a11y.switchToLight") : t("a11y.switchToDark")}
 		>
 			{theme === "dark" ? (
 				<Sun className="h-5 w-5" />

@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { formatMeasurement, formatRange } from "@/lib/conversions";
+import { useLocale } from "@/hooks/use-locale";
 import type { ColumnType, LabelType, SizeLabel } from "@prisma/client";
 import type { EditorCell } from "./types";
 
@@ -31,6 +32,7 @@ export function Cell({
 }: CellProps) {
 	const inputRef = useRef<HTMLInputElement>(null);
 	const selectRef = useRef<HTMLSelectElement>(null);
+	const { t } = useLocale();
 	const [localValue, setLocalValue] = useState("");
 	const [localMin, setLocalMin] = useState("");
 	const [localMax, setLocalMax] = useState("");
@@ -199,7 +201,7 @@ export function Cell({
 				onBlur={() => onFinishEdit()}
 				className="h-full w-full border-0 bg-transparent px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-inset focus:ring-zinc-500"
 			>
-				<option value="">— Select —</option>
+				<option value="">{t("editor.select")}</option>
 				{filteredLabels.map((label) => (
 					<option key={label.id} value={label.id}>
 						{label.displayValue} ({label.key})
@@ -221,7 +223,7 @@ export function Cell({
 					onKeyDown={handleKeyDown}
 					onBlur={saveAndFinish}
 					className="w-16 rounded border border-zinc-300 px-2 py-1 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800"
-					placeholder="Min"
+					placeholder={t("editor.min")}
 				/>
 				<span className="text-zinc-400">-</span>
 				<input
@@ -232,7 +234,7 @@ export function Cell({
 					onKeyDown={handleKeyDown}
 					onBlur={saveAndFinish}
 					className="w-16 rounded border border-zinc-300 px-2 py-1 text-sm focus:border-zinc-500 focus:outline-none dark:border-zinc-600 dark:bg-zinc-800"
-					placeholder="Max"
+					placeholder={t("editor.max")}
 				/>
 			</div>
 		);

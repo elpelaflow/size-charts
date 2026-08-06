@@ -2,8 +2,10 @@
 
 import { useEffect } from "react";
 import Script from "next/script";
+import { useLocale } from "@/hooks/use-locale";
 
 export function EmbedExample() {
+  const { t } = useLocale();
   useEffect(() => {
     // @ts-expect-error - SizeCharts is loaded from external script
     if (typeof window !== "undefined" && window.SizeCharts) {
@@ -15,16 +17,16 @@ export function EmbedExample() {
   return (
     <div className="max-w-4xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold">Embed Widget Examples</h1>
+        <h1 className="text-2xl font-bold">{t("examples.embedExamples.title")}</h1>
         <p className="mt-2 text-muted-foreground">
-          Pre-configured examples showing different theme and configuration options.
+          {t("examples.embedExamples.subtitle")}
         </p>
       </div>
 
       {/* Light Theme */}
       <section className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Light Theme (Inches)</h2>
+          <h2 className="text-lg font-semibold">{t("examples.embed.lightTheme")}</h2>
           <code className="text-xs bg-muted px-2 py-1 rounded">data-theme=&quot;light&quot;</code>
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-6">
@@ -38,7 +40,7 @@ export function EmbedExample() {
       {/* Dark Theme */}
       <section className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Dark Theme (Centimeters)</h2>
+          <h2 className="text-lg font-semibold">{t("examples.embed.darkTheme")}</h2>
           <code className="text-xs bg-muted px-2 py-1 rounded">data-theme=&quot;dark&quot;</code>
         </div>
         <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6">
@@ -52,7 +54,7 @@ export function EmbedExample() {
       {/* Compact Mode */}
       <section className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Compact Mode</h2>
+          <h2 className="text-lg font-semibold">{t("examples.embed.compactTheme")}</h2>
           <code className="text-xs bg-muted px-2 py-1 rounded">data-compact=&quot;true&quot;</code>
         </div>
         <div className="rounded-xl border border-zinc-200 bg-white p-6">
@@ -65,20 +67,20 @@ export function EmbedExample() {
 
       {/* Configuration Reference */}
       <section className="mb-8">
-        <h2 className="text-lg font-semibold mb-4">Configuration Options</h2>
+        <h2 className="text-lg font-semibold mb-4">{t("examples.embed.configOptions")}</h2>
         <div className="rounded-xl border border-border overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b bg-muted/50">
-                <th className="px-4 py-2 text-left font-medium">Attribute</th>
-                <th className="px-4 py-2 text-left font-medium">Values</th>
-                <th className="px-4 py-2 text-left font-medium">Default</th>
+                <th className="px-4 py-2 text-left font-medium">{t("docs.embed.attribute")}</th>
+                <th className="px-4 py-2 text-left font-medium">{t("examples.embed.values")}</th>
+                <th className="px-4 py-2 text-left font-medium">{t("docs.embed.default")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
               <tr>
                 <td className="px-4 py-2"><code className="bg-muted px-1 rounded">data-chart</code></td>
-                <td className="px-4 py-2 text-muted-foreground">Chart slug (required)</td>
+                <td className="px-4 py-2 text-muted-foreground">{t("docs.embed.attrChart")}</td>
                 <td className="px-4 py-2 text-muted-foreground">-</td>
               </tr>
               <tr>
@@ -98,7 +100,7 @@ export function EmbedExample() {
               </tr>
               <tr>
                 <td className="px-4 py-2"><code className="bg-muted px-1 rounded">data-api-key</code></td>
-                <td className="px-4 py-2 text-muted-foreground">API key string</td>
+                <td className="px-4 py-2 text-muted-foreground">{t("examples.embed.apiKeyString")}</td>
                 <td className="px-4 py-2 text-muted-foreground">-</td>
               </tr>
             </tbody>

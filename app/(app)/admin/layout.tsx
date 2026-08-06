@@ -15,44 +15,47 @@ import {
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
+import { useLocale } from "@/hooks/use-locale";
 
-function getBreadcrumbs(pathname: string) {
+type TFunc = (key: string) => string;
+
+function getBreadcrumbs(pathname: string, t: TFunc) {
 	const segments = pathname.split("/").filter(Boolean);
 	const breadcrumbs: { label: string; href?: string }[] = [];
 
 	if (segments[0] === "admin") {
 		if (segments.length === 1) {
-			breadcrumbs.push({ label: "Dashboard" });
+			breadcrumbs.push({ label: t("admin.dashboard") });
 		} else if (segments[1] === "size-charts") {
-			breadcrumbs.push({ label: "Size Charts", href: "/admin/size-charts" });
+			breadcrumbs.push({ label: t("admin.sizeCharts"), href: "/admin/size-charts" });
 			if (segments[2] === "new") {
-				breadcrumbs.push({ label: "New" });
+				breadcrumbs.push({ label: t("admin.new") });
 			} else if (segments[2]) {
-				breadcrumbs.push({ label: "Edit" });
+				breadcrumbs.push({ label: t("admin.edit") });
 			}
 		} else if (segments[1] === "categories") {
-			breadcrumbs.push({ label: "Categories" });
+			breadcrumbs.push({ label: t("admin.categories") });
 		} else if (segments[1] === "labels") {
-			breadcrumbs.push({ label: "Labels" });
+			breadcrumbs.push({ label: t("admin.labels") });
 		} else if (segments[1] === "templates") {
-			breadcrumbs.push({ label: "Templates" });
+			breadcrumbs.push({ label: t("admin.templates") });
 		} else if (segments[1] === "api-keys") {
-			breadcrumbs.push({ label: "API Keys" });
+			breadcrumbs.push({ label: t("admin.apiKeys") });
 		} else if (segments[1] === "docs") {
-			breadcrumbs.push({ label: "Documentation", href: "/admin/docs" });
+			breadcrumbs.push({ label: t("admin.documentation"), href: "/admin/docs" });
 			if (segments[2] === "getting-started") {
-				breadcrumbs.push({ label: "Getting Started" });
+				breadcrumbs.push({ label: t("admin.gettingStarted") });
 			} else if (segments[2] === "api") {
-				breadcrumbs.push({ label: "API Reference" });
+				breadcrumbs.push({ label: t("admin.apiReference") });
 			} else if (segments[2] === "examples") {
-				breadcrumbs.push({ label: "Examples", href: "/admin/docs/examples" });
+				breadcrumbs.push({ label: t("admin.examples"), href: "/admin/docs/examples" });
 				if (segments[3] === "embed") {
-					breadcrumbs.push({ label: "Embed Examples" });
+					breadcrumbs.push({ label: t("admin.embedExamples") });
 				} else if (segments[3] === "live") {
-					breadcrumbs.push({ label: "Live Builder" });
+					breadcrumbs.push({ label: t("admin.liveBuilder") });
 				}
 			} else if (segments[2] === "changelog") {
-				breadcrumbs.push({ label: "Changelog" });
+				breadcrumbs.push({ label: t("admin.changelog") });
 			}
 		}
 	}
@@ -66,7 +69,8 @@ export default function AdminLayout({
 	children: React.ReactNode;
 }) {
 	const pathname = usePathname();
-	const breadcrumbs = getBreadcrumbs(pathname);
+	const { t } = useLocale();
+	const breadcrumbs = getBreadcrumbs(pathname, t);
 	const { isDemoMode } = useDemoMode();
 
 	// Login page gets its own full-page layout without sidebar
@@ -98,7 +102,7 @@ export default function AdminLayout({
 											href="/admin"
 											className="text-muted-foreground hover:text-foreground transition-colors"
 										>
-											Admin
+											{t("admin.breadcrumb")}
 										</BreadcrumbLink>
 									</BreadcrumbItem>
 									{breadcrumbs.map((crumb, index) => (
